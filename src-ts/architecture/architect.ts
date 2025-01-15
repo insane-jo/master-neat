@@ -4,8 +4,12 @@ import Network from './network';
 import Layer from './layer';
 import Group from './group';
 import NodeElement from './node';
-import {IMutation} from '../methods/mutation';
 import {NodeTypeEnum} from "../types/node-type-enum";
+import addNode from "../methods/mutation/add-node";
+import addConn from "../methods/mutation/add-conn";
+import addBackConn from "../methods/mutation/add-back-conn";
+import addSelfConn from "../methods/mutation/add-self-conn";
+import addGate from "../methods/mutation/add-gate";
 
 /*******************************************************************************
                                         architect
@@ -122,23 +126,23 @@ var architect = {
 
     var i;
     for (i = 0; i < hidden; i++) {
-      network.mutate(methods.mutation.ADD_NODE as IMutation);
+      network.mutate(addNode);
     }
 
     for (i = 0; i < connections - hidden; i++) {
-      network.mutate(methods.mutation.ADD_CONN as IMutation);
+      network.mutate(addConn);
     }
 
     for (i = 0; i < backconnections; i++) {
-      network.mutate(methods.mutation.ADD_BACK_CONN as IMutation);
+      network.mutate(addBackConn);
     }
 
     for (i = 0; i < selfconnections; i++) {
-      network.mutate(methods.mutation.ADD_SELF_CONN as IMutation);
+      network.mutate(addSelfConn);
     }
 
     for (i = 0; i < gates; i++) {
-      network.mutate(methods.mutation.ADD_GATE as IMutation);
+      network.mutate(addGate);
     }
 
     return network;
@@ -314,9 +318,7 @@ var architect = {
       type: NodeTypeEnum.output
     });
 
-    var network = architect.Construct([input, output]);
-
-    return network;
+    return architect.Construct([input, output]);
   },
 
   /**

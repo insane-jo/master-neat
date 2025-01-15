@@ -4,9 +4,22 @@ const assert = chai.assert;
 
 import {IMutation} from "../src-ts/methods/mutation";
 import MasterNeat from "../src-ts";
-const { architect, methods, config } = MasterNeat;
+const { architect, config } = MasterNeat;
 import Network from "../src-ts/architecture/network";
-import {isNumberObject} from "node:util/types";
+import addGate from "../src-ts/methods/mutation/add-gate";
+import addBackConn from "../src-ts/methods/mutation/add-back-conn";
+import addSelfConn from "../src-ts/methods/mutation/add-self-conn";
+import addNode from "../src-ts/methods/mutation/add-node";
+import addConn from "../src-ts/methods/mutation/add-conn";
+import modBias from "../src-ts/methods/mutation/mod-bias";
+import modWeight from "../src-ts/methods/mutation/mod-weight";
+import subConn from "../src-ts/methods/mutation/sub-conn";
+import subNode from "../src-ts/methods/mutation/sub-node";
+import modActivation from "../src-ts/methods/mutation/mod-activation";
+import subGate from "../src-ts/methods/mutation/sub-gate";
+import subSelfConn from "../src-ts/methods/mutation/sub-self-conn";
+import subBackConn from "../src-ts/methods/mutation/sub-back-conn";
+import swapNodes from "../src-ts/methods/mutation/swap-nodes";
 
 /* Turn off warnings */
 config.warnings = false;
@@ -14,9 +27,9 @@ config.warnings = false;
 /* Functions used in the testing process */
 function checkMutation (method: IMutation) {
   var network = architect.Perceptron(2, 4, 4, 4, 2);
-  network.mutate(methods.mutation.ADD_GATE as IMutation);
-  network.mutate(methods.mutation.ADD_BACK_CONN as IMutation);
-  network.mutate(methods.mutation.ADD_SELF_CONN as IMutation);
+  network.mutate(addGate);
+  network.mutate(addBackConn);
+  network.mutate(addSelfConn);
 
   var originalOutput = [];
   var i, j;
@@ -88,46 +101,46 @@ function testEquality (original: Network, copied: (Network | IActivationFunction
 describe('Networks', function () {
   describe('Mutation', function () {
     it('ADD_NODE', function () {
-      checkMutation(methods.mutation.ADD_NODE as IMutation);
+      checkMutation(addNode);
     });
     it('ADD_CONNECTION', function () {
-      checkMutation(methods.mutation.ADD_CONN as IMutation);
+      checkMutation(addConn);
     });
     it('MOD_BIAS', function () {
-      checkMutation(methods.mutation.MOD_BIAS as IMutation);
+      checkMutation(modBias);
     });
     it('MOD_WEIGHT', function () {
-      checkMutation(methods.mutation.MOD_WEIGHT as IMutation);
+      checkMutation(modWeight);
     });
     it('SUB_CONN', function () {
-      checkMutation(methods.mutation.SUB_CONN as IMutation);
+      checkMutation(subConn);
     });
     it('SUB_NODE', function () {
-      checkMutation(methods.mutation.SUB_NODE as IMutation);
+      checkMutation(subNode);
     });
     it('MOD_ACTIVATION', function () {
-      checkMutation(methods.mutation.MOD_ACTIVATION as IMutation);
+      checkMutation(modActivation);
     });
     it('ADD_GATE', function () {
-      checkMutation(methods.mutation.ADD_GATE as IMutation);
+      checkMutation(addGate);
     });
     it('SUB_GATE', function () {
-      checkMutation(methods.mutation.SUB_GATE as IMutation);
+      checkMutation(subGate);
     });
     it('ADD_SELF_CONN', function () {
-      checkMutation(methods.mutation.ADD_SELF_CONN as IMutation);
+      checkMutation(addSelfConn);
     });
     it('SUB_SELF_CONN', function () {
-      checkMutation(methods.mutation.SUB_SELF_CONN as IMutation);
+      checkMutation(subSelfConn);
     });
     it('ADD_BACK_CONN', function () {
-      checkMutation(methods.mutation.ADD_BACK_CONN as IMutation);
+      checkMutation(addBackConn);
     });
     it('SUB_BACK_CONN', function () {
-      checkMutation(methods.mutation.SUB_BACK_CONN as IMutation);
+      checkMutation(subBackConn);
     });
     it('SWAP_NODES', function () {
-      checkMutation(methods.mutation.SWAP_NODES as IMutation);
+      checkMutation(swapNodes);
     });
   });
   describe('Structure', function () {
@@ -139,12 +152,12 @@ describe('Networks', function () {
       // mutate it a couple of times
       var i;
       for (i = 0; i < 100; i++) {
-        network1.mutate(methods.mutation.ADD_NODE as IMutation);
-        network2.mutate(methods.mutation.ADD_NODE as IMutation);
+        network1.mutate(addNode);
+        network2.mutate(addNode);
       }
       for (i = 0; i < 400; i++) {
-        network1.mutate(methods.mutation.ADD_CONN as IMutation);
-        network2.mutate(methods.mutation.ADD_NODE as IMutation);
+        network1.mutate(addConn);
+        network2.mutate(addConn);
       }
 
       // Crossover

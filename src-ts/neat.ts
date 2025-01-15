@@ -15,7 +15,7 @@ var selection = methods.selection;
 
 type IFitnessFunction = (popGenome: Network | Network[]) => number;
 
-interface INeatOptions { 
+interface INeatOptions {
   equal?: boolean;
   clear?: boolean;
   popsize: number;
@@ -36,7 +36,7 @@ interface INeatOptions {
   mutationSelection: (genome: Network) => IMutation;
 }
 
-export default class Neat { 
+export default class Neat {
   public input: number;
   public output: number;
   public fitness: IFitnessFunction;
@@ -184,17 +184,17 @@ export default class Neat {
   selectMutationMethod(genome: Network) {
     var mutationMethod = this.mutation[Math.floor(Math.random() * this.mutation.length)];
 
-    if (mutationMethod === methods.mutation.ADD_NODE && genome.nodes.length >= this.maxNodes) {
+    if (mutationMethod.name === 'ADD_NODE' && genome.nodes.length >= this.maxNodes) {
       if (config.warnings) console.warn('maxNodes exceeded!');
       return;
     }
 
-    if (mutationMethod === methods.mutation.ADD_CONN && genome.connections.length >= this.maxConns) {
+    if (mutationMethod.name === 'ADD_CONN' && genome.connections.length >= this.maxConns) {
       if (config.warnings) console.warn('maxConns exceeded!');
       return;
     }
 
-    if (mutationMethod === methods.mutation.ADD_GATE && genome.gates.length >= this.maxGates) {
+    if (mutationMethod.name === 'ADD_GATE' && genome.gates.length >= this.maxGates) {
       if (config.warnings) console.warn('maxGates exceeded!');
       return;
     }

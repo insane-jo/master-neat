@@ -5,7 +5,7 @@ export type IMutation = AnyObject & {name: string};
 
 type IMutationCollection = {[key: string]: IMutation | IMutation[]};
 
-var mutation: IMutationCollection = {
+const mutation: IMutationCollection = {
   ADD_NODE: {
     name: 'ADD_NODE'
   },

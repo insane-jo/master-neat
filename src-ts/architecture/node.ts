@@ -7,6 +7,8 @@ import methods from '../methods/methods';
 import config from '../config';
 import {NodeTypeEnum} from "../types/node-type-enum";
 import {IMutation} from "../methods/mutation";
+import {IMutationModActivation} from "../methods/mutation/mod-activation";
+import {IMutationModBias} from "../methods/mutation/mod-bias";
 
 type NodeConnectionsDescriptor = {
   in: Connection[];
@@ -370,18 +372,21 @@ export default class NodeElement {
   mutate (method: IMutation) {
     if (typeof method === 'undefined') {
       throw new Error('No mutate method given!');
-    } else if (!(method.name in methods.mutation)) {
+    } else if (methods.mutation.ALL.indexOf(method) == -1) {
       throw new Error('This method does not exist!');
     }
 
-    switch (method) {
-      case methods.mutation.MOD_ACTIVATION:
+    switch (method.name) {
+      case 'MOD_ACTIVATION':
         // Can't be the same squash
-        let squash = method.allowed[(method.allowed.indexOf(this.squash) + Math.floor(Math.random() * (method.allowed.length - 1)) + 1) % method.allowed.length];
+        const methodAct = method as IMutationModActivation;
+        let squash = methodAct.allowed[(methodAct.allowed.indexOf(this.squash) + Math.floor(Math.random() * (methodAct.allowed.length - 1)) + 1) % methodAct.allowed.length];
         this.squash = squash;
         break;
-      case methods.mutation.MOD_BIAS:
-        let modification = Math.random() * (method.max - method.min) + method.min;
+      case 'MOD_BIAS':
+        const methodBias = method as IMutationModBias;
+
+        let modification = Math.random() * (methodBias.max - methodBias.min) + methodBias.min;
         this.bias += modification;
         break;
     }
