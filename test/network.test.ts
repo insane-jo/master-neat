@@ -2,24 +2,24 @@
 import chai from 'chai';
 const assert = chai.assert;
 
-import {IMutation} from "../src-ts/methods/mutation";
-import MasterNeat from "../src-ts";
+import {IMutation} from "../src/methods/mutation";
+import MasterNeat from "../src";
 const { architect, config } = MasterNeat;
-import Network from "../src-ts/architecture/network";
-import addGate from "../src-ts/methods/mutation/add-gate";
-import addBackConn from "../src-ts/methods/mutation/add-back-conn";
-import addSelfConn from "../src-ts/methods/mutation/add-self-conn";
-import addNode from "../src-ts/methods/mutation/add-node";
-import addConn from "../src-ts/methods/mutation/add-conn";
-import modBias from "../src-ts/methods/mutation/mod-bias";
-import modWeight from "../src-ts/methods/mutation/mod-weight";
-import subConn from "../src-ts/methods/mutation/sub-conn";
-import subNode from "../src-ts/methods/mutation/sub-node";
-import modActivation from "../src-ts/methods/mutation/mod-activation";
-import subGate from "../src-ts/methods/mutation/sub-gate";
-import subSelfConn from "../src-ts/methods/mutation/sub-self-conn";
-import subBackConn from "../src-ts/methods/mutation/sub-back-conn";
-import swapNodes from "../src-ts/methods/mutation/swap-nodes";
+import Network from "../src/architecture/network";
+import addGate from "../src/methods/mutation/add-gate";
+import addBackConn from "../src/methods/mutation/add-back-conn";
+import addSelfConn from "../src/methods/mutation/add-self-conn";
+import addNode from "../src/methods/mutation/add-node";
+import addConn from "../src/methods/mutation/add-conn";
+import modBias from "../src/methods/mutation/mod-bias";
+import modWeight from "../src/methods/mutation/mod-weight";
+import subConn from "../src/methods/mutation/sub-conn";
+import subNode from "../src/methods/mutation/sub-node";
+import modActivation from "../src/methods/mutation/mod-activation";
+import subGate from "../src/methods/mutation/sub-gate";
+import subSelfConn from "../src/methods/mutation/sub-self-conn";
+import subBackConn from "../src/methods/mutation/sub-back-conn";
+import swapNodes from "../src/methods/mutation/swap-nodes";
 
 /* Turn off warnings */
 config.warnings = false;

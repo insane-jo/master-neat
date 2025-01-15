@@ -3,12 +3,10 @@
   "version": "0.0.1",
   "description": "",
   "scripts": {
-    "test:src": "mocha test/src.js test",
-    "test:dist": "mocha test/dist.js test",
     "build:dist": "webpack",
     "build": "npm run build:dist",
-    "deploy": "npm run build && npm run test:dist && npm publish",
-    "test:ts": "mocha -r ts-node/register test-ts/**/*.test.ts"
+    "deploy": "npm run build && npm run test:ts && npm publish",
+    "test:ts": "mocha -r ts-node/register test/**/*.test.ts"
   },
   "devDependencies": {
     "@types/chai": "^5.0.1",

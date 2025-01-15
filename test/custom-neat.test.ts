@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import MasterNeat from '../src-ts';
+import MasterNeat from '../src';
 const {architect} = MasterNeat;
 
 

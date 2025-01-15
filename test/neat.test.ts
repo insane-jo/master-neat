@@ -1,7 +1,7 @@
 import chai from 'chai';
 const assert = chai.assert;
 
-import MasterNeat from "../src-ts";
+import MasterNeat from "../src";
 var {Network, methods, config} = MasterNeat;
 
 /* Turn off warnings */
