@@ -2,7 +2,7 @@ import cp from 'child_process';
 import path from 'path';
 import Network from '../../../architecture/network';
 
-export default class TestWorker {
+export default class NodeTestWorker {
   public worker: cp.ChildProcess;
 
   // @todo: выкосить any
@@ -13,7 +13,7 @@ export default class TestWorker {
   }
 
   evaluate (network: Network) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       var serialized = network.serialize();
 
       var data = {

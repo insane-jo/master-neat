@@ -5,7 +5,7 @@ import * as multi from '../../multi';
                                 WEBWORKER
 *******************************************************************************/
 
-export default class TestWorker {
+export default class BrowserTestWorker {
   url: string;
   worker: Worker;
 
@@ -19,7 +19,7 @@ export default class TestWorker {
   }
 
   evaluate(network: Network) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       var serialized = network.serialize();
 
       var data = {
@@ -47,7 +47,7 @@ export default class TestWorker {
   }
 
   protected _createBlobString(cost: string) {
-    var source = `
+    return `
       var F = [${multi.activations.toString()}];
       var cost = ${cost.toString()};
       var multi = {
@@ -70,7 +70,5 @@ export default class TestWorker {
           set = multi.deserializeDataSet(new Float64Array(e.data.set));
         }
       };`;
-
-    return source;
   }
 }
