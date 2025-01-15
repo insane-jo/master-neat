@@ -1,24 +1,17 @@
-import NodeElement, { NodeType } from "./node";
+import NodeElement, {NodeType} from "./node";
 import Connection from "./connection";
 import methods from "../methods/methods";
 import {IConnectionDescription} from "../types/methods-collection-types";
 import {IGate} from "../types/methods-gating-types";
-import { IActivationFunction } from "../types/activation-types";
+import {IActivationFunction} from "../types/activation-types";
 import Layer from './layer';
 
 import config from "../config";
-
-// @todo: Привести к единому дескриптору. Такой есть в ноде и еще где-то
-export interface IGroupConnectionDescriptor {
-  in: (NodeElement | Connection)[];
-  out: (NodeElement | Connection)[];
-  self: (NodeElement | Connection)[];
-  gated?: Connection[];
-}
+import {IConnectionDescriptor} from "../types/connection-descriptor";
 
 export default class Group {
   public nodes: NodeElement[];
-  public connections: IGroupConnectionDescriptor;
+  public connections: IConnectionDescriptor;
 
   constructor(size: number) {
     this.nodes = [];
@@ -36,7 +29,7 @@ export default class Group {
   /**
    * Activates all the nodes in the group
    */
-  activate (value?: number[]): number[] {
+  activate(value?: number[]): number[] {
     const values = [];
 
     if (typeof value !== 'undefined' && value.length !== this.nodes.length) {
@@ -188,7 +181,7 @@ export default class Group {
   /**
    * Sets the value of a property for every node
    */
-  set(values: {bias?: number; squash?: IActivationFunction; type?: NodeType}) {
+  set(values: { bias?: number; squash?: IActivationFunction; type?: NodeType }) {
     for (var i = 0; i < this.nodes.length; i++) {
       if (typeof values.bias !== 'undefined') {
         this.nodes[i].bias = values.bias;
