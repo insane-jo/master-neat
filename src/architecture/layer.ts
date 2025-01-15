@@ -78,10 +78,8 @@ export default class Layer {
     var connections: Connection[];
     if (target instanceof Group || target instanceof NodeElement) {
       connections = (this.output as Group).connect(target, method, weight);
-    } else if (target instanceof Layer) {
-      connections = target.input(this, method, weight);
     } else {
-      return []
+      connections = target.input(this, method, weight);
     }
 
     return connections;
@@ -99,7 +97,7 @@ export default class Layer {
    */
   set(values: NodeElement) {
     for (var i = 0; i < this.nodes.length; i++) {
-      var node = this.nodes[i];
+      const node = this.nodes[i];
 
       if (node instanceof NodeElement) {
         if (typeof values.bias !== "undefined") {
@@ -108,7 +106,7 @@ export default class Layer {
 
         node.squash = values.squash || node.squash;
         node.type = values.type || node.type;
-      } else if (node instanceof Group) {
+      } else {
         node.set(values);
       }
     }
@@ -146,7 +144,7 @@ export default class Layer {
           }
         }
       }
-    } else if (target instanceof NodeElement) {
+    } else {
       for (i = 0; i < this.nodes.length; i++) {
         this.nodes[i].disconnect(target, twosided);
 
@@ -193,13 +191,6 @@ export default class Layer {
     layer.output = block;
 
     layer.input = function (from, method, weight) {
-      let fromTarget: Group;
-      if (from instanceof Layer) {
-        fromTarget = from.output;
-      } else {
-        fromTarget = from;
-      }
-
       method = method || methods.connection.ALL_TO_ALL;
       return from.connect(block, method, weight);
     } as TInputFunction;
@@ -246,12 +237,6 @@ export default class Layer {
     layer.output = outputBlock;
 
     layer.input = function (from, method, weight) {
-      let fromTarget: Group;
-      if (from instanceof Layer) {
-        fromTarget = from.output;
-      } else {
-        fromTarget = from;
-      }
       method = method || methods.connection.ALL_TO_ALL;
       var connections: Connection[] = [];
 
@@ -402,8 +387,10 @@ export default class Layer {
 
       return from.connect(
         layer.nodes[layer.nodes.length - 1],
-        methods.connection.ONE_TO_ONE,
-        1
+        method,
+        weight
+        // methods.connection.ONE_TO_ONE,
+        // 1
       );
     };
 

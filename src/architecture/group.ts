@@ -107,7 +107,7 @@ export default class Group {
       }
     } else if (target instanceof Layer) {
       connections = target.input(this, method, weight);
-    } else if (target instanceof NodeElement) {
+    } else {
       for (i = 0; i < this.nodes.length; i++) {
         let connection = this.nodes[i].connect(target, weight);
         this.connections.out.push(connection[0]);
@@ -222,7 +222,7 @@ export default class Group {
           }
         }
       }
-    } else if (target instanceof NodeElement) {
+    } else {
       for (i = 0; i < this.nodes.length; i++) {
         this.nodes[i].disconnect(target, twosided);
 
