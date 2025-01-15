@@ -18,7 +18,7 @@ export default class BrowserTestWorker {
     this.worker.postMessage(data, [data.set]);
   }
 
-  evaluate(network: Network) {
+  evaluate(network: Network): Promise<any> {
     return new Promise((resolve) => {
       var serialized = network.serialize();
 

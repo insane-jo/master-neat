@@ -961,8 +961,7 @@ export default class Network {
           var done = 0;
 
           // Start worker function
-          // @todo: выкосить any
-          var startWorker = function (worker: any) {
+          var startWorker = function (worker: BrowserTestWorker | NodeTestWorker) {
             if (!queue.length) {
               if (++done === threads) resolve(undefined);
               return;
@@ -991,7 +990,7 @@ export default class Network {
     // Intialise the NEAT instance
     options.network = this;
 
-    // @todo: выкосить  any
+    // @todo: выкосить any
     var neat = new Neat(this.input, this.output, fitnessFunction as any, options as any);
 
     var error = -Infinity;
@@ -1130,9 +1129,9 @@ export default class Network {
    * Serialize to send to workers efficiently
    */
   serialize() {
-    var activations = [];
-    var states = [];
-    var conns = [];
+    var activations: number[] = [];
+    var states: number[] = [];
+    var conns: number[] = [];
     var squashes = [
       'LOGISTIC', 'TANH', 'IDENTITY', 'STEP', 'RELU', 'SOFTSIGN', 'SINUSOID',
       'GAUSSIAN', 'BENT_IDENTITY', 'BIPOLAR', 'BIPOLAR_SIGMOID', 'HARD_TANH',
@@ -1152,7 +1151,7 @@ export default class Network {
 
     for (i = this.input; i < this.nodes.length; i++) {
       let node = this.nodes[i];
-      conns.push((node as any).index);
+      conns.push((node as any).index as number);
       conns.push(node.bias);
       conns.push(squashes.indexOf(node.squash.name));
 

@@ -1,18 +1,19 @@
 import cp from 'child_process';
 import path from 'path';
 import Network from '../../../architecture/network';
+import {ICostFunction} from "../../../methods/cost";
 
 export default class NodeTestWorker {
   public worker: cp.ChildProcess;
 
   // @todo: выкосить any
-  constructor(dataSet: any, cost: any) {
+  constructor(dataSet: any, cost: ICostFunction) {
     this.worker = cp.fork(path.join(__dirname, '/worker'));
 
     this.worker.send({ set: dataSet, cost: cost.name });
   }
 
-  evaluate (network: Network) {
+  evaluate (network: Network): Promise<any> {
     return new Promise((resolve) => {
       var serialized = network.serialize();
 
