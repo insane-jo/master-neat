@@ -109,7 +109,7 @@ var architect = {
   /**
    * Creates a randomly connected network
    */
-  Random: function (input: number, hidden: number, output: number, options: {connections?: number; backconnections?: number; selfconnections?: number; gates?: number;}) {
+  Random: function (input: number, hidden: number, output: number, options?: {connections?: number; backconnections?: number; selfconnections?: number; gates?: number;}) {
     options = options || {};
 
     var connections = options.connections || hidden * 2;
@@ -146,8 +146,8 @@ var architect = {
   /**
    * Creates a long short-term memory network
    */
-  LSTM: function () {
-    var args = Array.prototype.slice.call(arguments);
+  LSTM: function (...inArgs: number[]) {
+    var args = Array.prototype.slice.call(inArgs);
     if (args.length < 3) {
       throw new Error('You have to specify at least 3 layers');
     }
@@ -268,8 +268,8 @@ var architect = {
   /**
    * Creates a gated recurrent unit network
    */
-  GRU: function () {
-    var args = Array.prototype.slice.call(arguments);
+  GRU: function (...inArgs: number[]) {
+    var args = Array.prototype.slice.call(inArgs);
     if (args.length < 3) {
       throw new Error('not enough layers (minimum 3) !!');
     }
@@ -321,7 +321,7 @@ var architect = {
   /**
    * Creates a NARX network (remember previous inputs/outputs)
    */
-  NARX: function (inputSize: number, hiddenLayers: number[], outputSize: number, previousInput: number, previousOutput: number) {
+  NARX: function (inputSize: number, hiddenLayers: number | number[], outputSize: number, previousInput: number, previousOutput: number) {
     if (!Array.isArray(hiddenLayers)) {
       hiddenLayers = [hiddenLayers];
     }

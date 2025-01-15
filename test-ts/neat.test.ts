@@ -1,9 +1,9 @@
-/* Import */
-var chai = require('chai');
-var assert = chai.assert;
+import chai from 'chai';
+const assert = chai.assert;
 
-/* Shorten var names */
-var {Network, methods, config} = neataptic;
+import MasterNeat from "../src-ts";
+import {IMutation} from "../src-ts/methods/mutation";
+var {Network, methods, config} = MasterNeat;
 
 /* Turn off warnings */
 config.warnings = false;
@@ -26,7 +26,7 @@ describe('Neat', function () {
 
     var network = new Network(2, 1);
     var results = await network.evolve(trainingSet, {
-      mutation: methods.mutation.FFW,
+      mutation: methods.mutation.FFW as IMutation[],
       equal: true,
       elitism: 10,
       mutationRate: 0.5,
@@ -48,7 +48,7 @@ describe('Neat', function () {
 
     var network = new Network(2, 1);
     var results = await network.evolve(trainingSet, {
-      mutation: methods.mutation.FFW,
+      mutation: methods.mutation.FFW as IMutation[],
       equal: true,
       elitism: 10,
       mutationRate: 0.5,
@@ -71,7 +71,7 @@ describe('Neat', function () {
 
     var network = new Network(2, 1);
     var results = await network.evolve(trainingSet, {
-      mutation: methods.mutation.FFW,
+      mutation: methods.mutation.FFW as IMutation[],
       equal: true,
       elitism: 10,
       mutationRate: 0.5,
