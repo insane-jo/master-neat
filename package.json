@@ -2,7 +2,6 @@
   "name": "master-neat",
   "version": "0.0.1",
   "description": "",
-  "main": "./src/neataptic",
   "scripts": {
     "test:src": "mocha test/src.js test",
     "test:dist": "mocha test/dist.js test",

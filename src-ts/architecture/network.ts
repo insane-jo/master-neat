@@ -318,7 +318,7 @@ export default class Network {
   /**
    * Mutates the network with the given method
    */
-  mutate(method: IMutation) {
+  mutate(method?: IMutation) {
     if (typeof method === 'undefined') {
       throw new Error('No (correct) mutate method given!');
     }

@@ -5,6 +5,9 @@ import { ISelection } from "./methods/selection";
 
 import methods from './methods/methods';
 import config from './config';
+import addNode from "./methods/mutation/add-node";
+import addConn from "./methods/mutation/add-conn";
+import addGate from "./methods/mutation/add-gate";
 
 /* Easier variable naming */
 var selection = methods.selection;
@@ -184,17 +187,17 @@ export default class Neat {
   selectMutationMethod(genome: Network) {
     var mutationMethod = this.mutation[Math.floor(Math.random() * this.mutation.length)];
 
-    if (mutationMethod.name === 'ADD_NODE' && genome.nodes.length >= this.maxNodes) {
+    if (mutationMethod === addNode && genome.nodes.length >= this.maxNodes) {
       if (config.warnings) console.warn('maxNodes exceeded!');
       return;
     }
 
-    if (mutationMethod.name === 'ADD_CONN' && genome.connections.length >= this.maxConns) {
+    if (mutationMethod === addConn && genome.connections.length >= this.maxConns) {
       if (config.warnings) console.warn('maxConns exceeded!');
       return;
     }
 
-    if (mutationMethod.name === 'ADD_GATE' && genome.gates.length >= this.maxGates) {
+    if (mutationMethod === addGate && genome.gates.length >= this.maxGates) {
       if (config.warnings) console.warn('maxGates exceeded!');
       return;
     }
@@ -210,8 +213,8 @@ export default class Neat {
     for (var i = 0; i < this.population.length; i++) {
       if (Math.random() <= this.mutationRate) {
         for (var j = 0; j < this.mutationAmount; j++) {
-          var mutationMethod = this.selectMutationMethod(this.population[i]);
-          this.population[i].mutate(mutationMethod as IMutation);
+          const mutationMethod = this.selectMutationMethod(this.population[i]);
+          this.population[i].mutate(mutationMethod);
         }
       }
     }
