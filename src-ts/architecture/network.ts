@@ -646,6 +646,7 @@ export default class Network {
 
       // Checks for options such as scheduled logs and shuffling
       if (options.shuffle) {
+
         for (let j, x, i = set.length; i; j = Math.floor(Math.random() * i), x = set[--i], set[i] = set[j], set[j] = x) ;
       }
 
