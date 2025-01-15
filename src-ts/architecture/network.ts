@@ -338,7 +338,7 @@ export default class Network {
         let node = new NodeElement(NodeTypeEnum.hidden);
 
         // Random squash function
-        node.mutate(mutation.MOD_ACTIVATION);
+        node.mutate(mutation.MOD_ACTIVATION as IMutation);
 
         // Place it in this.nodes
         let minBound = Math.min(toIndex, this.nodes.length - this.output);
