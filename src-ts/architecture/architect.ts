@@ -84,9 +84,9 @@ var architect = {
   /**
    * Creates a multilayer perceptron (MLP)
    */
-  Perceptron: function () {
+  Perceptron: function (...args: number[]) {
     // Convert arguments to Array
-    var layers = Array.prototype.slice.call(arguments);
+    var layers = Array.prototype.slice.call(args);
     if (layers.length < 3) {
       throw new Error('You have to specify at least 3 layers');
     }

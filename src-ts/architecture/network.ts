@@ -16,28 +16,28 @@ var mutation = methods.mutation;
 type INetworkTrainingSetItem = {input: number[], output: number[]};
 
 export type INetworkTrainingOptions = {
-  error: number;
-  rate: number;
-  dropout: number;
-  momentum: number;
-  batchSize: number;
-  cost: ICostFunction;
-  iterations: number;
+  error?: number;
+  rate?: number;
+  dropout?: number;
+  momentum?: number;
+  batchSize?: number;
+  cost?: ICostFunction;
+  iterations?: number;
 
   // @todo: выкосить к херам
-  ratePolicy: any;
+  ratePolicy?: any;
 
-  crossValidate: {
+  crossValidate?: {
     testSize: number;
     testError: number;
   };
 
-  clear: boolean;
-  shuffle: boolean;
+  clear?: boolean;
+  shuffle?: boolean;
 
-  log: number;
+  log?: number;
 
-  schedule: {
+  schedule?: {
     iterations: number;
     function: (x: { error: number, iteration: number, fitness?: number }) => void;
   };
@@ -46,7 +46,7 @@ export type INetworkTrainingOptions = {
   amount?: number;
   threads?: number;
 
-  fitnessPopulation: boolean;
+  fitnessPopulation?: boolean;
 
   network?: Network;
 };
@@ -560,12 +560,10 @@ export default class Network {
   /**
    * Train the given set to this network
    */
-  train(set: INetworkTrainingSetItem[], options: INetworkTrainingOptions) {
+  train(set: INetworkTrainingSetItem[], options: INetworkTrainingOptions = {}) {
     if (set[0].input.length !== this.input || set[0].output.length !== this.output) {
       throw new Error('Dataset input/output size should be same as network input/output size!');
     }
-
-    options = options || {};
 
     // Warning messages
     if (typeof options.rate === 'undefined') {
@@ -614,7 +612,7 @@ export default class Network {
     var error = 1;
 
     // var i, j, x;
-    while (error > targetError && (options.iterations === 0 || iteration < options.iterations)) {
+    while (error > targetError && (options.iterations === 0 || iteration < (options.iterations as number))) {
       if (options.crossValidate && error <= options.crossValidate.testError) break;
 
       iteration++;
@@ -990,7 +988,7 @@ export default class Network {
     var bestFitness = -Infinity;
     var bestGenome;
 
-    while (error < -targetError && (options.iterations === 0 || neat.generation < options.iterations)) {
+    while (error < -targetError && (options.iterations === 0 || neat.generation < (options.iterations as number))) {
       let fittest = await neat.evolve();
       let fitness = fittest.score as number;
       error = fitness + (fittest.nodes.length - fittest.input - fittest.output + fittest.connections.length + fittest.gates.length) * growth;
