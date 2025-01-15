@@ -6,9 +6,6 @@ import Group from './group';
 import methods from '../methods/methods';
 import config from '../config';
 import {NodeTypeEnum} from "../types/node-type-enum";
-import {IMutation} from "../methods/mutation";
-import {IMutationModActivation} from "../methods/mutation/mod-activation";
-import {IMutationModBias} from "../methods/mutation/mod-bias";
 
 type NodeConnectionsDescriptor = {
   in: Connection[];
@@ -364,32 +361,6 @@ export default class NodeElement {
 
     this.error.responsibility = this.error.projected = this.error.gated = 0;
     this.old = this.state = this.activation = 0;
-  }
-
-  /**
-   * Mutates the node with the given method
-   */
-  mutate (method: IMutation) {
-    if (typeof method === 'undefined') {
-      throw new Error('No mutate method given!');
-    } else if (methods.mutation.ALL.indexOf(method) == -1) {
-      throw new Error('This method does not exist!');
-    }
-
-    switch (method.name) {
-      case 'MOD_ACTIVATION':
-        // Can't be the same squash
-        const methodAct = method as IMutationModActivation;
-        let squash = methodAct.allowed[(methodAct.allowed.indexOf(this.squash) + Math.floor(Math.random() * (methodAct.allowed.length - 1)) + 1) % methodAct.allowed.length];
-        this.squash = squash;
-        break;
-      case 'MOD_BIAS':
-        const methodBias = method as IMutationModBias;
-
-        let modification = Math.random() * (methodBias.max - methodBias.min) + methodBias.min;
-        this.bias += modification;
-        break;
-    }
   }
 
   /**

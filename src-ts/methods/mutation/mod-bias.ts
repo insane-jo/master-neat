@@ -5,6 +5,7 @@ import NodeElement from "../../architecture/node";
 export interface IMutationModBias extends IMutation {
   min: number;
   max: number;
+  mutateNode: (node: NodeElement) => void;
 }
 
 const modBias: IMutationModBias = {
@@ -13,7 +14,11 @@ const modBias: IMutationModBias = {
     // Has no effect on input node, so they are excluded
     let index = Math.floor(Math.random() * (network.nodes.length - network.input) + network.input);
     const node: NodeElement = network.nodes[index];
-    node.mutate(this);
+    this.mutateNode(node);
+  },
+  mutateNode(node: NodeElement) {
+    let modification = Math.random() * (this.max - this.min) + this.min;
+    node.bias += modification;
   },
   min: -1,
   max: 1,

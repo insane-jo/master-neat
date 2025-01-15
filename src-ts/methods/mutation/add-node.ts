@@ -17,7 +17,7 @@ const addNode: IMutation = {
     let node = new NodeElement(NodeTypeEnum.hidden);
 
     // Random squash function
-    node.mutate(modActivation);
+    modActivation.mutateNode(node);
 
     // Place it in this.nodes
     let minBound = Math.min(toIndex, network.nodes.length - network.output);

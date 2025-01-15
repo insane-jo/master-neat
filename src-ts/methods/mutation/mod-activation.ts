@@ -3,10 +3,12 @@ import activation from "../activation";
 import Network from "../../architecture/network";
 import config from "../../config";
 import {IActivationFunction} from "../../types/activation-types";
+import NodeElement from "../../architecture/node";
 
 export interface IMutationModActivation extends IMutation {
   mutateOutput: boolean;
   allowed: IActivationFunction[];
+  mutateNode: (node: NodeElement) => void;
 }
 
 const modActivation: IMutationModActivation = {
@@ -21,7 +23,10 @@ const modActivation: IMutationModActivation = {
     let index = Math.floor(Math.random() * (network.nodes.length - (this.mutateOutput ? 0 : network.output) - network.input) + network.input);
     const node = network.nodes[index];
 
-    node.mutate(this);
+    this.mutateNode(node);
+  },
+  mutateNode(node: NodeElement) {
+    node.squash = this.allowed[(this.allowed.indexOf(node.squash) + Math.floor(Math.random() * (this.allowed.length - 1)) + 1) % this.allowed.length];
   },
   mutateOutput: true,
   allowed: [
