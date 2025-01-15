@@ -5,10 +5,10 @@ import Connection from "./connection";
 import NodeElement, { NodeType } from "./node";
 
 /* Import */
-var multi = require('../multithreading/multi');
+import * as multi from '../multithreading/multi';
 import methods from '../methods/methods';
-var config = require('../config');
-var Neat = require('../neat');
+import config from '../config';
+import Neat from '../neat';
 
 /* Easier variable naming */
 var mutation = methods.mutation;
@@ -982,7 +982,9 @@ export default class Network {
 
     // Intialise the NEAT instance
     options.network = this;
-    var neat = new Neat(this.input, this.output, fitnessFunction, options);
+
+    // @todo: выкосить  any
+    var neat = new Neat(this.input, this.output, fitnessFunction as any, options as any);
 
     var error = -Infinity;
     var bestFitness = -Infinity;
@@ -990,7 +992,7 @@ export default class Network {
 
     while (error < -targetError && (options.iterations === 0 || neat.generation < options.iterations)) {
       let fittest = await neat.evolve();
-      let fitness = fittest.score;
+      let fitness = fittest.score as number;
       error = fitness + (fittest.nodes.length - fittest.input - fittest.output + fittest.connections.length + fittest.gates.length) * growth;
 
       if (fitness > bestFitness) {

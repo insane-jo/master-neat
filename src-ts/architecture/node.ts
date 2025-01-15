@@ -3,9 +3,8 @@ import {IActivationFunction} from "../types/activation-types";
 import Connection from './connection';
 import Group from './group';
 
-var methods = require('../methods/methods');
-//var Connection = require('./connection');
-var config = require('../config');
+import methods from '../methods/methods';
+import config from '../config';
 
 //@todo: Убрать строковое перечисление в ENUM
 export type NodeType = 'input' | 'hidden' | 'output' | 'constant';

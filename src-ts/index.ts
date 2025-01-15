@@ -7,6 +7,7 @@ import Group from './architecture/group';
 import Layer from './architecture/layer';
 import NodeElement from './architecture/node';
 import Neat from './neat';
+import * as multi from './multithreading/multi';
 
 const MasterNeat = {
     methods,
@@ -18,7 +19,7 @@ const MasterNeat = {
     Layer,
     NodeElement,
     Neat,
-    multi: require('./multithreading/multi')
+    multi
 };
 
 export default MasterNeat;

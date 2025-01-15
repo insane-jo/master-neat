@@ -1,31 +1,31 @@
-/* Export */
-module.exports = TestWorker;
-
-/* Import */
-var multi = require('../../multi');
+import Network from "../../../architecture/network";
+import * as multi from '../../multi';
 
 /*******************************************************************************
                                 WEBWORKER
 *******************************************************************************/
 
-function TestWorker (dataSet, cost) {
-  var blob = new Blob([this._createBlobString(cost)]);
-  this.url = window.URL.createObjectURL(blob);
-  this.worker = new Worker(this.url);
+export default class TestWorker {
+  url: string;
+  worker: Worker;
 
-  var data = { set: new Float64Array(dataSet).buffer };
-  this.worker.postMessage(data, [data.set]);
-}
+  constructor(dataSet: any, cost: any) {
+    var blob = new Blob([this._createBlobString(cost)]);
+    this.url = window.URL.createObjectURL(blob);
+    this.worker = new Worker(this.url);
 
-TestWorker.prototype = {
-  evaluate: function (network) {
+    var data = { set: new Float64Array(dataSet).buffer };
+    this.worker.postMessage(data, [data.set]);
+  }
+
+  evaluate(network: Network) {
     return new Promise((resolve, reject) => {
       var serialized = network.serialize();
 
       var data = {
         activations: new Float64Array(serialized[0]).buffer,
         states: new Float64Array(serialized[1]).buffer,
-        conns: new Float64Array(serialized[2]).buffer
+        conns: new Float64Array(serialized[2]).buffer,
       };
 
       this.worker.onmessage = function (e) {
@@ -33,16 +33,20 @@ TestWorker.prototype = {
         resolve(error);
       };
 
-      this.worker.postMessage(data, [data.activations, data.states, data.conns]);
+      this.worker.postMessage(data, [
+        data.activations,
+        data.states,
+        data.conns,
+      ]);
     });
-  },
+  }
 
-  terminate: function () {
+  terminate () {
     this.worker.terminate();
     window.URL.revokeObjectURL(this.url);
-  },
+  }
 
-  _createBlobString: function (cost) {
+  protected _createBlobString(cost: string) {
     var source = `
       var F = [${multi.activations.toString()}];
       var cost = ${cost.toString()};
@@ -69,4 +73,4 @@ TestWorker.prototype = {
 
     return source;
   }
-};
+}

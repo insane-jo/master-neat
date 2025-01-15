@@ -6,8 +6,7 @@ import {IGate} from "../types/methods-gating-types";
 import { IActivationFunction } from "../types/activation-types";
 import Layer from './layer';
 
-//var methods = require('../methods/methods');
-var config = require('../config');
+import config from "../config";
 
 // @todo: Привести к единому дескриптору. Такой есть в ноде и еще где-то
 export interface IGroupConnectionDescriptor {

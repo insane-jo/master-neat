@@ -4,7 +4,7 @@ import Group from "./group";
 import NodeElement from "./node";
 
 /* Import */
-var methods = require("../methods/methods");
+import methods from '../methods/methods';
 
 type TInputFunction = (from: Layer | Group, method?: IConnectionDescription, weight?: number) => Connection[];
 
