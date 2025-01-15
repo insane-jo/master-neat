@@ -1,13 +1,13 @@
 import {ICommonCollection} from "../types/common-collection";
 
-type IRateFunction = (baseRate: number, iteration: number) => number;
+export type IRateFunction = (baseRate: number, iteration: number) => number;
 type IRateFunctionBuilder = () => IRateFunction;
 type IRateCollection = ICommonCollection<IRateFunctionBuilder>
 
 // https://stackoverflow.com/questions/30033096/what-is-lr-policy-in-caffe/30045244
 const rate: IRateCollection = {
   FIXED: () => {
-    const func: IRateFunction = function (baseRate, iteration) { return baseRate; };
+    const func: IRateFunction = function (baseRate) { return baseRate; };
     return func;
   },
   STEP: (gamma = 0.9, stepSize = 100) => {

@@ -6,6 +6,7 @@ import Group from './group';
 import methods from '../methods/methods';
 import config from '../config';
 import {NodeTypeEnum} from "../types/node-type-enum";
+import {IMutation} from "../methods/mutation";
 
 type NodeConnectionsDescriptor = {
   in: Connection[];
@@ -365,9 +366,8 @@ export default class NodeElement {
 
   /**
    * Mutates the node with the given method
-   * @todo: Убрать any
    */
-  mutate (method: any) {
+  mutate (method: IMutation) {
     if (typeof method === 'undefined') {
       throw new Error('No mutate method given!');
     } else if (!(method.name in methods.mutation)) {
@@ -422,14 +422,12 @@ export default class NodeElement {
    * Converts the node to a json object
    */
   toJSON() {
-    const json = {
+    return {
       bias: this.bias,
       type: this.type,
       squash: this.squash.name,
       mask: this.mask
     };
-
-    return json;
   }
 
   /**

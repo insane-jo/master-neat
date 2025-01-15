@@ -12,6 +12,7 @@ import Neat from '../neat';
 import BrowserTestWorker from "../multithreading/workers/browser/testworker";
 import NodeTestWorker from "../multithreading/workers/node/testworker";
 import {NodeTypeEnum} from "../types/node-type-enum";
+import {IRateFunction} from "../methods/rate";
 
 /* Easier variable naming */
 var mutation = methods.mutation;
@@ -32,8 +33,7 @@ export type INetworkTrainingOptions = {
   elitism?: number;
   mutationRate?: number;
 
-  // @todo: выкосить к херам
-  ratePolicy?: any;
+  ratePolicy?: IRateFunction;
 
   crossValidate?: {
     testSize: number;
