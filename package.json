@@ -1,0 +1,33 @@
+{
+  "name": "master-ai-neat",
+  "version": "0.0.1",
+  "description": "",
+  "main": "./src/neataptic",
+  "scripts": {
+    "test:src": "mocha test/src.js test",
+    "test:dist": "mocha test/dist.js test",
+    "build:dist": "webpack",
+    "build": "npm run build:dist",
+    "deploy": "npm run build && npm run test:dist && npm publish"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.6",
+    "chai": "^4.1.2",
+    "copy-webpack-plugin": "^4.0.1",
+    "mocha": "^3.5.3",
+    "path-browserify": "^1.0.1",
+    "semistandard": "*",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.7.3",
+    "webpack": "^5.97.1",
+    "webpack-cli": "^6.0.1"
+  },
+  "keywords": [
+    "neural network",
+    "machine learning",
+    "genetic algorithm",
+    "mutation",
+    "neat"
+  ],
+  "license": "MIT"
+}
