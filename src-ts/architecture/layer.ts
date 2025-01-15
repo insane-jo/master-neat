@@ -6,6 +6,7 @@ import NodeElement from "./node";
 /* Import */
 import methods from '../methods/methods';
 import {IConnectionDescriptor} from "../types/connection-descriptor";
+import {NodeTypeEnum} from "../types/node-type-enum";
 
 type TInputFunction = (from: Layer | Group, method?: IConnectionDescription, weight?: number) => Connection[];
 
@@ -283,7 +284,7 @@ export default class Layer {
     previousOutput.set({
       bias: 0,
       squash: methods.activation.IDENTITY,
-      type: "constant",
+      type: NodeTypeEnum.constant,
     });
 
     memoryCell.set({
@@ -292,7 +293,7 @@ export default class Layer {
     inverseUpdateGate.set({
       bias: 0,
       squash: methods.activation.INVERSE,
-      type: "constant",
+      type: NodeTypeEnum.constant,
     });
     updateGate.set({
       bias: 1,
@@ -365,7 +366,7 @@ export default class Layer {
       block.set({
         squash: methods.activation.IDENTITY,
         bias: 0,
-        type: "constant",
+        type: NodeTypeEnum.constant,
       });
 
       if (previous != null) {

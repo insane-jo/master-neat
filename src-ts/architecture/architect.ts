@@ -4,7 +4,8 @@ import Network from './network';
 import Layer from './layer';
 import Group from './group';
 import NodeElement from './node';
-import { IMutation } from '../methods/mutation';
+import {IMutation} from '../methods/mutation';
+import {NodeTypeEnum} from "../types/node-type-enum";
 
 /*******************************************************************************
                                         architect
@@ -43,13 +44,13 @@ var architect = {
     var inputs = [];
     var outputs = [];
     for (i = nodes.length - 1; i >= 0; i--) {
-      if (nodes[i].type === 'output' || nodes[i].connections.out.length + nodes[i].connections.gated.length === 0) {
-        nodes[i].type = 'output';
+      if (nodes[i].type === NodeTypeEnum.output || nodes[i].connections.out.length + nodes[i].connections.gated.length === 0) {
+        nodes[i].type = NodeTypeEnum.output;
         network.output++;
         outputs.push(nodes[i]);
         nodes.splice(i, 1);
-      } else if (nodes[i].type === 'input' || !nodes[i].connections.in.length) {
-        nodes[i].type = 'input';
+      } else if (nodes[i].type === NodeTypeEnum.input || !nodes[i].connections.in.length) {
+        nodes[i].type = NodeTypeEnum.input;
         network.input++;
         inputs.push(nodes[i]);
         nodes.splice(i, 1);
@@ -163,7 +164,7 @@ var architect = {
     }
 
     outputLayer.set({
-      type: 'output'
+      type: NodeTypeEnum.output
     });
 
     var options = {
@@ -176,7 +177,7 @@ var architect = {
 
     var inputLayer = new Group(args.shift()); // first argument
     inputLayer.set({
-      type: 'input'
+      type: NodeTypeEnum.input
     });
 
     var blocks = args; // all the arguments in the middle
@@ -306,11 +307,11 @@ var architect = {
     input.connect(output, methods.connection.ALL_TO_ALL);
 
     input.set({
-      type: 'input'
+      type: NodeTypeEnum.input
     });
     output.set({
       squash: methods.activation.STEP,
-      type: 'output'
+      type: NodeTypeEnum.output
     });
 
     var network = architect.Construct([input, output]);
@@ -356,8 +357,8 @@ var architect = {
     output.connect(outputMemory, methods.connection.ONE_TO_ONE, 1);
     outputMemory.connect(hidden[0], methods.connection.ALL_TO_ALL);
 
-    input.set(new NodeElement('input'));
-    output.set(new NodeElement('output'));
+    input.set(new NodeElement(NodeTypeEnum.input));
+    output.set(new NodeElement(NodeTypeEnum.output));
 
     return architect.Construct(nodes);
   }

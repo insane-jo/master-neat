@@ -2,7 +2,7 @@ import {ICostFunction} from "../methods/cost";
 import {IMutation} from "../methods/mutation";
 import {IActivationFunction} from "../types/activation-types";
 import Connection from "./connection";
-import NodeElement, {NodeType} from "./node";
+import NodeElement from "./node";
 
 /* Import */
 import * as multi from '../multithreading/multi';
@@ -11,6 +11,7 @@ import config from '../config';
 import Neat from '../neat';
 import BrowserTestWorker from "../multithreading/workers/browser/testworker";
 import NodeTestWorker from "../multithreading/workers/node/testworker";
+import {NodeTypeEnum} from "../types/node-type-enum";
 
 /* Easier variable naming */
 var mutation = methods.mutation;
@@ -88,8 +89,8 @@ export default class Network {
 
     // Create input and output nodes
     for (let i = 0; i < this.input + this.output; i++) {
-      var type = i < this.input ? 'input' : 'output';
-      this.nodes.push(new NodeElement(type as NodeType));
+      var type = i < this.input ? NodeTypeEnum.input : NodeTypeEnum.output;
+      this.nodes.push(new NodeElement(type));
     }
 
     // Connect input nodes with output nodes directly
@@ -110,9 +111,9 @@ export default class Network {
 
     // Activate nodes chronologically
     for (var i = 0; i < this.nodes.length; i++) {
-      if (this.nodes[i].type === 'input') {
+      if (this.nodes[i].type === NodeTypeEnum.input) {
         this.nodes[i].activate(input[i]);
-      } else if (this.nodes[i].type === 'output') {
+      } else if (this.nodes[i].type === NodeTypeEnum.output) {
         var activation = this.nodes[i].activate();
         output.push(activation);
       } else {
@@ -132,9 +133,9 @@ export default class Network {
 
     // Activate nodes chronologically
     for (var i = 0; i < this.nodes.length; i++) {
-      if (this.nodes[i].type === 'input') {
+      if (this.nodes[i].type === NodeTypeEnum.input) {
         this.nodes[i].noTraceActivate(input[i]);
-      } else if (this.nodes[i].type === 'output') {
+      } else if (this.nodes[i].type === NodeTypeEnum.output) {
         var activation = this.nodes[i].noTraceActivate();
         output.push(activation);
       } else {
@@ -334,7 +335,7 @@ export default class Network {
 
         // Insert the new node right before the old connection.to
         let toIndex = this.nodes.indexOf(connection.to);
-        let node = new NodeElement('hidden');
+        let node = new NodeElement(NodeTypeEnum.hidden);
 
         // Random squash function
         node.mutate(mutation.MOD_ACTIVATION);
@@ -661,7 +662,7 @@ export default class Network {
 
     if (dropout) {
       for (let i = 0; i < this.nodes.length; i++) {
-        if (this.nodes[i].type === 'hidden' || this.nodes[i].type === 'constant') {
+        if (this.nodes[i].type === NodeTypeEnum.hidden || this.nodes[i].type === NodeTypeEnum.constant) {
           this.nodes[i].mask = 1 - this.dropout;
         }
       }
@@ -702,7 +703,7 @@ export default class Network {
     var i;
     if (this.dropout) {
       for (i = 0; i < this.nodes.length; i++) {
-        if (this.nodes[i].type === 'hidden' || this.nodes[i].type === 'constant') {
+        if (this.nodes[i].type === NodeTypeEnum.hidden || this.nodes[i].type === NodeTypeEnum.constant) {
           this.nodes[i].mask = 1 - this.dropout;
         }
       }
@@ -751,7 +752,7 @@ export default class Network {
     for (i = 0; i < this.nodes.length; i++) {
       var node = this.nodes[i];
 
-      if (node.type === 'input') {
+      if (node.type === NodeTypeEnum.input) {
         if (this.input === 1) {
           json.constraints[0].offsets.push({
             node: i,
@@ -767,7 +768,7 @@ export default class Network {
           node: i,
           offset: 0
         });
-      } else if (node.type === 'output') {
+      } else if (node.type === NodeTypeEnum.output) {
         if (this.output === 1) {
           json.constraints[0].offsets.push({
             node: i,
@@ -787,7 +788,7 @@ export default class Network {
 
       json.nodes.push({
         id: i,
-        name: node.type === 'hidden' ? node.squash.name : node.type.toUpperCase(),
+        name: node.type === NodeTypeEnum.hidden ? node.squash.name : node.type.toUpperCase(),
         activation: node.activation,
         bias: node.bias
       });
@@ -1217,7 +1218,7 @@ export default class Network {
     var i;
     for (i = 0; i < network2.connections.length; i++) {
       let conn = network2.connections[i];
-      if (conn.from.type === 'input') {
+      if (conn.from.type === NodeTypeEnum.input) {
         let index = network2.nodes.indexOf(conn.from);
 
         // redirect
@@ -1232,7 +1233,7 @@ export default class Network {
 
     // Change the node type of network1's output nodes (now hidden)
     for (i = network1.nodes.length - network1.output; i < network1.nodes.length; i++) {
-      network1.nodes[i].type = 'hidden';
+      network1.nodes[i].type = NodeTypeEnum.hidden;
     }
 
     // Create one network from both networks
@@ -1293,7 +1294,7 @@ export default class Network {
         node = random >= 0.5 ? network1.nodes[i] : network2.nodes[i];
         let other = random < 0.5 ? network1.nodes[i] : network2.nodes[i];
 
-        if (typeof node === 'undefined' || node.type === 'output') {
+        if (typeof node === 'undefined' || node.type === NodeTypeEnum.output) {
           node = other;
         }
       } else {

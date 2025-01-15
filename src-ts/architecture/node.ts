@@ -5,9 +5,7 @@ import Group from './group';
 
 import methods from '../methods/methods';
 import config from '../config';
-
-//@todo: Убрать строковое перечисление в ENUM
-export type NodeType = 'input' | 'hidden' | 'output' | 'constant';
+import {NodeTypeEnum} from "../types/node-type-enum";
 
 type NodeConnectionsDescriptor = {
   in: Connection[];
@@ -25,7 +23,7 @@ type NodeErrorDescriptor = {
 export default class NodeElement {
   public bias: number;
   public squash: IActivationFunction;
-  public type: NodeType;
+  public type: NodeTypeEnum;
 
   public activation: number = 0;
   public derivative: number = 0;
@@ -48,10 +46,10 @@ export default class NodeElement {
     gated: 0
   };
 
-  constructor(nodeType?: NodeType) {
-    this.bias = (nodeType === 'input') ? 0 : Math.random() * 0.2 - 0.1;
+  constructor(nodeType?: NodeTypeEnum) {
+    this.bias = (nodeType === NodeTypeEnum.input) ? 0 : Math.random() * 0.2 - 0.1;
     this.squash = methods.activation.LOGISTIC;
-    this.type = nodeType || 'hidden';
+    this.type = nodeType || NodeTypeEnum.hidden;
 
     this.connections = {
       in: [],
@@ -176,7 +174,7 @@ export default class NodeElement {
     let error = 0;
 
     // Output nodes get their error from the enviroment
-    if (this.type === 'output') {
+    if (this.type === NodeTypeEnum.output) {
       this.error.responsibility = this.error.projected = (target || 0) - this.activation;
     } else { // the rest of the nodes compute their error responsibilities by backpropagation
       // error responsibilities from all the connections projected from this node
@@ -209,7 +207,7 @@ export default class NodeElement {
       this.error.responsibility = this.error.projected + this.error.gated;
     }
 
-    if (this.type === 'constant') return;
+    if (this.type === NodeTypeEnum.constant) return;
 
     // Adjust all the node's incoming connections
     for (let i = 0; i < this.connections.in.length; i++) {

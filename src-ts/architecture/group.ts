@@ -1,4 +1,4 @@
-import NodeElement, {NodeType} from "./node";
+import NodeElement from "./node";
 import Connection from "./connection";
 import methods from "../methods/methods";
 import {IConnectionDescription} from "../types/methods-collection-types";
@@ -8,6 +8,7 @@ import Layer from './layer';
 
 import config from "../config";
 import {IConnectionDescriptor} from "../types/connection-descriptor";
+import {NodeTypeEnum} from "../types/node-type-enum";
 
 export default class Group {
   public nodes: NodeElement[];
@@ -181,7 +182,7 @@ export default class Group {
   /**
    * Sets the value of a property for every node
    */
-  set(values: { bias?: number; squash?: IActivationFunction; type?: NodeType }) {
+  set(values: { bias?: number; squash?: IActivationFunction; type?: NodeTypeEnum }) {
     for (var i = 0; i < this.nodes.length; i++) {
       if (typeof values.bias !== 'undefined') {
         this.nodes[i].bias = values.bias;
