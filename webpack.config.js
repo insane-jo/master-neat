@@ -11,7 +11,8 @@ module.exports = {
   mode: 'production',
   context: __dirname,
   entry: {
-    'dist-ts/master-neat': './src-ts/index.ts'
+    'dist/master-neat': './src/index.ts',
+    'dist/worker': './src/multithreading/workers/node/worker.ts'
   },
   resolve: {
     modules: [
@@ -41,9 +42,9 @@ module.exports = {
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.BannerPlugin(license),
     new webpack.optimize.ModuleConcatenationPlugin(),
-    new CopyWebpackPlugin([
-      { from: 'src/multithreading/workers/node/worker.js', to: 'dist' }
-    ])
+    // new CopyWebpackPlugin([
+    //   { from: 'src/multithreading/workers/node/worker.js', to: 'dist' }
+    // ])
   ],
   externals: [
     'child_process',

@@ -1,7 +1,10 @@
 import { ChildProcess } from 'child_process';
-import MasterNeat from '../../../index';
+// import MasterNeat from '../../../index';
 import { ICostFunction } from '../../../methods/cost';
-const {multi, methods} = MasterNeat;
+// const {multi, methods} = MasterNeat;
+
+import methods from "../../../methods/methods";
+import * as multi from '../../multi';
 
 // @todo: Выкосить any
 var set: any[] = [];
