@@ -1,9 +1,13 @@
 var population;
 // var cycles, sinAllowed;
 var points = [];
-var myFunction = function (x) {
+var divisionLineFunction = function (x) {
   return Math.sin(x) * 0.4 + 0.5;
 };
+
+// var divisionLineFunction = function (x) {
+//   return Math.tanh(x);
+// }
 
 function setup() {
   let canvas = createCanvas(600, 400);
@@ -13,13 +17,13 @@ function setup() {
   //Draw separation line
   for (let i = 0; i < width; i += 1) {
     fill(50);
-    ellipse(i, myFunction(map(i, 0, width, 0, Math.PI * 4)) * height, 5)
+    ellipse(i, divisionLineFunction(map(i, 0, width, 0, Math.PI * 4)) * height, 5)
   }
 
   //Generate and Draw points
   for (let i = 0; i < 1000; i++) {
     let y = Math.random(), x = Math.random() * Math.PI * 4;
-    let type = y > myFunction(x) ? 1 : 0;
+    let type = y > divisionLineFunction(x) ? 1 : 0;
     points.push({x: x, y: y, type: type});
 
     fill(255);
@@ -48,7 +52,7 @@ function start() {
       correct2 = 0,
       incorrect = 0;
 
-    for(let i = 0; i < points.length; i++) {
+    for (let i = 0; i < points.length; i++) {
       push();
       const currPoint = points[i];
       const correctType = currPoint.type;
