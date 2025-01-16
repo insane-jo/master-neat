@@ -16,27 +16,30 @@ var selection = methods.selection;
                                          NEAT
 *******************************************************************************/
 
-type IFitnessFunction = (popGenome: Network | Network[]) => number;
+// type INetworkFitnessFunction = (population: Network) => number;
+// type IGenomeFitnessFunction = (genome: Network[]) => Promise<undefined>;
+// type IFitnessFunction = INetworkFitnessFunction | IGenomeFitnessFunction;
+export type IFitnessFunction = (popGenome: Network | Network[]) => (number | Promise<undefined>);
 
 interface INeatOptions {
   equal?: boolean;
   clear?: boolean;
-  popsize: number;
-  elitism: number;
-  provenance: number;
-  mutationRate: number;
-  mutationAmount: number;
-  fitnessPopulation: boolean;
-  selection: ISelection;
-  crossover: ICrossover[];
-  mutation: IMutation[];
-  network: Network;
+  popsize?: number;
+  elitism?: number;
+  provenance?: number;
+  mutationRate?: number;
+  mutationAmount?: number;
+  fitnessPopulation?: boolean;
+  selection?: ISelection;
+  crossover?: ICrossover[];
+  mutation?: IMutation[];
+  network?: Network;
 
-  maxNodes: number;
-  maxConns: number;
-  maxGates: number;
+  maxNodes?: number;
+  maxConns?: number;
+  maxGates?: number;
 
-  mutationSelection: (genome: Network) => IMutation;
+  mutationSelection?: (genome: Network) => IMutation;
 }
 
 export default class Neat {
@@ -54,7 +57,7 @@ export default class Neat {
   selection: ISelection;
   crossover: ICrossover[];
   mutation: IMutation[];
-  template: Network;
+  template?: Network;
 
   maxNodes: number;
   maxConns: number;
@@ -90,7 +93,7 @@ export default class Neat {
     ];
     this.mutation = options.mutation || methods.mutation.FFW;
 
-    this.template = options.network || false;
+    this.template = options.network || undefined;
 
     this.maxNodes = options.maxNodes || Infinity;
     this.maxConns = options.maxConns || Infinity;
@@ -147,7 +150,7 @@ export default class Neat {
 
     // Provenance
     for (i = 0; i < this.provenance; i++) {
-      newPopulation.push(Network.fromJSON(this.template.toJSON()));
+      newPopulation.push(Network.fromJSON((this.template as Network).toJSON()));
     }
 
     // Breed the next individuals
@@ -235,7 +238,9 @@ export default class Neat {
     } else {
       for (i = 0; i < this.population.length; i++) {
         var genome = this.population[i];
-        if (this.clear) genome.clear();
+        if (this.clear) {
+          genome.clear();
+        }
         genome.score = await this.fitness(genome);
       }
     }

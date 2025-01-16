@@ -8,7 +8,7 @@ import NodeElement from "./node";
 import * as multi from '../multithreading/multi';
 import methods from '../methods/methods';
 import config from '../config';
-import Neat from '../neat';
+import Neat, {IFitnessFunction} from '../neat';
 import BrowserTestWorker from "../multithreading/workers/browser/testworker";
 import NodeTestWorker from "../multithreading/workers/node/testworker";
 import {NodeTypeEnum} from "../types/node-type-enum";
@@ -575,7 +575,7 @@ export default class Network {
       options.iterations = 0; // run until target error
     }
 
-    var fitnessFunction;
+    var fitnessFunction: IFitnessFunction;
     if (threads === 1) {
       // Create the fitness function
       fitnessFunction = function (genome: Network) {
@@ -588,7 +588,7 @@ export default class Network {
         score = isNaN(score) ? -Infinity : score; // this can cause problems with fitness proportionate selection
 
         return score / amount;
-      };
+      } as IFitnessFunction;
     } else {
       // Serialize the dataset
       var converted = multi.serializeDataSet(set);
@@ -605,7 +605,7 @@ export default class Network {
         }
       }
 
-      fitnessFunction = function (population: Network[]) {
+      fitnessFunction = function (population: Network[]): Promise<undefined> {
         return new Promise((resolve) => {
           // Create a queue
           var queue = population.slice();
@@ -633,7 +633,7 @@ export default class Network {
             startWorker(workers[i]);
           }
         });
-      };
+      } as IFitnessFunction;
 
       options.fitnessPopulation = true;
     }
@@ -642,7 +642,7 @@ export default class Network {
     options.network = this;
 
     // @todo: выкосить any
-    var neat = new Neat(this.input, this.output, fitnessFunction as any, options as any);
+    var neat = new Neat(this.input, this.output, fitnessFunction, options);
 
     var error = -Infinity;
     var bestFitness = -Infinity;
