@@ -84,6 +84,8 @@ function start() {
     document.getElementById('fitness').innerText = results.fitness;
 
     document.getElementById('iteration').innerText = results.iteration;
+
+    drawNetwork(bestNetwork, results);
   };
 
   population.evolve(trainingSet, {
