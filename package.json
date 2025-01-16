@@ -4,6 +4,7 @@
   "description": "",
   "scripts": {
     "build:dist": "webpack",
+    "build:watch": "webpack --watch",
     "build": "npm run build:dist",
     "deploy": "npm run build && npm run test:ts && npm publish",
     "test:ts": "mocha -r ts-node/register test/**/*.test.ts"

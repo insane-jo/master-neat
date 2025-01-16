@@ -55,6 +55,8 @@ export type INetworkTrainingOptions = {
   fitnessPopulation?: boolean;
 
   network?: Network;
+
+  callback?: (n: Network, result: { error: number, iteration: number, fitness?: number }) => void;
 };
 
 export default class Network {
@@ -665,6 +667,13 @@ export default class Network {
 
       if (options.schedule && neat.generation % options.schedule.iterations === 0) {
         options.schedule.function({fitness: fitness, error: -error, iteration: neat.generation});
+      }
+
+      if (options.callback) {
+        options.callback(
+          fittest,
+          {fitness: fitness, error: -error, iteration: neat.generation}
+        )
       }
     }
 

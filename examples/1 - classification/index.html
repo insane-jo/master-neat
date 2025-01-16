@@ -1,0 +1,49 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Classification - NeatJS</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/addons/p5.dom.min.js"></script>
+    <script src="https://d3js.org/d3.v2.min.js?2.9.3"></script>
+
+    <script src="../../dist/master-neat-browser.js"></script>
+
+    <script src="sketch.js"></script>
+
+    <style>
+        .left {
+            float: left;
+            margin: 5px;
+        }
+
+        p span {
+            font-weight: bold;
+        }
+    </style>
+
+</head>
+
+<body>
+<div class="left">
+    <div id="canvascontainer"></div>
+    <p>Correctly classified as:
+        <p><span style="color: #00ff00">Class 1: </span> <span id="correct1-items"></span> </p>
+        <p><span style="color: #0000ff">Class 2: </span> <span id="correct2-items"></span></p>
+        <p><span style="color: #ff0000">Not Correctly Classified: </span> <span id="incorrect-items"></span> </p>
+        <p>
+            Current error: <span id="error"></span>
+        </p>
+        <p>
+            Current fitness: <span id="fitness"></span>
+        </p>
+        <p>
+            Current iteration: <span id="iteration"></span>
+        </p>
+    </p>
+</div>
+
+<div id="svgContainer"></div>
+
+</body>
+</html>
