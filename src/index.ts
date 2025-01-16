@@ -9,19 +9,6 @@ import NodeElement from './architecture/node';
 import Neat from './neat';
 import * as multi from './multithreading/multi';
 
-// const MasterNeat = {
-//     methods,
-//     Connection,
-//     architect,
-//     Network,
-//     config,
-//     Group,
-//     Layer,
-//     NodeElement,
-//     Neat,
-//     multi
-// };
-
 export {
     methods,
     Connection,
