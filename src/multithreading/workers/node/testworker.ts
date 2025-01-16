@@ -8,7 +8,7 @@ export default class NodeTestWorker {
 
   // @todo: выкосить any
   constructor(dataSet: any, cost: ICostFunction) {
-    if (typeof require !== 'undefined' && 'ts' in eval('require.extensions')) {
+    if (typeof require !== 'undefined' && '.ts' in eval('require.extensions')) {
       this.worker = cp.fork(path.join(__dirname, '/worker'));
     } else {
       this.worker = cp.fork(path.join(process.env.PWD as string, './dist/worker.js'));
