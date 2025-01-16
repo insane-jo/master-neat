@@ -43,7 +43,7 @@ function start() {
       }
     });
 
-  const processingCallback = (bestNetwork, results) => {
+  const drawResultsCallback = (bestNetwork, results) => {
     let correct1 = 0,
       correct2 = 0,
       incorrect = 0;
@@ -95,6 +95,6 @@ function start() {
     mutationRate: 0.5,
     error: Number.NEGATIVE_INFINITY,
     // threads: 4,
-    callback: processingCallback
+    callback: drawResultsCallback
   })
 }
