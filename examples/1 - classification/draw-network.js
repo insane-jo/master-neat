@@ -46,21 +46,28 @@ const drawNetwork = (network, results, width = 400, height = 400, container = "s
     .charge(-100)
     .size([width, height]);
 
+  const inputs = preparedNodes.filter((n) => n.type == 'input');
+  const outputs = preparedNodes.filter((n) => n.type == 'output');
+  const endNodes = [].concat(inputs, outputs);
+
   const nodes = preparedNodes.map((node) => {
-      // if (node.type == 0) {
-      if (node.type == 'hidden') {
-        node.fixed = true;
-        node.y = height - (height * 0.2);
-        node.x = ((width / network.input) * node.number) + (width / network.input) / 2;
-      }
+    // if (node.type == 0) {
+    if (node.type == 'input') {
+      node.fixed = true;
+      node.y = height - (height * 0.2);
 
-      if (node.output) {
-        node.fixed = true;
-        node.y = (height * 0.2);
-        node.x = ((width / network.output) * (node.number - network.input)) + (width / network.output) / 2;
-      }
+      node.x = ((width / inputs.length) * inputs.indexOf(node)) + (width / inputs.length) / 2;
+      // node.x = ((width / network.input) * node.index) + (width / network.input) / 2;
+    }
 
-      return node
+    if (node.type == 'output') {
+      node.fixed = true;
+      node.y = (height * 0.2);
+      // node.x = ((width / network.output) * (node.index - network.input)) + (width / network.output) / 2;
+      node.x = ((width / outputs.length) * (endNodes.indexOf(node) - inputs.length)) + (width / outputs.length) / 2;
+    }
+
+    return node
   })
 
   force.nodes(nodes)
