@@ -50,10 +50,15 @@ export default class BrowserTestWorker {
     return `
       var F = [${multi.activations.toString()}];
       var cost = ${cost.toString()};
+      
+      const deserializeDataSet = ${multi.deserializeDataSet.toString()};
+      const testSerializedSet = ${multi.testSerializedSet.toString()};
+      const activateSerializedNetwork = ${multi.activateSerializedNetwork.toString()};
+      
       var multi = {
-        deserializeDataSet: ${multi.deserializeDataSet.toString()},
-        testSerializedSet: ${multi.testSerializedSet.toString()},
-        activateSerializedNetwork: ${multi.activateSerializedNetwork.toString()}
+        deserializeDataSet,
+        testSerializedSet,
+        activateSerializedNetwork
       };
 
       this.onmessage = function (e) {
