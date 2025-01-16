@@ -28,7 +28,17 @@
  * or disable the default devtool with "devtool: false".
  * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
  */
-/******/ (() => { // webpackBootstrap
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory(require("child_process"), require("os"));
+	else if(typeof define === 'function' && define.amd)
+		define(["child_process", "os"], factory);
+	else if(typeof exports === 'object')
+		exports["MasterNeat"] = factory(require("child_process"), require("os"));
+	else
+		root["MasterNeat"] = factory(root["child_process"], root["os"]);
+})(self, (__WEBPACK_EXTERNAL_MODULE_child_process__, __WEBPACK_EXTERNAL_MODULE_os__) => {
+return /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
@@ -418,7 +428,7 @@ eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nexpo
   \********************************/
 /***/ ((module) => {
 
-module.exports = require("child_process");
+module.exports = __WEBPACK_EXTERNAL_MODULE_child_process__;
 
 /***/ }),
 
@@ -428,7 +438,7 @@ module.exports = require("child_process");
   \*********************/
 /***/ ((module) => {
 
-module.exports = require("os");
+module.exports = __WEBPACK_EXTERNAL_MODULE_os__;
 
 /***/ })
 
@@ -464,7 +474,8 @@ module.exports = require("os");
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
 /******/ 	var __webpack_exports__ = __webpack_require__("./src/index.ts");
-/******/ 	exports.MasterNeat = __webpack_exports__;
 /******/ 	
+/******/ 	return __webpack_exports__;
 /******/ })()
 ;
+});

@@ -576,6 +576,7 @@ export default class Network {
     }
 
     var fitnessFunction: IFitnessFunction;
+    let workers: (BrowserTestWorker | NodeTestWorker)[] = [];
     if (threads === 1) {
       // Create the fitness function
       fitnessFunction = function (genome: Network) {
@@ -594,7 +595,7 @@ export default class Network {
       var converted = multi.serializeDataSet(set);
 
       // Create workers, send datasets
-      const workers: (BrowserTestWorker | NodeTestWorker)[] = [];
+      workers = [];
       if (typeof window === 'undefined') {
         for (let i = 0; i < threads; i++) {
           workers.push(new multi.workers.node.TestWorker(converted, cost));

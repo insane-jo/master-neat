@@ -5,7 +5,7 @@ const {architect} = MasterNeat;
 
 
 describe('Neat XOR', function () {
-  it('Custom test', function () {
+  it('Custom Network-test', function () {
     const network = architect.Perceptron(2, 40, 1);
 
     const trainSet = [{input: [0, 0], output: [0]},
@@ -27,4 +27,8 @@ describe('Neat XOR', function () {
     expect(network.activate([0, 1])[0]).greaterThan(0.9);
     expect(network.activate([0, 0])[0]).lessThan(0.1);
   });
+
+  it('Custom NEAT test', () => {
+
+  })
 });

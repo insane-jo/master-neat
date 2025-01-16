@@ -52,7 +52,7 @@ describe('Neat', function () {
       elitism: 10,
       mutationRate: 0.5,
       error: 0.03,
-      threads: 1
+      threads: 4
     });
 
     assert.isBelow(results.error, 0.03);

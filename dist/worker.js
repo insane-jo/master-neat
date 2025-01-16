@@ -28,17 +28,7 @@
  * or disable the default devtool with "devtool: false".
  * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
  */
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("child_process"));
-	else if(typeof define === 'function' && define.amd)
-		define(["child_process"], factory);
-	else if(typeof exports === 'object')
-		exports["MasterNeat"] = factory(require("child_process"));
-	else
-		root["MasterNeat"] = factory(root["child_process"]);
-})(self, (__WEBPACK_EXTERNAL_MODULE_child_process__) => {
-return /******/ (() => { // webpackBootstrap
+/******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
@@ -338,7 +328,7 @@ eval("\nvar __createBinding = (this && this.__createBinding) || (Object.create ?
   \*******************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst child_process_1 = __importDefault(__webpack_require__(/*! child_process */ \"child_process\"));\nconst path_1 = __importDefault(__webpack_require__(/*! path */ \"./node_modules/path-browserify/index.js\"));\nclass NodeTestWorker {\n    // @todo: выкосить any\n    constructor(dataSet, cost) {\n        this.worker = child_process_1.default.fork(path_1.default.join(__dirname, '/worker'));\n        this.worker.send({ set: dataSet, cost: cost.name });\n    }\n    evaluate(network) {\n        return new Promise((resolve) => {\n            var serialized = network.serialize();\n            var data = {\n                activations: serialized[0],\n                states: serialized[1],\n                conns: serialized[2]\n            };\n            var _that = this.worker;\n            this.worker.on('message', function callback(e) {\n                _that.removeListener('message', callback);\n                resolve(e);\n            });\n            this.worker.send(data);\n        });\n    }\n    terminate() {\n        this.worker.kill();\n    }\n}\nexports[\"default\"] = NodeTestWorker;\n\n\n//# sourceURL=webpack://MasterNeat/./src/multithreading/workers/node/testworker.ts?");
+eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst child_process_1 = __importDefault(__webpack_require__(/*! child_process */ \"child_process\"));\nconst path_1 = __importDefault(__webpack_require__(/*! path */ \"./node_modules/path-browserify/index.js\"));\nclass NodeTestWorker {\n    // @todo: выкосить any\n    constructor(dataSet, cost) {\n        if ( true && 'ts' in eval('require.extensions')) {\n            this.worker = child_process_1.default.fork(path_1.default.join(__dirname, '/worker'));\n        }\n        else {\n            this.worker = child_process_1.default.fork(path_1.default.join(process.env.PWD, './dist/worker.js'));\n        }\n        this.worker.send({ set: dataSet, cost: cost.name });\n    }\n    evaluate(network) {\n        return new Promise((resolve) => {\n            var serialized = network.serialize();\n            var data = {\n                activations: serialized[0],\n                states: serialized[1],\n                conns: serialized[2]\n            };\n            var _that = this.worker;\n            this.worker.on('message', function callback(e) {\n                _that.removeListener('message', callback);\n                resolve(e);\n            });\n            this.worker.send(data);\n        });\n    }\n    terminate() {\n        this.worker.kill();\n    }\n}\nexports[\"default\"] = NodeTestWorker;\n\n\n//# sourceURL=webpack://MasterNeat/./src/multithreading/workers/node/testworker.ts?");
 
 /***/ }),
 
@@ -348,7 +338,7 @@ eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {
   \***************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-eval("\nvar __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {\n    if (k2 === undefined) k2 = k;\n    var desc = Object.getOwnPropertyDescriptor(m, k);\n    if (!desc || (\"get\" in desc ? !m.__esModule : desc.writable || desc.configurable)) {\n      desc = { enumerable: true, get: function() { return m[k]; } };\n    }\n    Object.defineProperty(o, k2, desc);\n}) : (function(o, m, k, k2) {\n    if (k2 === undefined) k2 = k;\n    o[k2] = m[k];\n}));\nvar __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {\n    Object.defineProperty(o, \"default\", { enumerable: true, value: v });\n}) : function(o, v) {\n    o[\"default\"] = v;\n});\nvar __importStar = (this && this.__importStar) || (function () {\n    var ownKeys = function(o) {\n        ownKeys = Object.getOwnPropertyNames || function (o) {\n            var ar = [];\n            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;\n            return ar;\n        };\n        return ownKeys(o);\n    };\n    return function (mod) {\n        if (mod && mod.__esModule) return mod;\n        var result = {};\n        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== \"default\") __createBinding(result, mod, k[i]);\n        __setModuleDefault(result, mod);\n        return result;\n    };\n})();\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\n// const {multi, methods} = MasterNeat;\nconst methods_1 = __importDefault(__webpack_require__(/*! ../../../methods/methods */ \"./src/methods/methods.ts\"));\nconst multi = __importStar(__webpack_require__(/*! ../../multi */ \"./src/multithreading/multi.ts\"));\n// @todo: Выкосить any\nvar set = [];\nvar cost;\nvar F = multi.activations;\n// @todo: Выкосить any\nprocess.on('message', (e) => {\n    if (typeof e.set === 'undefined') {\n        var A = e.activations;\n        var S = e.states;\n        var data = e.conns;\n        var result = multi.testSerializedSet(set, cost, A, S, data, F);\n        process.send(result);\n    }\n    else {\n        cost = methods_1.default.cost[e.cost];\n        set = multi.deserializeDataSet(e.set);\n    }\n});\n\n\n//# sourceURL=webpack://MasterNeat/./src/multithreading/workers/node/worker.ts?");
+eval("\nvar __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {\n    if (k2 === undefined) k2 = k;\n    var desc = Object.getOwnPropertyDescriptor(m, k);\n    if (!desc || (\"get\" in desc ? !m.__esModule : desc.writable || desc.configurable)) {\n      desc = { enumerable: true, get: function() { return m[k]; } };\n    }\n    Object.defineProperty(o, k2, desc);\n}) : (function(o, m, k, k2) {\n    if (k2 === undefined) k2 = k;\n    o[k2] = m[k];\n}));\nvar __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {\n    Object.defineProperty(o, \"default\", { enumerable: true, value: v });\n}) : function(o, v) {\n    o[\"default\"] = v;\n});\nvar __importStar = (this && this.__importStar) || (function () {\n    var ownKeys = function(o) {\n        ownKeys = Object.getOwnPropertyNames || function (o) {\n            var ar = [];\n            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;\n            return ar;\n        };\n        return ownKeys(o);\n    };\n    return function (mod) {\n        if (mod && mod.__esModule) return mod;\n        var result = {};\n        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== \"default\") __createBinding(result, mod, k[i]);\n        __setModuleDefault(result, mod);\n        return result;\n    };\n})();\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst methods_1 = __importDefault(__webpack_require__(/*! ../../../methods/methods */ \"./src/methods/methods.ts\"));\nconst multi = __importStar(__webpack_require__(/*! ../../multi */ \"./src/multithreading/multi.ts\"));\n// @todo: Выкосить any\nvar set = [];\nvar cost;\nvar F = multi.activations;\n// @todo: Выкосить any\nprocess.on('message', (e) => {\n    if (typeof e.set === 'undefined') {\n        var A = e.activations;\n        var S = e.states;\n        var data = e.conns;\n        var result = multi.testSerializedSet(set, cost, A, S, data, F);\n        process.send(result);\n    }\n    else {\n        cost = methods_1.default.cost[e.cost];\n        set = multi.deserializeDataSet(e.set);\n    }\n});\n\n\n//# sourceURL=webpack://MasterNeat/./src/multithreading/workers/node/worker.ts?");
 
 /***/ }),
 
@@ -378,7 +368,7 @@ eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nexpo
   \********************************/
 /***/ ((module) => {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE_child_process__;
+module.exports = require("child_process");
 
 /***/ })
 
@@ -414,8 +404,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_child_process__;
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
 /******/ 	var __webpack_exports__ = __webpack_require__("./src/multithreading/workers/node/worker.ts");
+/******/ 	exports.MasterNeat = __webpack_exports__;
 /******/ 	
-/******/ 	return __webpack_exports__;
 /******/ })()
 ;
-});
