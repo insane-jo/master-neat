@@ -30,7 +30,7 @@ interface INeatOptions {
   selection: ISelection;
   crossover: ICrossover[];
   mutation: IMutation[];
-  network: any;
+  network: Network;
 
   maxNodes: number;
   maxConns: number;
@@ -54,7 +54,7 @@ export default class Neat {
   selection: ISelection;
   crossover: ICrossover[];
   mutation: IMutation[];
-  template: any;
+  template: Network;
 
   maxNodes: number;
   maxConns: number;

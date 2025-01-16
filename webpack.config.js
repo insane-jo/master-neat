@@ -8,7 +8,7 @@ var license = fs.readFileSync('./LICENSE', 'utf-8');
 
 /* Export config */
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   context: __dirname,
   entry: {
     'dist/master-neat': './src/index.ts',
