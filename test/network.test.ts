@@ -3,7 +3,7 @@ import chai from 'chai';
 const assert = chai.assert;
 
 import {IMutation} from "../src/methods/mutation";
-import MasterNeat from "../src";
+import * as MasterNeat from "../src";
 const { architect, config } = MasterNeat;
 import Network from "../src/architecture/network";
 import addGate from "../src/methods/mutation/add-gate";
