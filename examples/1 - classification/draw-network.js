@@ -1,6 +1,6 @@
 var drawInitted = false;
 
-const drawNetwork = (network, results, width = 800, height = 800, container = "svgContainer") => {
+const drawNetwork = (network, results, width = 400, height = 400, container = "svgContainer") => {
 
   if (drawInitted && results.iteration % 1000 !== 0) {
     return
