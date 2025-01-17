@@ -1,8 +1,13 @@
 var population;
 // var cycles, sinAllowed;
 var points = [];
+
+const a = Math.random();
+const b = Math.random();
+
 var divisionLineFunction = function (x) {
-  return Math.sin(x) * 0.4 + 0.5;
+  // return Math.sin(x) * 0.4 + 0.5;
+  return Math.sin(x) * a + b;
 };
 
 // var divisionLineFunction = function (x) {
@@ -87,6 +92,8 @@ function start() {
 
     document.getElementById('error').innerText = results.error;
     document.getElementById('fitness').innerText = results.fitness;
+
+    document.getElementById('network').innerText = `Nodes: 2 - ${bestNetwork.nodes.length - 3} - 1, Connections: ${bestNetwork.connections.length}`;
 
     const currDate = Date.now();
     const msPerIteration = (currDate - startDate) / results.iteration;
