@@ -28,7 +28,17 @@
  * or disable the default devtool with "devtool: false".
  * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
  */
-/******/ (() => { // webpackBootstrap
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory(require("child_process"), require("os"));
+	else if(typeof define === 'function' && define.amd)
+		define(["child_process", "os"], factory);
+	else if(typeof exports === 'object')
+		exports["MasterNeat"] = factory(require("child_process"), require("os"));
+	else
+		root["MasterNeat"] = factory(root["child_process"], root["os"]);
+})(self, (__WEBPACK_EXTERNAL_MODULE_child_process__, __WEBPACK_EXTERNAL_MODULE_os__) => {
+return /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
@@ -332,6 +342,16 @@ eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\ncons
 
 /***/ }),
 
+/***/ "./src/multithreading/workers/browser/worker.ts":
+/*!******************************************************!*\
+  !*** ./src/multithreading/workers/browser/worker.ts ***!
+  \******************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst workers_1 = __webpack_require__(/*! ../workers */ \"./src/multithreading/workers/workers.ts\");\nconst network_1 = __importDefault(__webpack_require__(/*! ../../../architecture/network */ \"./src/architecture/network.ts\"));\nconst methods_1 = __importDefault(__webpack_require__(/*! ../../../methods/methods */ \"./src/methods/methods.ts\"));\nvar set = [];\nvar cost;\nglobalThis.onmessage = (e) => {\n    const msg = e.data;\n    if (msg.type === workers_1.EWokerMessageType.init) {\n        const initMessage = msg;\n        set = initMessage.dataSet;\n        cost = methods_1.default.cost[initMessage.cost];\n    }\n    else if (msg.type === workers_1.EWokerMessageType.iteration) {\n        const iterationMessage = msg;\n        const network = network_1.default.fromJSON(iterationMessage.network);\n        const error = network.test(set, cost).error;\n        const answer = { buffer: new Float64Array([error]).buffer };\n        //@ts-ignore\n        postMessage(answer, [answer.buffer]);\n    }\n};\n\n\n//# sourceURL=webpack://MasterNeat/./src/multithreading/workers/browser/worker.ts?");
+
+/***/ }),
+
 /***/ "./src/multithreading/workers/node/testworker.ts":
 /*!*******************************************************!*\
   !*** ./src/multithreading/workers/node/testworker.ts ***!
@@ -339,16 +359,6 @@ eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\ncons
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst child_process_1 = __importDefault(__webpack_require__(/*! child_process */ \"child_process\"));\nconst path_1 = __importDefault(__webpack_require__(/*! path */ \"./node_modules/path-browserify/index.js\"));\nconst workers_1 = __webpack_require__(/*! ../workers */ \"./src/multithreading/workers/workers.ts\");\nclass NodeTestWorker {\n    // @todo: выкосить any\n    constructor(dataSet, cost) {\n        if ( true && '.ts' in eval('require.extensions')) {\n            this.worker = child_process_1.default.fork(path_1.default.join(__dirname, '/worker.ts'), [], { execArgv: ['-r', 'ts-node/register'] });\n        }\n        else {\n            this.worker = child_process_1.default.fork(path_1.default.join(process.env.PWD, './dist/worker.js'));\n        }\n        const msgPayload = {\n            type: workers_1.EWokerMessageType.init,\n            dataSet: dataSet,\n            cost: cost.name\n        };\n        this.worker.send(msgPayload);\n    }\n    evaluate(network) {\n        return new Promise((resolve) => {\n            const msgPayload = {\n                type: workers_1.EWokerMessageType.iteration,\n                network: network.toJSON()\n            };\n            var _that = this.worker;\n            this.worker.on('message', function callback(e) {\n                _that.removeListener('message', callback);\n                resolve(e);\n            });\n            this.worker.send(msgPayload);\n        });\n    }\n    terminate() {\n        this.worker.kill();\n    }\n}\nexports[\"default\"] = NodeTestWorker;\n\n\n//# sourceURL=webpack://MasterNeat/./src/multithreading/workers/node/testworker.ts?");
-
-/***/ }),
-
-/***/ "./src/multithreading/workers/node/worker.ts":
-/*!***************************************************!*\
-  !*** ./src/multithreading/workers/node/worker.ts ***!
-  \***************************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst workers_1 = __webpack_require__(/*! ../workers */ \"./src/multithreading/workers/workers.ts\");\nconst network_1 = __importDefault(__webpack_require__(/*! ../../../architecture/network */ \"./src/architecture/network.ts\"));\nconst methods_1 = __importDefault(__webpack_require__(/*! ../../../methods/methods */ \"./src/methods/methods.ts\"));\nvar set = [];\nvar cost;\nprocess.on('message', (e) => {\n    if (e.type === workers_1.EWokerMessageType.init) {\n        const initMessage = e;\n        set = initMessage.dataSet;\n        cost = methods_1.default.cost[initMessage.cost];\n    }\n    else if (e.type === workers_1.EWokerMessageType.iteration) {\n        const iterationMessage = e;\n        const network = network_1.default.fromJSON(iterationMessage.network);\n        const error = network.test(set, cost).error;\n        process.send(error);\n    }\n});\n\n\n//# sourceURL=webpack://MasterNeat/./src/multithreading/workers/node/worker.ts?");
 
 /***/ }),
 
@@ -388,7 +398,7 @@ eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nexpo
   \********************************/
 /***/ ((module) => {
 
-module.exports = require("child_process");
+module.exports = __WEBPACK_EXTERNAL_MODULE_child_process__;
 
 /***/ }),
 
@@ -398,7 +408,7 @@ module.exports = require("child_process");
   \*********************/
 /***/ ((module) => {
 
-module.exports = require("os");
+module.exports = __WEBPACK_EXTERNAL_MODULE_os__;
 
 /***/ })
 
@@ -433,8 +443,9 @@ module.exports = require("os");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __webpack_require__("./src/multithreading/workers/node/worker.ts");
-/******/ 	exports.MasterNeat = __webpack_exports__;
+/******/ 	var __webpack_exports__ = __webpack_require__("./src/multithreading/workers/browser/worker.ts");
 /******/ 	
+/******/ 	return __webpack_exports__;
 /******/ })()
 ;
+});

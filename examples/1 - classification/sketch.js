@@ -98,6 +98,7 @@ function start() {
     elitism: 10,
     mutationRate: 0.5,
     error: Number.NEGATIVE_INFINITY,
+    browserWorkerScriptUrl: "../../dist/worker-browser.js",
     // threads: 4,
     callback: drawResultsCallback
   })

@@ -15,7 +15,7 @@ import {NodeTypeEnum} from "../types/node-type-enum";
 import {IRateFunction} from "../methods/rate";
 import subNode from "../methods/mutation/sub-node";
 
-type INetworkTrainingSetItem = { input: number[], output: number[] };
+export type INetworkTrainingSetItem = { input: number[], output: number[] };
 
 export type INetworkTrainingOptions = {
   error?: number;
@@ -25,6 +25,7 @@ export type INetworkTrainingOptions = {
   batchSize?: number;
   cost?: ICostFunction;
   iterations?: number;
+  browserWorkerScriptUrl?: string;
 
   mutation?: IMutation[];
   equal?: boolean;
@@ -579,6 +580,11 @@ export default class Network {
 
     var fitnessFunction: IFitnessFunction;
     let workers: (BrowserTestWorker | NodeTestWorker)[] = [];
+
+    if (typeof window !== 'undefined' && options.browserWorkerScriptUrl == undefined) {
+      threads = 1;
+    }
+
     if (threads === 1) {
       // Create the fitness function
       fitnessFunction = function (genome: Network) {
@@ -593,18 +599,16 @@ export default class Network {
         return score / amount;
       } as IFitnessFunction;
     } else {
-      // Serialize the dataset
-      var converted = multi.serializeDataSet(set);
 
       // Create workers, send datasets
       workers = [];
       if (typeof window === 'undefined') {
         for (let i = 0; i < threads; i++) {
-          workers.push(new multi.workers.node.TestWorker(converted, cost));
+          workers.push(new multi.workers.node.TestWorker(set, cost));
         }
       } else {
         for (let i = 0; i < threads; i++) {
-          workers.push(new multi.workers.browser.TestWorker(converted, cost));
+          workers.push(new multi.workers.browser.TestWorker(options.browserWorkerScriptUrl as string, set, cost));
         }
       }
 

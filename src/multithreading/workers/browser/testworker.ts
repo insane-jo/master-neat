@@ -1,31 +1,32 @@
-import Network from "../../../architecture/network";
-import * as multi from '../../multi';
+import Network, {INetworkTrainingSetItem} from "../../../architecture/network";
+import {EWokerMessageType, IWorkerInitMessage, IWorkerIterationMessage} from "../workers";
 
 /*******************************************************************************
-                                WEBWORKER
-*******************************************************************************/
+ WEBWORKER
+ *******************************************************************************/
 
 export default class BrowserTestWorker {
   url: string;
   worker: Worker;
 
-  constructor(dataSet: any, cost: any) {
-    var blob = new Blob([this._createBlobString(cost)]);
-    this.url = window.URL.createObjectURL(blob);
+  constructor(workerUrl: string, dataSet: INetworkTrainingSetItem[], cost: any) {
+    this.url = workerUrl;
     this.worker = new Worker(this.url);
 
-    var data = { set: new Float64Array(dataSet).buffer };
-    this.worker.postMessage(data, [data.set]);
+    const msgPayload: IWorkerInitMessage = {
+      type: EWokerMessageType.init,
+      dataSet: dataSet,
+      cost: cost.name
+    };
+
+    this.worker.postMessage(msgPayload);
   }
 
   evaluate(network: Network): Promise<any> {
     return new Promise((resolve) => {
-      var serialized = network.serialize();
-
-      var data = {
-        activations: new Float64Array(serialized[0]).buffer,
-        states: new Float64Array(serialized[1]).buffer,
-        conns: new Float64Array(serialized[2]).buffer,
+      const msgPayload: IWorkerIterationMessage = {
+        type: EWokerMessageType.iteration,
+        network: network.toJSON()
       };
 
       this.worker.onmessage = function (e) {
@@ -33,47 +34,12 @@ export default class BrowserTestWorker {
         resolve(error);
       };
 
-      this.worker.postMessage(data, [
-        data.activations,
-        data.states,
-        data.conns,
-      ]);
+      this.worker.postMessage(msgPayload);
     });
   }
 
   terminate () {
     this.worker.terminate();
     window.URL.revokeObjectURL(this.url);
-  }
-
-  protected _createBlobString(cost: string) {
-    return `
-      var F = [${multi.activations.toString()}];
-      var cost = ${cost.toString()};
-      
-      const deserializeDataSet = ${multi.deserializeDataSet.toString()};
-      const testSerializedSet = ${multi.testSerializedSet.toString()};
-      const activateSerializedNetwork = ${multi.activateSerializedNetwork.toString()};
-      
-      var multi = {
-        deserializeDataSet,
-        testSerializedSet,
-        activateSerializedNetwork
-      };
-
-      this.onmessage = function (e) {
-        if(typeof e.data.set === 'undefined'){
-          var A = new Float64Array(e.data.activations);
-          var S = new Float64Array(e.data.states);
-          var data = new Float64Array(e.data.conns);
-
-          var error = multi.testSerializedSet(set, cost, A, S, data, F);
-
-          var answer = { buffer: new Float64Array([error ]).buffer };
-          postMessage(answer, [answer.buffer]);
-        } else {
-          set = multi.deserializeDataSet(new Float64Array(e.data.set));
-        }
-      };`;
   }
 }

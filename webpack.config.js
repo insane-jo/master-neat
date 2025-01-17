@@ -10,7 +10,8 @@ module.exports = [{
   mode: 'development',
   context: __dirname,
   entry: {
-    'dist/master-neat-browser': './src/index.ts'
+    'dist/master-neat-browser': './src/index.ts',
+    'dist/worker-browser': './src/multithreading/workers/browser/worker.ts'
   },
   resolve: {
     modules: [
