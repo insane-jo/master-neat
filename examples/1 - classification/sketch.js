@@ -35,6 +35,7 @@ function setup() {
 
 function start() {
   population = new MasterNeat.Network(2, 1);
+  const startDate = Date.now();
 
   /**
    * @type INetworkTrainingSetItem[]
@@ -87,7 +88,9 @@ function start() {
     document.getElementById('error').innerText = results.error;
     document.getElementById('fitness').innerText = results.fitness;
 
-    document.getElementById('iteration').innerText = results.iteration;
+    const currDate = Date.now();
+    const msPerIteration = (currDate - startDate) / results.iteration;
+    document.getElementById('iteration').innerText = `${results.iteration} (${msPerIteration.toFixed(4)} ms/epoch)`;
 
     drawNetwork(bestNetwork, results);
   };
