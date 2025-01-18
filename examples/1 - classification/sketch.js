@@ -109,6 +109,7 @@ function start() {
     mutationRate: 0.5,
     error: Number.NEGATIVE_INFINITY,
     browserWorkerScriptUrl: "../../dist/worker-browser.js",
+    popsize: 250,
     // threads: 4,
     callback: drawResultsCallback
   })

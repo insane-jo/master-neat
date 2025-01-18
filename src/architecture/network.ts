@@ -26,6 +26,7 @@ export type INetworkTrainingOptions = {
   cost?: ICostFunction;
   iterations?: number;
   browserWorkerScriptUrl?: string;
+  popsize?: number;
 
   mutation?: IMutation[];
   equal?: boolean;
