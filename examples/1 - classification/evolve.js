@@ -49,14 +49,14 @@ function evolve() {
     document.getElementById('correct2-items').innerText = correct2;
     document.getElementById('incorrect-items').innerText = incorrect;
 
-    document.getElementById('error').innerText = results.error;
-    document.getElementById('fitness').innerText = results.fitness;
+    document.getElementById('error').innerText = results.error.toFixed(10);
+    document.getElementById('fitness').innerText = results.fitness.toFixed(10);
 
-    document.getElementById('network').innerText = `Nodes: 2 - ${bestNetwork.nodes.length - 3} - 1, Connections: ${bestNetwork.connections.length}`;
+    document.getElementById('network').innerText = `2 - ${bestNetwork.nodes.length - 3} - 1 (${bestNetwork.connections.length})`;
 
     const currDate = Date.now();
     const msPerIteration = (currDate - startDate) / results.iteration;
-    document.getElementById('iteration').innerText = `${results.iteration} (${msPerIteration.toFixed(4)} ms/epoch)`;
+    document.getElementById('iteration').innerText = `${results.iteration} (${msPerIteration.toFixed(4)} ms)`;
 
     drawNetwork(bestNetwork, results);
   };

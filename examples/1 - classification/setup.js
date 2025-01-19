@@ -1,10 +1,15 @@
-var points = [];
+const points = [];
+
+let divisionLineFunctionText;
+
 const divisionLineFunction = (() => {
   // Randomize the parameters to make the line function look random
   const a = Math.random();
   const b = Math.random();
   const c = Math.random();
   const d = Math.random();
+
+  divisionLineFunctionText = `f(x) = Math.sin( x ) * ${a} + Math.cos( x * ${b} ) * ${c} + ${d} * Math.pow(x, 2) * 0.005;`;
 
   // Return a function that uses sin, cos, and other math tricks
   return (x) => {
@@ -116,6 +121,8 @@ function setup() {
     svg.select("#division-line")
       .attr("points", divisionLineDataResized.map(p => `${p.x},${p.y}`).join(" "));
   });
+
+  document.getElementById('division-line-function').innerText = divisionLineFunctionText;
 
   evolve();
 }

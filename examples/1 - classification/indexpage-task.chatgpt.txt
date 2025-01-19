@@ -1,0 +1,34 @@
+I've developed NEAT evolve package for javascript. Now I'm trying to make example page html to show how evolving makes classigication. Help me to make changes:
+
+Help me build beautirful and simple html page to represent example with classification.
+
+General:
+* Use daisyui v4.12 as framework
+* Use theming and only daisyui components
+* This page must be responsive and support pc and mobile
+* Must have heading with info about this example
+* Add short description about this example
+* Add d3 from cdn
+
+Points distribution:
+* Page must contain container #points-distribution with min-width 400px and height 300px. This container will represent points distribution chart
+* Must contain info about points distribution: correctly classified points with class 1 in #correct1-items, correctly classified points with class 2 in #correct2-items, not correctly classified points in #incorrect-items
+* On big screen points distribution stats must be displayed on the right side of graph as column, on small screen display stats under the graph as row
+
+Network graph:
+* Page must contain container #best-network with min-width 400px and height 300px. This container will show network graph
+* Must contain network fitness in #fitness
+* Must contain network error in #error
+* Must contain current evolving iteration in #iteration
+* Must contain info about network configuration: input nodes, output nodes, hidden nodes, connections
+
+Controls:
+* Must contain buttons start, stop and resume. Start button must call js function setup()
+* Move setup function call to button start click
+
+Common:
+* For points distribution chart and network graph use Card component
+* From numeric stats use component Stat
+* For daisyui use this links:
+<link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.23/dist/full.min.css" rel="stylesheet" type="text/css" />
+<script src="https://cdn.tailwindcss.com"></script>
