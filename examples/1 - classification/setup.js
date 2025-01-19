@@ -100,7 +100,7 @@ function setup() {
     });
 
   // Ensure the SVG resizes properly
-  d3.select(window).on('resize', function () {
+  d3.select(window).on('resize.points', function () {
     const width = container.node().clientWidth;
     svg.attr('width', width);
     svg.selectAll(".point")

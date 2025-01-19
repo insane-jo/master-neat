@@ -3,10 +3,13 @@ let drawInitted = false;
 let globalBestNetwork,
   globalResults;
 
-const drawNetwork = (network, results, containerId = "best-network", width = 400, height = 300) => {
-  if (drawInitted && results.iteration % 100 !== 0) {
+const drawNetwork = (network, results, forceRedraw = false, containerId = "best-network", width = 400, height = 300) => {
+  if (!forceRedraw && drawInitted && results.iteration % 1000 !== 0) {
     return;
   }
+
+  globalBestNetwork = network;
+  globalResults = results;
 
   drawInitted = true;
 
@@ -18,7 +21,7 @@ const drawNetwork = (network, results, containerId = "best-network", width = 400
   }
 
   // Clear any existing SVG elements
-  svgContainer.selectAll("*").remove();
+  svgContainer.html('');
 
   const containerWidth = Math.max(svgContainer.node().offsetWidth || 400, 400);
   const containerHeight = Math.max(svgContainer.node().offsetHeight || 300, 300);
@@ -126,6 +129,6 @@ const drawNetwork = (network, results, containerId = "best-network", width = 400
   });
 };
 
-d3.select(window).on('resize', function () {
-  drawNetwork(globalBestNetwork, globalResults)
+d3.select(window).on('resize.network', function () {
+  drawNetwork(globalBestNetwork, globalResults, true)
 });
