@@ -3,8 +3,8 @@ I've developed NEAT evolve package for javascript. Now I'm trying to make exampl
 Draw network graph with svg and d3:
 * Use svg to display network graph
 * Graph must be inside container #best-network
-* Input nodes must have fixed coordinates on the left side of container
-* Output nodes must have fixed coordinates on the right side of container
+* Input nodes must have fixed coordinates on the left side of container from top to bottom
+* Output nodes must have fixed coordinates on the right side of container from top to bottom
 * Graph must have responsive width with min width 400px and fixed height 300px
 * Input nodes must have pastel blue color, output nodes must have pastel green color, nodes with type hidden must be gray pastel color
 * Every node (except type input) must have text with it's squash function

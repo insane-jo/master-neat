@@ -1,5 +1,8 @@
 let drawInitted = false;
 
+let globalBestNetwork,
+  globalResults;
+
 const drawNetwork = (network, results, containerId = "best-network", width = 400, height = 300) => {
   if (drawInitted && results.iteration % 100 !== 0) {
     return;
@@ -18,6 +21,7 @@ const drawNetwork = (network, results, containerId = "best-network", width = 400
   svgContainer.selectAll("*").remove();
 
   const containerWidth = Math.max(svgContainer.node().offsetWidth || 400, 400);
+  const containerHeight = Math.max(svgContainer.node().offsetHeight || 300, 300);
 
   const svg = svgContainer.append("svg")
     .attr("width", containerWidth)
@@ -49,14 +53,20 @@ const drawNetwork = (network, results, containerId = "best-network", width = 400
   // Set fixed coordinates for input and output nodes
   inputs.forEach((node, i) => {
     node.fixed = true;
-    node.fx = (containerWidth / inputs.length) * i + (containerWidth / inputs.length) / 2;
-    node.fy = height * 0.8;
+    // node.fx = (containerWidth / inputs.length) * i + (containerWidth / inputs.length) / 2;
+    // node.fy = height * 0.9;
+
+    node.fx = containerWidth * 0.1; // (containerWidth / inputs.length) * i + (containerWidth / inputs.length) / 2;
+    node.fy = (containerHeight / inputs.length) * i + (containerHeight / inputs.length) / 2; //height * 0.9;
   });
 
   outputs.forEach((node, i) => {
     node.fixed = true;
-    node.fx = (containerWidth / outputs.length) * i + (containerWidth / outputs.length) / 2;
-    node.fy = height * 0.2;
+    // node.fx = (containerWidth / outputs.length) * i + (containerWidth / outputs.length) / 2;
+    // node.fy = height * 0.1;
+
+    node.fx = containerWidth * 0.9; // (containerWidth / outputs.length) * i + (containerWidth / outputs.length) / 2;
+    node.fy = (containerHeight / outputs.length) * i + (containerHeight / outputs.length) / 2; // height * 0.1;
   });
 
   const force = d3.forceSimulation(preparedNodes)
@@ -115,3 +125,7 @@ const drawNetwork = (network, results, containerId = "best-network", width = 400
     node.attr("transform", d => `translate(${d.x},${d.y})`);
   });
 };
+
+d3.select(window).on('resize', function () {
+  drawNetwork(globalBestNetwork, globalResults)
+});
