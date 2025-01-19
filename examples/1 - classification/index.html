@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head data-theme="dark">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Interactive visualization of the NEAT (NeuroEvolution of Augmenting Topologies) algorithm showcasing points classification, network evolution, and stats updates in real-time.">
@@ -27,76 +27,83 @@
     <meta name="twitter:title" content="NEAT Classification Evolution Demo">
     <meta name="twitter:description" content="Visualize the classification evolution of a neural network powered by the NEAT algorithm.">
 </head>
-<body class="bg-gray-50">
+<body>
 
 <!-- Main Container for the Page -->
 <div class="container mx-auto p-2">
 
     <!-- Page Heading -->
     <header class="text-center mb-6">
-        <h1 class="text-4xl font-semibold text-gray-800">Interactive NEAT Classification Evolution</h1>
-        <p class="mt-2 text-xl text-gray-600">A visual demonstration of the NEAT (NeuroEvolution of Augmenting Topologies) algorithm as it evolves a neural network to classify points. Explore the real-time changes in the network’s behavior and its classification accuracy.</p>
+        <h1 class="text-4xl font-semibold">Interactive NEAT Classification Evolution</h1>
+        <p class="mt-2 text-xl">A visual demonstration of the NEAT (NeuroEvolution of Augmenting Topologies) algorithm as it evolves a neural network to classify points. Explore the real-time changes in the network’s behavior and its classification accuracy.</p>
     </header>
 
     <!-- Division Line Function Display -->
-    <section class="p-4 mb-6 card bg-white shadow-xl">
-        <h2 class="text-2xl font-medium text-center mb-4 text-gray-600">Division Line Function</h2>
-        <div id="division-line-function" class="font-mono text-gray-800"></div>
-    </section>
-
-    <!-- Points Distribution Section -->
-    <section class="card card-side bg-white shadow-xl rounded-lg mb-6">
-        <h2 class="text-2xl font-medium text-center text-gray-600 mb-4 w-full absolute">Points Distribution</h2>
-        <div class="flex flex-col md:flex-row w-full">
-            <!-- Graph Display -->
-            <div class="min-h-[300px] flex-1 mb-4 md:mb-0">
-                <div id="points-distribution" class="w-full h-full"></div>
-            </div>
-
-            <!-- Stats Display -->
-            <div class="flex flex-wrap flex-row md:flex-col justify-between mt-4 md:mt-0">
-                <div class="stat flex-1">
-                    <div class="stat-title">Class 1 <span class="badge badge-outline tooltip" data-tip="Correctly identified points of class 1">?</span></div>
-                    <div class="stat-value text-3xl text-[#A2D8A1]" id="correct1-items">0</div>
-                </div>
-                <div class="stat flex-1">
-                    <div class="stat-title">Class 2 <span class="badge badge-outline tooltip" data-tip="Correctly identified points of class 2">?</span></div>
-                    <div class="stat-value text-3xl text-[#A2C9E0]" id="correct2-items">0</div>
-                </div>
-                <div class="stat flex-1">
-                    <div class="stat-title">Incorrect <span class="badge badge-outline tooltip" data-tip="Incorrectly identified points">?</span></div>
-                    <div class="stat-value text-3xl text-[#FFB3B3]" id="incorrect-items">0</div>
-                </div>
-            </div>
+    <section class="mb-6 card bg-neutral shadow-xl">
+        <div class="card-body">
+            <h2 class="card-title">Division Line Function</h2>
+            <div id="division-line-function" class="font-mono"></div>
         </div>
     </section>
 
-    <!-- Network Graph Section -->
-    <section class="card card-side bg-white shadow-xl rounded-lg">
-        <h2 class="text-2xl font-medium text-center text-gray-600 mb-4 w-full absolute">Network Chart <span class="badge badge-outline tooltip" data-tip="Network graph rebuild every 1000 iterations">?</span></h2>
-        <div class="flex flex-col md:flex-row w-full">
-            <!-- Graph Display -->
-            <div class="min-h-[300px] flex-1 mb-4 md:mb-0">
-                <div id="best-network" class="w-full h-full"></div>
-            </div>
+    <!-- Points Distribution Section -->
+    <section class="card card-side bg-neutral shadow-xl mb-6">
+        <div class="card-body p-2">
+            <h2 class="card-title">Points Distribution</h2>
+            <div class="flex flex-col md:flex-row w-full">
+                <!-- Graph Display -->
+                <div class="min-h-[300px] flex-1 mb-4 md:mb-0">
+                    <div id="points-distribution" class="w-full h-full"></div>
+                </div>
 
-            <!-- Stats Display -->
-            <div class="flex flex-wrap flex-row md:flex-col justify-between mt-4 md:mt-0">
-                <div class="stat flex-1">
-                    <div class="stat-title">Error</div>
-                    <div class="stat-value text-xl font-normal font-mono" id="error">0.0</div>
+                <!-- Stats Display -->
+                <div class="flex flex-wrap flex-row md:flex-col justify-between mt-4 md:mt-0">
+                    <div class="stat flex-1">
+                        <div class="stat-title">Class 1 <span class="badge badge-outline tooltip" data-tip="Correctly identified points of class 1">?</span></div>
+                        <div class="stat-value text-3xl text-[#A2D8A1]" id="correct1-items">0</div>
+                    </div>
+                    <div class="stat flex-1">
+                        <div class="stat-title">Class 2 <span class="badge badge-outline tooltip" data-tip="Correctly identified points of class 2">?</span></div>
+                        <div class="stat-value text-3xl text-[#A2C9E0]" id="correct2-items">0</div>
+                    </div>
+                    <div class="stat flex-1">
+                        <div class="stat-title">Incorrect <span class="badge badge-outline tooltip" data-tip="Incorrectly identified points">?</span></div>
+                        <div class="stat-value text-3xl text-[#FFB3B3]" id="incorrect-items">0</div>
+                    </div>
                 </div>
-                <div class="stat flex-1">
-                    <div class="stat-title">Fitness</div>
-                    <div class="stat-value text-xl font-normal font-mono" id="fitness">0.0</div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Network Graph Section -->
+    <section class="card card-side bg-neutral shadow-xl">
+        <div class="card-body p-2">
+            <h2 class="card-title">Network Chart <span class="badge badge-outline tooltip" data-tip="Network graph rebuild every 1000 iterations">?</span></h2>
+            <div class="flex flex-col md:flex-row w-full">
+                <!-- Graph Display -->
+                <div class="min-h-[300px] flex-1 mb-4 md:mb-0">
+                    <div id="best-network" class="w-full h-full"></div>
                 </div>
-                <div class="stat flex-1">
-                    <div class="stat-title">Iteration</div>
-                    <div class="stat-value text-xl font-normal font-mono" id="iteration">0</div>
-                </div>
-                <div class="stat flex-1">
-                    <div class="stat-title">Network Configuration</div>
-                    <div class="stat-value text-xl font-normal font-mono" id="network">0-0-0</div>
+
+                <!-- Stats Display -->
+                <div class="flex flex-wrap flex-row md:flex-col justify-between mt-4 md:mt-0">
+                    <div class="stat flex-1">
+                        <div class="stat-title">Error</div>
+                        <div class="stat-value text-xl font-normal font-mono" id="error">0.0</div>
+                    </div>
+                    <div class="stat flex-1">
+                        <div class="stat-title">Fitness</div>
+                        <div class="stat-value text-xl font-normal font-mono" id="fitness">0.0</div>
+                    </div>
+                    <div class="stat flex-1">
+                        <div class="stat-title">Iteration</div>
+                        <div class="stat-value text-xl font-normal font-mono" id="iteration">0</div>
+                    </div>
+                    <div class="stat flex-1">
+                        <div class="stat-title">Network Configuration</div>
+                        <div class="stat-value text-xl font-normal font-mono" id="network">0-0-0</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -113,7 +120,6 @@
 
 <script src="setup.js"></script>
 <script src="evolve.js"></script>
-<script src="draw-network.js"></script>
 
 </body>
 </html>
