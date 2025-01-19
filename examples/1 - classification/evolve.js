@@ -1,44 +1,4 @@
-var population;
-// var cycles, sinAllowed;
-var points = [];
-
-const a = Math.random();
-const b = Math.random();
-
-var divisionLineFunction = function (x) {
-  // return Math.sin(x) * 0.4 + 0.5;
-  return Math.sin(x) * a + b;
-};
-
-// var divisionLineFunction = function (x) {
-//   return Math.tanh(x);
-// }
-
-function setup() {
-  let canvas = createCanvas(600, 400);
-  canvas.parent('canvascontainer');
-  background(61);
-
-  //Draw separation line
-  for (let i = 0; i < width; i += 1) {
-    fill(50);
-    ellipse(i, divisionLineFunction(map(i, 0, width, 0, Math.PI * 4)) * height, 5)
-  }
-
-  //Generate and Draw points
-  for (let i = 0; i < 1000; i++) {
-    let y = Math.random(), x = Math.random() * Math.PI * 4;
-    let type = y > divisionLineFunction(x) ? 1 : 0;
-    points.push({x: x, y: y, type: type});
-
-    fill(255);
-    ellipse(map(points[i].x, 0, Math.PI * 4, 0, width), points[i].y * height, 10)
-  }
-
-  start();
-}
-
-function start() {
+function evolve() {
   population = new MasterNeat.Network(2, 1);
   const startDate = Date.now();
 
@@ -59,7 +19,7 @@ function start() {
       incorrect = 0;
 
     for (let i = 0; i < points.length; i++) {
-      push();
+      // push();
       const currPoint = points[i];
       const correctType = currPoint.type;
       const [networkType] = bestNetwork.activate([currPoint.x, currPoint.y]);
@@ -68,23 +28,22 @@ function start() {
 
       if (correctType === stepNetworkType) {
         if (correctType === 1) {
-          fill(0, 255, 0);
           correct1++;
         }
 
         if (correctType === 0) {
-          fill(0, 0, 255);
           correct2++;
         }
 
       } else {
-        fill(255, 0, 0);
         incorrect++;
       }
 
-      ellipse(map(currPoint.x, 0, Math.PI * 4, 0, width), currPoint.y * height, 6)
-      pop();
+      // ellipse(map(currPoint.x, 0, Math.PI * 4, 0, width), currPoint.y * height, 6)
+      // pop();
+      projectPointStyle(i, stepNetworkType, true);
     }
+
 
     document.getElementById('correct1-items').innerText = correct1;
     document.getElementById('correct2-items').innerText = correct2;

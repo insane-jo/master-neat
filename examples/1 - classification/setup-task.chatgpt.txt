@@ -1,0 +1,103 @@
+I've developed NEAT evolve package for javascript. Now I'm trying to make example page html to show how evolving makes classification. Help me to make changes:
+
+Points distribution chart task:
+* To draw points distribution use tag #points-distribution
+* Draw chart with points distribution
+* To draw points distribution use d3 library and svg code
+* #points-distribution is resizable tag with min width 400 px and no max width. Height of your chart is always be 300px. Make your also resizable
+* Every point of class1 must be pastel green color
+* Every point of class2 must be pastel blue color
+* Every point must contain filled centered circle and circle arount it with the same color
+* Every point must have it's own selector
+* Inner circle (filled) radius is 3px. Outer circle (not filled) is 5px, stroke width is 1px.
+* On chart must be displayed divisionLineFunction line that separates points with class1 and class2
+* Division line must be drawed with stroke width 2px of gray or black color
+* Use tag polyline to draw divionline
+* Division line must have it's own selector
+
+* If you need me to setup any specific library - provide tag for it
+
+* Points is a global variable
+* Fill up points array only once and do not change it if I'll run setup function again
+
+* Add function projectPointClass(pointIndex, assumedType). When assumedType is equal to points type, it draws with correct color (green for class1 and blue for class2). If assumedType is different to original - draw outer circle of this point with red pastel color.
+
+* Provide me full javascript code
+
+that is my code from file setup.js:
+
+var population;
+// var cycles, sinAllowed;
+var points = [];
+
+const divisionLineFunction = (() => {
+  // Randomize the parameters to make the line function look random
+  const a = Math.random();
+  const b = Math.random();
+  const c = Math.random();
+  const d = Math.random();
+
+  // Return a function that uses sin, cos, and other math tricks
+  return (x) => {
+    return Math.sin(x) * a + Math.cos(x * b) * c + d * Math.pow(x, 2) * 0.005;
+  };
+})();
+
+// Map function to normalize values
+function map(value, in_min, in_max, out_min, out_max) {
+  return (value - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
+function setup() {
+  // Create SVG container inside the #points-distribution element
+  const svg = d3.select("#points-distribution")
+    .append("svg")
+    .attr("width", 600)
+    .attr("height", 400);
+
+  // Randomize the division line function
+  const a = Math.random();
+  const b = Math.random();
+  const divisionLineFunction = function (x) {
+    return Math.sin(x) * a + b;  // Randomized division line function
+  };
+
+  // Draw the separation line
+  svg.append("g")
+    .selectAll("line")
+    .data(d3.range(0, 600, 1))  // Loop over each pixel in the width
+    .enter().append("line")
+    .attr("x1", d => d)
+    .attr("y1", d => divisionLineFunction(map(d, 0, 600, 0, Math.PI * 4)) * 400)
+    .attr("x2", d => d)
+    .attr("y2", d => divisionLineFunction(map(d, 0, 600, 0, Math.PI * 4)) * 400)
+    .attr("stroke", "#808080")
+    .attr("stroke-width", 1);
+
+  // Generate and draw points
+  const points = [];
+  for (let i = 0; i < 1000; i++) {
+    const y = Math.random();
+    const x = Math.random() * Math.PI * 4;
+    const type = y > divisionLineFunction(x) ? 1 : 0;
+    points.push({ x: x, y: y, type: type });
+
+    const pointGroup = svg.append("g")
+      .attr("transform", `translate(${map(x, 0, Math.PI * 4, 0, 600)}, ${y * 400})`);
+
+    // Define color based on class
+    const color = type === 1 ? "#A2D8A1" : "#A2C9E0"; // Pastel Green for class 1, Pastel Blue for class 2
+
+    // Draw the outer circle (not filled)
+    pointGroup.append("circle")
+      .attr("r", 5)
+      .attr("stroke", color)
+      .attr("stroke-width", 1)
+      .attr("fill", "none");
+
+    // Draw the inner circle (filled)
+    pointGroup.append("circle")
+      .attr("r", 3)
+      .attr("fill", color);
+  }
+}

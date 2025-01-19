@@ -3,32 +3,16 @@
     <meta charset="UTF-8">
     <title>Classification - NeatJS</title>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/p5.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/addons/p5.dom.min.js"></script>
-    <script src="https://d3js.org/d3.v2.min.js?2.9.3"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
 
     <script src="../../dist/master-neat-browser.js"></script>
-    <!--    <script src="../../dist/worker-browser.js"></script>-->
-
-    <script src="sketch.js"></script>
-    <script src="draw-network.js"></script>
-
-    <style>
-        .left {
-            float: left;
-            margin: 5px;
-        }
-
-        p span {
-            font-weight: bold;
-        }
-    </style>
 
 </head>
 
 <body>
+
 <div class="left">
-    <div id="canvascontainer"></div>
+    <div id="points-distribution"></div>
     <p>Correctly classified as:
     <p><span style="color: #00ff00">Class 1: </span> <span id="correct1-items"></span></p>
     <p><span style="color: #0000ff">Class 2: </span> <span id="correct2-items"></span></p>
@@ -48,7 +32,17 @@
     </p>
 </div>
 
-<div id="svgContainer"></div>
+<div id="best-network"></div>
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function() {
+    setup();
+  });
+</script>
+
+<script src="setup.js"></script>
+<script src="evolve.js"></script>
+<script src="draw-network.js"></script>
 
 </body>
+
 </html>

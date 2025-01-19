@@ -1,139 +1,117 @@
-var drawInitted = false;
+let drawInitted = false;
 
-const drawNetwork = (network, results, width = 400, height = 400, container = "svgContainer") => {
-
-  if (drawInitted && results.iteration % 1000 !== 0) {
-    return
+const drawNetwork = (network, results, containerId = "best-network", width = 400, height = 300) => {
+  if (drawInitted && results.iteration % 100 !== 0) {
+    return;
   }
 
   drawInitted = true;
 
-  var svg = d3.select("body").append("svg")
-    .attr("width", width)
+  // Select the container
+  const svgContainer = d3.select(`#${containerId}`);
+  if (svgContainer.empty()) {
+    console.error(`Container with id #${containerId} not found.`);
+    return;
+  }
+
+  // Clear any existing SVG elements
+  svgContainer.selectAll("*").remove();
+
+  const containerWidth = Math.max(svgContainer.node().offsetWidth || 400, 400);
+
+  const svg = svgContainer.append("svg")
+    .attr("width", containerWidth)
     .attr("height", height)
     .attr("id", "best-network");
+
+  // Rest of the code remains the same...
 
   const preparedNodes = network.nodes.map((n, idx) => {
     const node = n.toJSON();
     node.index = idx;
-
     return node;
   });
-  const connections = network.connections.map((c, idx) => {
+
+  const connections = network.connections.map((c) => {
     const fromIndex = network.nodes.indexOf(c.from);
     const toIndex = network.nodes.indexOf(c.to);
-
     return {
       source: preparedNodes[fromIndex],
       target: preparedNodes[toIndex],
       weight: c.weight,
       enabled: true
-    }
+    };
   });
 
-  function getNodeWithIndex(node) {
-    const index = network.nodes.indexOf(node);
+  const inputs = preparedNodes.filter(n => n.type === 'input');
+  const outputs = preparedNodes.filter(n => n.type === 'output');
 
-    const currNode = node.toJSON();
-    currNode.index = index;
+  // Set fixed coordinates for input and output nodes
+  inputs.forEach((node, i) => {
+    node.fixed = true;
+    node.fx = (containerWidth / inputs.length) * i + (containerWidth / inputs.length) / 2;
+    node.fy = height * 0.8;
+  });
 
-    return currNode;
-  }
+  outputs.forEach((node, i) => {
+    node.fixed = true;
+    node.fx = (containerWidth / outputs.length) * i + (containerWidth / outputs.length) / 2;
+    node.fy = height * 0.2;
+  });
 
-  var force = d3.layout.force()
-    .gravity(.05)
-    .distance(100)
-    .charge(-100)
-    .size([width, height]);
+  const force = d3.forceSimulation(preparedNodes)
+    .force("link", d3.forceLink(connections).distance(100).strength(0.5))
+    .force("charge", d3.forceManyBody().strength(-200))
+    .force("center", d3.forceCenter(containerWidth / 2, height / 2));
 
-  const inputs = preparedNodes.filter((n) => n.type == 'input');
-  const outputs = preparedNodes.filter((n) => n.type == 'output');
-  const endNodes = [].concat(inputs, outputs);
-
-  const nodes = preparedNodes.map((node) => {
-    // if (node.type == 0) {
-    if (node.type == 'input') {
-      node.fixed = true;
-      node.y = height - (height * 0.2);
-
-      node.x = ((width / inputs.length) * inputs.indexOf(node)) + (width / inputs.length) / 2;
-      // node.x = ((width / network.input) * node.index) + (width / network.input) / 2;
-    }
-
-    if (node.type == 'output') {
-      node.fixed = true;
-      node.y = (height * 0.2);
-      // node.x = ((width / network.output) * (node.index - network.input)) + (width / network.output) / 2;
-      node.x = ((width / outputs.length) * (endNodes.indexOf(node) - inputs.length)) + (width / outputs.length) / 2;
-    }
-
-    return node
-  })
-
-  force.nodes(nodes)
-    .links(connections)
-    .start();
-
-  var link = svg.selectAll(".link")
+  // Add links
+  const link = svg.selectAll(".link")
     .data(connections)
     .enter().append("line")
     .attr("class", "link")
-    .style("stroke-width", function (d) {
-      return d.enabled ? (d.weight > 0 ? 0.3 + d.weight : 0.3 + d.weight * -1) : 0
-    })
-    .style("stroke", function (d) {
-      return d.weight > 0 ? "#0f0" : "#f00";
-    });
+    .style("stroke-width", d => Math.abs(d.weight) * 2)
+    .style("stroke", d => d.weight > 0 ? "#A2D8A1" : "#FFB3B3");
 
-  var node = svg.selectAll(".node")
-    .data(nodes)
+  // Add nodes
+  const node = svg.selectAll(".node")
+    .data(preparedNodes)
     .enter().append("g")
     .attr("class", "node")
-    .call(force.drag);
+    .call(d3.drag()
+      .on("start", d => {
+        if (!d3.event.active) force.alphaTarget(0.3).restart();
+        d.fx = d.x;
+        d.fy = d.y;
+      })
+      .on("drag", d => {
+        d.fx = d3.event.x;
+        d.fy = d3.event.y;
+      })
+      .on("end", d => {
+        if (!d3.event.active) force.alphaTarget(0);
+        d.fx = null;
+        d.fy = null;
+      }));
 
   node.append("circle")
-    .attr("r", "5")
-    .attr("fill", function (d) {
-      if (d.type === 'input') {
-        return '#00f'
-      } else if (d.type === 'output') {
-        return '#f00'
-      } else {
-        return '#000'
-      }
+    .attr("r", 10)
+    .attr("fill", d => {
+      if (d.type === 'input') return "#A2C9E0";
+      if (d.type === 'output') return "#A2D8A1";
+      return "#C0C0C0";  // Gray for hidden nodes
     });
 
   node.append("text")
     .attr("dx", 12)
     .attr("dy", ".35em")
-    .text(function (d) {
-      return d.index + (d.type !== 'input' ? "(" + d.squash + ")" : null)
-    });
+    .text(d => d.type !== 'input' ? d.squash : '');
 
-  force.on("tick", function () {
-    link.attr("x1", function (d) {
-      return d.source.x;
-    })
-      .attr("y1", function (d) {
-        return d.source.y;
-      })
-      .attr("x2", function (d) {
-        return d.target.x;
-      })
-      .attr("y2", function (d) {
-        return d.target.y;
-      });
+  force.on("tick", () => {
+    link.attr("x1", d => d.source.x)
+      .attr("y1", d => d.source.y)
+      .attr("x2", d => d.target.x)
+      .attr("y2", d => d.target.y);
 
-    node.attr("transform", function (d) {
-      return "translate(" + d.x + "," + d.y + ")";
-    });
+    node.attr("transform", d => `translate(${d.x},${d.y})`);
   });
-
-  // var element = document.getElementById(this.id);
-  document.getElementById(container)
-    .innerHTML = '';
-
-  var element = document.getElementById("best-network");
-  document.getElementById(container)
-    .append(element);
-}
+};
