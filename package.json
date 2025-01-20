@@ -10,12 +10,18 @@
     "test:ts": "mocha -r ts-node/register test/**/*.test.ts"
   },
   "devDependencies": {
+    "@reduxjs/toolkit": "^2.5.0",
     "@types/chai": "^5.0.1",
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.10.6",
+    "@types/react": "^19.0.7",
+    "@types/react-dom": "^19.0.3",
     "chai": "^4.5.0",
     "mocha": "^3.5.3",
     "path-browserify": "^1.0.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-redux": "^9.2.0",
     "semistandard": "*",
     "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",

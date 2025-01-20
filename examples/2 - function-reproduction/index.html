@@ -33,13 +33,13 @@
 <div class="container mx-auto p-2">
 
     <!-- Page Heading -->
-    <header class="text-center mb-6">
+    <header class="text-center">
         <h1 class="text-4xl font-semibold text-light">NEAT Function Reproduction Test</h1>
         <p class="mt-2 text-xl">Watch as the NEAT algorithm evolves to approximate a target function. View real-time updates on fitness, error, and network structure.</p>
     </header>
 
     <!-- Division Line Function Display -->
-    <section class="mb-6 card bg-neutral shadow-xl">
+    <section class="mb-t card bg-neutral shadow-xl">
         <div class="card-body">
             <h2 class="card-title">Division Line Function</h2>
             <div id="division-line-function" class="font-mono"></div>
@@ -47,7 +47,7 @@
     </section>
 
     <!-- Points Distribution Section -->
-    <section class="card bg-neutral shadow-xl mb-6">
+    <section class="card bg-neutral shadow-xl mt-6">
         <div class="card-body">
             <h2 class="card-title">Function reproduction</h2>
             <div class="flex flex-col md:flex-row w-full">
@@ -60,7 +60,7 @@
     </section>
 
     <!-- Network Graph Section -->
-    <section class="card card-side bg-neutral shadow-xl">
+    <section class="card card-side bg-neutral shadow-xl mt-6">
         <div class="card-body">
             <h2 class="card-title font-medium text-center mb-4 w-full absolute">Network Chart <span class="badge badge-outline tooltip" data-tip="Network graph rebuild every 1000 iterations">?</span></h2>
         </div>
@@ -93,18 +93,72 @@
         </div>
     </section>
 
+    <section class="card bg-neutral mt-6">
+        <div class="card-body">
+            <div class="card-title">Settings</div>
+            <div class="flex flex-wrap" id="settings-controller">
+
+                <div class="flex-1" id="settings-left">
+                    <div class="w-full">
+                        <div class="label">
+                            <span class="label-text">Network redraw rate (0 to 1000): <span id="redraw-rate"></span></span>
+                        </div>
+                        <input id="network-redraw-rate" type="range" min="1" max="1000" value="1000" class="range" oninput="console.log.bind(console)" onchange="console.log.bind(console)" >
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <div class="w-full">
+                        <div class="label">
+                            <span class="label-text">Cost function</span>
+                        </div>
+
+                        <div class="dropdown">
+                            <div tabindex="0" role="button" class="btn m-1">MSE</div>
+                            <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow" id="cost-functions-items">
+                                <li><a onclick="console.log('not mse')">Item 1</a></li>
+                                <li><a>Item 2</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="divider divider-horizontal"></div>
+                <div class="flex-1" id="settings-right">
+                    <h3>Allowed Mutations</h3>
+                    <h3>Cost function</h3>
+                    <h3>Allowed Activations</h3>
+                    <h3>Mutation rate</h3>
+                    <h3>Mutation amount</h3>
+                    <h3>Selection function</h3>
+                    <h3>Allowed crossovers</h3>
+                    <h3>Elitism</h3>
+                    <h3>Population size</h3>
+                    <h3>Equal</h3>
+                    <h3>Rate function</h3>
+                    <h3>Clear</h3>
+                    <h3>Shuffle</h3>
+                    <h3>Running state</h3>
+                    <h3>Is change applied</h3>
+                    <h3>Start (Resume) | Stop | Reset</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
 </div>
 
-<!-- Custom JavaScript -->
+<script src="setup.js"></script>
+<script src="evolve.js"></script>
+<script src="../common/settings-builder.js"></script>
+<script src="../common/draw-network.js"></script>
+
 <script type="text/javascript">
   document.addEventListener("DOMContentLoaded", function() {
     setup(); // Initialize the setup after page load
   });
 </script>
 
-<script src="setup.js"></script>
-<script src="evolve.js"></script>
-<script src="../common/draw-network.js"></script>
+<script src="../../dist/settings-builder.js"></script>
 
 </body>
 </html>

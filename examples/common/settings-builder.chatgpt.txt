@@ -1,0 +1,38 @@
+I've developed NEAT evolve package for javascript. Now I'm trying to make example page html to show how evolving makes classification.
+Help me create app based on react to manage settings for NEAT evolve settings.
+Use DaisyUI framework to display controls.
+
+This is requirements:
+* All settings must be placed in 2 columns.
+* All setting must have controller, label and description
+* Use typescript
+* Show only ready to use code example
+* Use redux as state machine
+* For common components create separate file for reusability
+* This app must be applied to #settings-controller
+* Show webpack config to build
+* Show npm packages that I need to install with npm
+* Generate description for settings based on your knowledge of neural networks and neat
+* Do not install or import daisyui, postcss and tailwind. They are imported via html globally from cdn
+* Do not show html code of index.html
+* Webpack bundle file name: settings-builder
+* Show file structure
+* Your react app must be store in path: misc/settings-builder/
+* In your code example always fully show code without cuttings
+* I have no impicit any flag in tsconfig.json Always provide state type in your code
+
+Settings of evolve to manage:
+* Network redraw rate. Value from 1 to 1000. Every which iteration network graph will be redrawn
+* Cost function. Allowed values: CROSS_ENTROPY, MSE, BINARY, MAE, MAPE, MSLE, HINGE
+* Allowed Activations. List of values: LOGISTIC, TANH, IDENTITY, STEP, RELU, SOFTSIGN, SINUSOID, GAUSSIAN, BENT_IDENTITY, BIPOLAR, BIPOLAR_SIGMOID, HARD_TANH, ABSOLUTE, INVERSE, SELU
+* Allowed Mutations. List of values: ADD_NODE, SUB_NODE, ADD_CONN, SUB_CONN, MOD_WEIGHT, MOD_BIAS, MOD_ACTIVATION, ADD_GATE, SUB_GATE, ADD_SELF_CONN, SUB_SELF_CONN, ADD_BACK_CONN, SUB_BACK_CONN, SWAP_NODES
+* Mutation rate. Float value: 0 to 1.
+* Mutation amount. Any natural positive number
+* Selection function. Allowed values: FITNESS_PROPORTIONATE, POWER, TOURNAMENT.
+* Allowed crossovers. List of values: SINGLE_POINT, TWO_POINT, UNIFORM, AVERAGE.
+* Population size. Positive number.
+* Elitism. Positive number between 1 and population size.
+* Equal. Boolean
+* Rate function. Allowed values: FIXED, STEP, EXP, INV.
+* Clear. Boolean
+* Shuffle. Boolean

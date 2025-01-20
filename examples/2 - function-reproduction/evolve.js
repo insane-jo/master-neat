@@ -45,6 +45,7 @@ function evolve() {
     error: Number.NEGATIVE_INFINITY,
     browserWorkerScriptUrl: "../../dist/worker-browser.js",
     popsize: 250,
+    cost: MasterNeat.methods.cost.MAE,
     // threads: 4,
     callback: drawResultsCallback
   })
