@@ -8,6 +8,7 @@ import PopulationSize from "../settings-components/PopulationSize";
 import Elitism from "../settings-components/Elitism";
 import RateFunction from "../settings-components/RateFunction";
 import Equal from "../settings-components/Equal";
+import Clear from "../settings-components/Clear";
 
 const SettingsForm: React.FC = () => {
   return (
@@ -21,6 +22,7 @@ const SettingsForm: React.FC = () => {
       <Elitism />
       <RateFunction />
       <Equal />
+      <Clear />
     </div>
   );
 };

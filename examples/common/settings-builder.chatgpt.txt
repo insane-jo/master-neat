@@ -17,7 +17,7 @@ This is requirements:
 * Do not show html code of index.html
 * Webpack bundle file name: settings-builder
 * Show file structure
-* Your react app must be store in path: misc/settings-builder/
+* Your React app must be store in path: misc/settings-builder/
 * In your code example always fully show code without cuttings
 * I have no impicit any flag in tsconfig.json Always provide state type in your code
 
@@ -34,5 +34,4 @@ Settings of evolve to manage:
 + * Elitism. Positive number between 1 and population size.
 + * Equal. Boolean
 + * Rate function. Allowed values: FIXED, STEP, EXP, INV.
-* Clear. Boolean
-* Shuffle. Boolean
++ * Clear. Boolean

@@ -13,6 +13,7 @@ interface SettingsState {
   elitism: number;
   rateFunction: keyof typeof Rate;
   equal: boolean;
+  clear: boolean;
   // Add other settings
 }
 
@@ -26,6 +27,7 @@ const initialState: SettingsState = {
   elitism: 50,
   rateFunction: 'FIXED',
   equal: true,
+  clear: false
   // Initialize other settings
 };
 
