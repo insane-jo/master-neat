@@ -30,7 +30,7 @@ Settings of evolve to manage:
 + * Mutation amount. Any natural positive number
 + * Selection function. Allowed values: FITNESS_PROPORTIONATE, POWER, TOURNAMENT.
 * Allowed crossovers. List of values: SINGLE_POINT, TWO_POINT, UNIFORM, AVERAGE.
-* Population size. Positive number.
++ * Population size. Positive number.
 * Elitism. Positive number between 1 and population size.
 * Equal. Boolean
 * Rate function. Allowed values: FIXED, STEP, EXP, INV.

@@ -9,6 +9,7 @@ interface SettingsState {
   mutationAmount: number;
   selectionFunction: keyof typeof selection;
   popsize: number;
+  elitism: number;
   // Add other settings
 }
 
@@ -18,7 +19,8 @@ const initialState: SettingsState = {
   mutationRate: 0.7,
   mutationAmount: 1,
   selectionFunction: 'POWER',
-  popsize: 250
+  popsize: 250,
+  elitism: 50
   // Initialize other settings
 };
 

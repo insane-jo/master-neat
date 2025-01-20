@@ -5,6 +5,7 @@ import MutationRate from "../settings-components/MutationRate";
 import MutationAmount from "../settings-components/MutationAmount";
 import SelectionFunction from "../settings-components/SelectionFunction";
 import PopulationSize from "../settings-components/PopulationSize";
+import Elitism from "../settings-components/Elitism";
 
 const SettingsForm: React.FC = () => {
   return (
@@ -15,6 +16,7 @@ const SettingsForm: React.FC = () => {
       <MutationAmount />
       <SelectionFunction />
       <PopulationSize />
+      <Elitism />
     </div>
   );
 };
