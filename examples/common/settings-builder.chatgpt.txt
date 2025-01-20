@@ -32,7 +32,7 @@ Settings of evolve to manage:
 * Allowed crossovers. List of values: SINGLE_POINT, TWO_POINT, UNIFORM, AVERAGE.
 + * Population size. Positive number.
 + * Elitism. Positive number between 1 and population size.
-* Equal. Boolean
-* Rate function. Allowed values: FIXED, STEP, EXP, INV.
++ * Equal. Boolean
++ * Rate function. Allowed values: FIXED, STEP, EXP, INV.
 * Clear. Boolean
 * Shuffle. Boolean

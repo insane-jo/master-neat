@@ -12,6 +12,7 @@ interface SettingsState {
   popsize: number;
   elitism: number;
   rateFunction: keyof typeof Rate;
+  equal: boolean;
   // Add other settings
 }
 
@@ -23,7 +24,8 @@ const initialState: SettingsState = {
   selectionFunction: 'POWER',
   popsize: 250,
   elitism: 50,
-  rateFunction: 'FIXED'
+  rateFunction: 'FIXED',
+  equal: true,
   // Initialize other settings
 };
 
