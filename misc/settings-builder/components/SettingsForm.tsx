@@ -2,6 +2,9 @@ import React from 'react';
 import RedrawRate from "../settings-components/RedrawRate";
 import CostFunction from "../settings-components/CostFunction";
 import MutationRate from "../settings-components/MutationRate";
+import MutationAmount from "../settings-components/MutationAmount";
+import SelectionFunction from "../settings-components/SelectionFunction";
+import PopulationSize from "../settings-components/PopulationSize";
 
 const SettingsForm: React.FC = () => {
   return (
@@ -9,6 +12,9 @@ const SettingsForm: React.FC = () => {
       <RedrawRate />
       <CostFunction />
       <MutationRate />
+      <MutationAmount />
+      <SelectionFunction />
+      <PopulationSize />
     </div>
   );
 };
