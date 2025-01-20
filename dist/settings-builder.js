@@ -176,7 +176,7 @@ eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\ncons
   \***********************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\nconst RedrawRate_1 = __importDefault(__webpack_require__(/*! ../settings-components/RedrawRate */ \"./misc/settings-builder/settings-components/RedrawRate.tsx\"));\nconst CostFunction_1 = __importDefault(__webpack_require__(/*! ../settings-components/CostFunction */ \"./misc/settings-builder/settings-components/CostFunction.tsx\"));\nconst SettingsForm = () => {\n    return ((0, jsx_runtime_1.jsxs)(\"div\", { className: \"grid grid-cols-2 gap-4\", children: [(0, jsx_runtime_1.jsx)(RedrawRate_1.default, {}), (0, jsx_runtime_1.jsx)(CostFunction_1.default, {})] }));\n};\nexports[\"default\"] = SettingsForm;\n\n\n//# sourceURL=webpack://master-neat/./misc/settings-builder/components/SettingsForm.tsx?");
+eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\nconst RedrawRate_1 = __importDefault(__webpack_require__(/*! ../settings-components/RedrawRate */ \"./misc/settings-builder/settings-components/RedrawRate.tsx\"));\nconst CostFunction_1 = __importDefault(__webpack_require__(/*! ../settings-components/CostFunction */ \"./misc/settings-builder/settings-components/CostFunction.tsx\"));\nconst MutationRate_1 = __importDefault(__webpack_require__(/*! ../settings-components/MutationRate */ \"./misc/settings-builder/settings-components/MutationRate.tsx\"));\nconst SettingsForm = () => {\n    return ((0, jsx_runtime_1.jsxs)(\"div\", { className: \"grid grid-cols-2 gap-4\", children: [(0, jsx_runtime_1.jsx)(RedrawRate_1.default, {}), (0, jsx_runtime_1.jsx)(CostFunction_1.default, {}), (0, jsx_runtime_1.jsx)(MutationRate_1.default, {})] }));\n};\nexports[\"default\"] = SettingsForm;\n\n\n//# sourceURL=webpack://master-neat/./misc/settings-builder/components/SettingsForm.tsx?");
 
 /***/ }),
 
@@ -200,6 +200,16 @@ eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {
 
 /***/ }),
 
+/***/ "./misc/settings-builder/settings-components/MutationRate.tsx":
+/*!********************************************************************!*\
+  !*** ./misc/settings-builder/settings-components/MutationRate.tsx ***!
+  \********************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\nconst react_redux_1 = __webpack_require__(/*! react-redux */ \"./node_modules/react-redux/dist/cjs/index.js\");\nconst settingsSlice_1 = __webpack_require__(/*! ../store/settingsSlice */ \"./misc/settings-builder/store/settingsSlice.ts\");\nconst SettingFile_1 = __importDefault(__webpack_require__(/*! ../components/SettingFile */ \"./misc/settings-builder/components/SettingFile.tsx\"));\nconst MutationRate = () => {\n    const dispatch = (0, react_redux_1.useDispatch)();\n    const mutationRate = (0, react_redux_1.useSelector)((state) => state.settings.mutationRate);\n    const label = `Mutation Rate (${mutationRate})`;\n    return ((0, jsx_runtime_1.jsx)(SettingFile_1.default, { label: label, description: \"Value from 0 to 1.\", children: (0, jsx_runtime_1.jsx)(\"input\", { type: \"range\", min: 0, max: 1, step: .01, value: mutationRate, onChange: (e) => dispatch((0, settingsSlice_1.updateSetting)({ key: 'mutationRate', value: Number(e.target.value) })), className: \"range\" }) }));\n};\nexports[\"default\"] = MutationRate;\n\n\n//# sourceURL=webpack://master-neat/./misc/settings-builder/settings-components/MutationRate.tsx?");
+
+/***/ }),
+
 /***/ "./misc/settings-builder/settings-components/RedrawRate.tsx":
 /*!******************************************************************!*\
   !*** ./misc/settings-builder/settings-components/RedrawRate.tsx ***!
@@ -216,7 +226,7 @@ eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {
   \******************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nexports.updateSetting = void 0;\nconst toolkit_1 = __webpack_require__(/*! @reduxjs/toolkit */ \"./node_modules/@reduxjs/toolkit/dist/cjs/index.js\");\nconst initialState = {\n    networkRedrawRate: 100,\n    costFunction: 'MSE',\n    // Initialize other settings\n};\nconst settingsSlice = (0, toolkit_1.createSlice)({\n    name: 'settings',\n    initialState,\n    reducers: {\n        updateSetting(state, action) {\n            const settingsKey = action.payload.key;\n            const settingsValue = action.payload.value;\n            return Object.assign(Object.assign({}, state), { [settingsKey]: settingsValue });\n        },\n    },\n});\nexports.updateSetting = settingsSlice.actions.updateSetting;\nexports[\"default\"] = settingsSlice.reducer;\n\n\n//# sourceURL=webpack://master-neat/./misc/settings-builder/store/settingsSlice.ts?");
+eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nexports.updateSetting = void 0;\nconst toolkit_1 = __webpack_require__(/*! @reduxjs/toolkit */ \"./node_modules/@reduxjs/toolkit/dist/cjs/index.js\");\nconst initialState = {\n    networkRedrawRate: 100,\n    costFunction: 'MSE',\n    mutationRate: 0.7\n    // Initialize other settings\n};\nconst settingsSlice = (0, toolkit_1.createSlice)({\n    name: 'settings',\n    initialState,\n    reducers: {\n        updateSetting(state, action) {\n            const settingsKey = action.payload.key;\n            const settingsValue = action.payload.value;\n            return Object.assign(Object.assign({}, state), { [settingsKey]: settingsValue });\n        },\n    },\n});\nexports.updateSetting = settingsSlice.actions.updateSetting;\nexports[\"default\"] = settingsSlice.reducer;\n\n\n//# sourceURL=webpack://master-neat/./misc/settings-builder/store/settingsSlice.ts?");
 
 /***/ }),
 

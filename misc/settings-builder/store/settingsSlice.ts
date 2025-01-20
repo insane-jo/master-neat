@@ -4,12 +4,14 @@ import cost from "../../../src/methods/cost";
 interface SettingsState {
   networkRedrawRate: number;
   costFunction: keyof typeof cost;
+  mutationRate: number;
   // Add other settings
 }
 
 const initialState: SettingsState = {
   networkRedrawRate: 100,
   costFunction: 'MSE',
+  mutationRate: 0.7
   // Initialize other settings
 };
 
