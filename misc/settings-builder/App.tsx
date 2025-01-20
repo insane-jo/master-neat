@@ -5,9 +5,7 @@ import SettingsForm from './components/SettingsForm';
 
 const App: React.FC = () => (
   <Provider store={store}>
-    <div className="w-full">
-      <SettingsForm />
-    </div>
+    <SettingsForm />
   </Provider>
 );
 
