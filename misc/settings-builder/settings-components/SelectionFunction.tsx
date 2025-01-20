@@ -5,7 +5,7 @@ import SettingField from "../components/SettingFile";
 import {updateSetting} from "../store/settingsSlice";
 import Selection from "../../../src/methods/selection";
 
-const CostFunction = () => {
+const SelectionFunction = () => {
   const dispatch = useDispatch<AppDispatch>();
   const selectionFunction = useSelector((state: RootState) => state.settings.selectionFunction);
 
@@ -26,4 +26,4 @@ const CostFunction = () => {
   );
 };
 
-export default CostFunction;
+export default SelectionFunction;

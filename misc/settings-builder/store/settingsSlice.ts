@@ -1,15 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import cost from "../../../src/methods/cost";
-import selection from "../../../src/methods/selection";
+import Cost from "../../../src/methods/cost";
+import Selection from "../../../src/methods/selection";
+import Rate from "../../../src/methods/rate";
 
 interface SettingsState {
   networkRedrawRate: number;
-  costFunction: keyof typeof cost;
+  costFunction: keyof typeof Cost;
   mutationRate: number;
   mutationAmount: number;
-  selectionFunction: keyof typeof selection;
+  selectionFunction: keyof typeof Selection;
   popsize: number;
   elitism: number;
+  rateFunction: keyof typeof Rate;
   // Add other settings
 }
 
@@ -20,7 +22,8 @@ const initialState: SettingsState = {
   mutationAmount: 1,
   selectionFunction: 'POWER',
   popsize: 250,
-  elitism: 50
+  elitism: 50,
+  rateFunction: 'FIXED'
   // Initialize other settings
 };
 

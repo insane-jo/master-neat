@@ -4,7 +4,7 @@ import {updateSetting} from "../store/settingsSlice";
 import SettingField from "../components/SettingFile";
 import React from "react";
 
-const RedrawRate = () => {
+const MutationAmount = () => {
   const dispatch = useDispatch<AppDispatch>();
   const mutationAmount = useSelector((state: RootState) => state.settings.mutationAmount);
 
@@ -24,4 +24,4 @@ const RedrawRate = () => {
   );
 }
 
-export default RedrawRate;
+export default MutationAmount;

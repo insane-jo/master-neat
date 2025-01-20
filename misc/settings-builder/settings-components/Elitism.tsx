@@ -4,7 +4,7 @@ import {updateSetting} from "../store/settingsSlice";
 import SettingField from "../components/SettingFile";
 import React from "react";
 
-const RedrawRate = () => {
+const Elitism = () => {
   const dispatch = useDispatch<AppDispatch>();
   const popsize = useSelector((state: RootState) => state.settings.popsize);
   const elitism = useSelector((state: RootState) => state.settings.elitism);
@@ -26,4 +26,4 @@ const RedrawRate = () => {
   );
 }
 
-export default RedrawRate;
+export default Elitism;
