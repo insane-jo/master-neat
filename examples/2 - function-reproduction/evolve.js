@@ -2,17 +2,6 @@ function evolve() {
   population = new MasterNeat.Network(1, 1);
   const startDate = Date.now();
 
-  /**
-   * @type INetworkTrainingSetItem[]
-   */
-  const trainingSet = points
-    .map((p) => {
-      return {
-        input: [p.x],
-        output: [p.y]
-      }
-    });
-
   const drawResultsCallback = (bestNetwork, results) => {
     // if (results.iteration == 1 || results.iteration % 100 == 0) {
       const predictedPoints = points.map((p) => {
@@ -37,14 +26,14 @@ function evolve() {
     drawNetwork(bestNetwork, results);
   };
 
-  population.evolve(trainingSet, {
+  population.evolve(TRAINING_SET, {
     mutation: MasterNeat.methods.mutation.ALL,
     equal: false,
     elitism: 50,
     mutationRate: 0.9,
     mutationAmount: 5,
     error: Number.NEGATIVE_INFINITY,
-    browserWorkerScriptUrl: "../../dist/worker-browser.js",
+    browserWorkerScriptUrl: BROWSER_WORKER_SCRIPT_URL,
     popsize: 250,
     cost: MasterNeat.methods.cost.MSE,
     callback: drawResultsCallback

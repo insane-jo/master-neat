@@ -21,7 +21,7 @@ var selection = methods.selection;
 // type IFitnessFunction = INetworkFitnessFunction | IGenomeFitnessFunction;
 export type IFitnessFunction = (popGenome: Network | Network[]) => (number | Promise<undefined>);
 
-interface INeatOptions {
+export interface INeatOptions {
   equal?: boolean;
   clear?: boolean;
   popsize?: number;

@@ -1,14 +1,25 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import Cost from "../../../src/methods/cost";
 import Selection from "../../../src/methods/selection";
 import Rate from "../../../src/methods/rate";
-import Mutation from "../../../src/methods/mutation";
+import Mutation, {IMutation} from "../../../src/methods/mutation";
 import Activation from "../../../src/methods/activation";
 import Crossover from "../../../src/methods/crossover";
+import {INetworkTrainingOptions} from "../../../src/architecture/network";
+import {INeatOptions} from "../../../src/neat";
+
+declare var redrawNetworkIterations: number;
+declare const BROWSER_WORKER_SCRIPT_URL: string;
+declare const DRAW_RESULTS_CALLBACK: (startDate: number) => any; //(n: any, result: { error: number, iteration: number, fitness?: number }) => void;
+declare const NETWORK_INPUT_AMOUNT: number;
+declare const NETWORK_OUTPUT_AMOUNT: number;
+declare const TRAINING_SET: any;
+
+declare const MasterNeat: any;
 
 interface SettingsState {
   networkRedrawRate: number;
-  costFunction: keyof typeof Cost;
+  costFunction: string;// keyof typeof Cost;
   mutationRate: number;
   mutationAmount: number;
   selectionFunction: keyof typeof Selection;
@@ -25,11 +36,15 @@ interface SettingsState {
   },
   allowedCrossovers: {
     [key: keyof typeof Crossover]: boolean;
+  },
+
+  evolving: {
+    network: any
   }
 }
 
 const initialState: SettingsState = {
-  networkRedrawRate: 100,
+  networkRedrawRate: redrawNetworkIterations,
   costFunction: 'MSE',
   mutationRate: 0.7,
   mutationAmount: 1,
@@ -57,6 +72,10 @@ const initialState: SettingsState = {
 
       return res;
     }, {}),
+
+  evolving: {
+    network: new MasterNeat.Network(NETWORK_INPUT_AMOUNT, NETWORK_OUTPUT_AMOUNT)
+  }
 };
 
 const settingsSlice = createSlice({
@@ -66,6 +85,10 @@ const settingsSlice = createSlice({
     updateSetting(state: SettingsState, action: PayloadAction<{ key: keyof SettingsState; value: any }>) {
       const settingsKey = action.payload.key;
       const settingsValue = action.payload.value;
+
+      if (settingsKey === 'networkRedrawRate') {
+        redrawNetworkIterations = settingsValue;
+      }
 
       return {
         ...state,
@@ -87,9 +110,61 @@ const settingsSlice = createSlice({
           ...collectionOriginalValue,
         }
       }
+    },
+    startEvolve(state: SettingsState) {
+      const network = state.evolving.network;
+
+      const progressCallback = DRAW_RESULTS_CALLBACK(Date.now());
+
+      network.evolve(TRAINING_SET, {
+        mutation: MasterNeat.methods.mutation.ALL,
+        equal: false,
+        elitism: 50,
+        mutationRate: 0.9,
+        mutationAmount: 5,
+        error: Number.NEGATIVE_INFINITY,
+        browserWorkerScriptUrl: BROWSER_WORKER_SCRIPT_URL,
+        popsize: 250,
+        cost: MasterNeat.methods.cost.MSE,
+        callback: progressCallback
+      })
     }
   },
 });
 
-export const {updateSetting, updateAllowedCollection} = settingsSlice.actions;
+const createSettings = (state: SettingsState): INetworkTrainingOptions & INeatOptions => {
+  const mutations = Object.keys(state.allowedMutations)
+    .filter((mutationName) => state.allowedMutations[mutationName])
+    .map((mutationName) => {
+      const exactMutation = Mutation.ALL.find((item) => item.name === mutationName) as IMutation;
+
+      return exactMutation;
+    });
+
+  const crossovers = Object.keys(state.allowedCrossovers)
+    .filter((crossoverName) => state.allowedCrossovers[crossoverName])
+    .map((crossoverName) => {
+      return Crossover[crossoverName];
+    })
+
+  return {
+    cost: Cost[state.costFunction],
+    popsize: state.popsize,
+    elitism: state.elitism,
+    equal: state.equal,
+    clear: state.clear,
+    selection: Selection[state.selectionFunction],
+    mutationAmount: state.mutationAmount,
+    mutationRate: state.mutationRate,
+    mutation: mutations,
+    crossover: crossovers,
+
+    error: Number.NEGATIVE_INFINITY,
+    browserWorkerScriptUrl: BROWSER_WORKER_SCRIPT_URL
+  }
+};
+
+export const createSettingsSelector = createSelector([createSettings], (settings) => settings);
+
+export const {updateSetting, updateAllowedCollection, startEvolve} = settingsSlice.actions;
 export default settingsSlice.reducer;
