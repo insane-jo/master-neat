@@ -291,6 +291,7 @@ export default class Neat {
 
   /**
    * Gets a genome based on the selection function
+   * @todo: вынести реализацию в функции селекции
    * @return {Network} genome
    */
   getParent() {
