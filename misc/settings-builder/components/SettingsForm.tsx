@@ -11,6 +11,7 @@ import Equal from "../settings-components/Equal";
 import Clear from "../settings-components/Clear";
 import AllowedMutations from "../settings-components/AllowedMutations";
 import AllowedActivations from "../settings-components/AllowedActivations";
+import AllowedCrossovers from "../settings-components/AllowedCrossovers";
 
 const SettingsForm: React.FC = () => {
   return (
@@ -27,6 +28,7 @@ const SettingsForm: React.FC = () => {
       <Clear />
       <AllowedMutations />
       <AllowedActivations />
+      <AllowedCrossovers />
     </div>
   );
 };

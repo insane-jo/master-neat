@@ -4,6 +4,7 @@ import Selection from "../../../src/methods/selection";
 import Rate from "../../../src/methods/rate";
 import Mutation from "../../../src/methods/mutation";
 import Activation from "../../../src/methods/activation";
+import Crossover from "../../../src/methods/crossover";
 
 interface SettingsState {
   networkRedrawRate: number;
@@ -20,7 +21,10 @@ interface SettingsState {
     [key: string]: boolean
   };
   allowedActivations: {
-    [key: string]: boolean
+    [key: keyof typeof Activation]: boolean
+  },
+  allowedCrossovers: {
+    [key: keyof typeof Crossover]: boolean;
   }
 }
 
@@ -43,6 +47,12 @@ const initialState: SettingsState = {
     }, {}),
   allowedActivations: Object.keys(Activation)
     .reduce((res: { [key: string]: boolean }, curr) => {
+      res[curr] = true;
+
+      return res;
+    }, {}),
+  allowedCrossovers: Object.keys(Crossover)
+    .reduce((res: { [key: keyof typeof Crossover]: boolean }, curr) => {
       res[curr] = true;
 
       return res;
