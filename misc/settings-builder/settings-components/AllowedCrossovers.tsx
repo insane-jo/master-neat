@@ -38,7 +38,7 @@ const AllowedCrossovers = () => {
   const label = `Allowed Crossover: ${allowedCount} of ${totalCrossovers}`;
 
   return (
-    <div className="grid grid-cols-subgrid gap-4 col-span-1 md:col-span-2 lg:col-span-3 border border-current pt-6 p-2">
+    <div className="grid grid-cols-subgrid gap-4 col-span-1 md:col-span-2 lg:col-span-3 border border-current pt-6 p-2 rounded-lg">
       <div className="form-control absolute -mt-8">
         <label className="label">
           <span className="label-text">{label}</span>
