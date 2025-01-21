@@ -14,6 +14,8 @@ declare const DRAW_RESULTS_CALLBACK: (startDate: number) => any; //(n: any, resu
 declare const NETWORK_INPUT_AMOUNT: number;
 declare const NETWORK_OUTPUT_AMOUNT: number;
 declare const TRAINING_SET: any;
+declare const globalResults: any;
+declare const drawNetwork: any;
 
 declare const MasterNeat: any;
 
@@ -44,6 +46,7 @@ interface SettingsState {
 }
 
 let EVOLVING_NETWORK = new MasterNeat.Network(NETWORK_INPUT_AMOUNT, NETWORK_OUTPUT_AMOUNT);
+let currentDrawCallback: any;
 
 const initialState: SettingsState = {
   networkRedrawRate: redrawNetworkIterations,
@@ -77,6 +80,38 @@ const initialState: SettingsState = {
 
   evolving: {
     networkDate: Date.now()
+  }
+};
+
+const createSettings = (state: SettingsState): INetworkTrainingOptions & INeatOptions => {
+  const mutations = Object.keys(state.allowedMutations)
+    .filter((mutationName) => state.allowedMutations[mutationName])
+    .map((mutationName) => {
+      const exactMutation = Mutation.ALL.find((item) => item.name === mutationName) as IMutation;
+
+      return exactMutation;
+    });
+
+  const crossovers = Object.keys(state.allowedCrossovers)
+    .filter((crossoverName) => state.allowedCrossovers[crossoverName])
+    .map((crossoverName) => {
+      return Crossover[crossoverName];
+    })
+
+  return {
+    cost: Cost[state.costFunction],
+    popsize: state.popsize,
+    elitism: state.elitism,
+    equal: state.equal,
+    clear: state.clear,
+    selection: Selection[state.selectionFunction],
+    mutationAmount: state.mutationAmount,
+    mutationRate: state.mutationRate,
+    mutation: mutations,
+    crossover: crossovers,
+
+    error: Number.NEGATIVE_INFINITY,
+    browserWorkerScriptUrl: BROWSER_WORKER_SCRIPT_URL
   }
 };
 
@@ -116,57 +151,26 @@ const settingsSlice = createSlice({
     startEvolve(state: SettingsState) {
       const network = EVOLVING_NETWORK;
 
-      const progressCallback = DRAW_RESULTS_CALLBACK(Date.now());
+      currentDrawCallback = DRAW_RESULTS_CALLBACK(Date.now());
+
+      const settingToEvolve = createSettings(state);
 
       network.evolve(TRAINING_SET, {
-        mutation: MasterNeat.methods.mutation.ALL,
-        equal: false,
-        elitism: 50,
-        mutationRate: 0.9,
-        mutationAmount: 5,
-        error: Number.NEGATIVE_INFINITY,
-        browserWorkerScriptUrl: BROWSER_WORKER_SCRIPT_URL,
-        popsize: 250,
-        cost: MasterNeat.methods.cost.MSE,
-        callback: progressCallback
-      })
+        ...settingToEvolve,
+
+        callback: currentDrawCallback
+      });
+    },
+    stopEvolve(state: SettingsState) {
+      EVOLVING_NETWORK.stopEvolve()
+        .then((results: any) => {
+          drawNetwork(EVOLVING_NETWORK, {...results, iteration: 0}, true);
+        });
     }
   },
 });
 
-const createSettings = (state: SettingsState): INetworkTrainingOptions & INeatOptions => {
-  const mutations = Object.keys(state.allowedMutations)
-    .filter((mutationName) => state.allowedMutations[mutationName])
-    .map((mutationName) => {
-      const exactMutation = Mutation.ALL.find((item) => item.name === mutationName) as IMutation;
-
-      return exactMutation;
-    });
-
-  const crossovers = Object.keys(state.allowedCrossovers)
-    .filter((crossoverName) => state.allowedCrossovers[crossoverName])
-    .map((crossoverName) => {
-      return Crossover[crossoverName];
-    })
-
-  return {
-    cost: Cost[state.costFunction],
-    popsize: state.popsize,
-    elitism: state.elitism,
-    equal: state.equal,
-    clear: state.clear,
-    selection: Selection[state.selectionFunction],
-    mutationAmount: state.mutationAmount,
-    mutationRate: state.mutationRate,
-    mutation: mutations,
-    crossover: crossovers,
-
-    error: Number.NEGATIVE_INFINITY,
-    browserWorkerScriptUrl: BROWSER_WORKER_SCRIPT_URL
-  }
-};
-
 export const createSettingsSelector = createSelector([createSettings], (settings) => settings);
 
-export const {updateSetting, updateAllowedCollection, startEvolve} = settingsSlice.actions;
+export const {updateSetting, updateAllowedCollection, startEvolve, stopEvolve} = settingsSlice.actions;
 export default settingsSlice.reducer;

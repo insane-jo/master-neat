@@ -73,6 +73,9 @@ export default class Network {
 
   public score?: number;
 
+  protected isEvolvingStopped: boolean;
+  protected evolvingPromise?: Promise<{error: number, iterations: number, time: number}>;
+
   constructor(input: number, output: number) {
     if (typeof input === 'undefined' || typeof output === 'undefined') {
       throw new Error('No input or output size given');
@@ -86,6 +89,8 @@ export default class Network {
     this.connections = [];
     this.gates = [];
     this.selfconns = [];
+
+    this.isEvolvingStopped = false;
 
     // Regularization
     this.dropout = 0;
@@ -546,6 +551,11 @@ export default class Network {
     }
   }
 
+  stopEvolve(): Promise<{error: number, iterations: number, time: number}> {
+    this.isEvolvingStopped = true;
+    return this.evolvingPromise as Promise<{error: number, iterations: number, time: number}>;
+  }
+
   /**
    * Evolves the network to reach a lower error on a dataset
    */
@@ -553,6 +563,13 @@ export default class Network {
     if (set[0].input.length !== this.input || set[0].output.length !== this.output) {
       throw new Error('Dataset input/output size should be same as network input/output size!');
     }
+
+    this.isEvolvingStopped = false;
+
+    let resolveEvolve: any;
+    this.evolvingPromise = new Promise((resolve) => {
+      resolveEvolve = resolve;
+    });
 
     // Read the options
     options = options || {};
@@ -657,7 +674,7 @@ export default class Network {
     var bestFitness = -Infinity;
     var bestGenome;
 
-    while (error < -targetError && (options.iterations === 0 || neat.generation < (options.iterations as number))) {
+    while (!this.isEvolvingStopped && error < -targetError && (options.iterations === 0 || neat.generation < (options.iterations as number))) {
       let fittest = await neat.evolve();
       let fitness = fittest.score as number;
       error = fitness + (fittest.nodes.length - fittest.input - fittest.output + fittest.connections.length + fittest.gates.length) * growth;
@@ -700,11 +717,15 @@ export default class Network {
       if (options.clear) this.clear();
     }
 
-    return {
+    const returnResult = {
       error: -error,
       iterations: neat.generation,
       time: Date.now() - start
     };
+
+    resolveEvolve(returnResult);
+
+    return returnResult;
   }
 
   /**

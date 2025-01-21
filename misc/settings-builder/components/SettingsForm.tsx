@@ -15,31 +15,34 @@ import AllowedCrossovers from "../settings-components/AllowedCrossovers";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../store/store";
 import {startEvolve} from "../store/settingsSlice";
+import MainControls from "./MainControls";
 
 const SettingsForm: React.FC = () => {
-    const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch<AppDispatch>();
 
-    useEffect(() => {
-        dispatch(
-          startEvolve()
-        );
-    });
+  useEffect(() => {
+    dispatch(
+      startEvolve()
+    );
+  });
 
   return (
     <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      <RedrawRate />
-      <CostFunction />
-      <MutationRate />
-      <MutationAmount />
-      <SelectionFunction />
-      <PopulationSize />
-      <Elitism />
-      <RateFunction />
-      <Equal />
-      <Clear />
-      <AllowedMutations />
-      <AllowedActivations />
-      <AllowedCrossovers />
+      <RedrawRate/>
+      <CostFunction/>
+      <MutationRate/>
+      <MutationAmount/>
+      <SelectionFunction/>
+      <PopulationSize/>
+      <Elitism/>
+      <RateFunction/>
+      <Equal/>
+      <Clear/>
+      <AllowedMutations/>
+      <AllowedActivations/>
+      <AllowedCrossovers/>
+
+      <MainControls />
     </div>
   );
 };

@@ -295,14 +295,14 @@ export default class Neat {
    */
   getParent() {
     var i;
-    switch (this.selection) {
-      case selection.POWER:
+    switch (this.selection.name) {
+      case selection.POWER.name:
         // @ts-ignore
         if (this.population[0].score < this.population[1].score) this.sort();
 
         var index = Math.floor(Math.pow(Math.random(), (this.selection.power as number)) * this.population.length);
         return this.population[index];
-      case selection.FITNESS_PROPORTIONATE:
+      case selection.FITNESS_PROPORTIONATE.name:
         // As negative fitnesses are possible
         // https://stackoverflow.com/questions/16186686/genetic-algorithm-handling-negative-fitness-values
         // this is unnecessarily run for every individual, should be changed
@@ -329,7 +329,7 @@ export default class Neat {
 
         // if all scores equal, return random genome
         return this.population[Math.floor(Math.random() * this.population.length)];
-      case selection.TOURNAMENT:
+      case selection.TOURNAMENT.name:
         if ((this.selection.size as number) > this.popsize) {
           throw new Error('Your tournament size should be lower than the population size, please change methods.selection.TOURNAMENT.size');
         }
