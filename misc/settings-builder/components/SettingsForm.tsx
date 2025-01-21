@@ -10,6 +10,7 @@ import RateFunction from "../settings-components/RateFunction";
 import Equal from "../settings-components/Equal";
 import Clear from "../settings-components/Clear";
 import AllowedMutations from "../settings-components/AllowedMutations";
+import AllowedActivations from "../settings-components/AllowedActivations";
 
 const SettingsForm: React.FC = () => {
   return (
@@ -25,6 +26,7 @@ const SettingsForm: React.FC = () => {
       <Equal />
       <Clear />
       <AllowedMutations />
+      <AllowedActivations />
     </div>
   );
 };

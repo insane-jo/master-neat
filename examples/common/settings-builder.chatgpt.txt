@@ -24,8 +24,8 @@ This is requirements:
 Settings of evolve to manage:
 + * Network redraw rate. Value from 1 to 1000. Every which iteration network graph will be redrawn
 + * Cost function. Allowed values: CROSS_ENTROPY, MSE, BINARY, MAE, MAPE, MSLE, HINGE
-* Allowed Activations. List of values: LOGISTIC, TANH, IDENTITY, STEP, RELU, SOFTSIGN, SINUSOID, GAUSSIAN, BENT_IDENTITY, BIPOLAR, BIPOLAR_SIGMOID, HARD_TANH, ABSOLUTE, INVERSE, SELU
-* Allowed Mutations. List of values: ADD_NODE, SUB_NODE, ADD_CONN, SUB_CONN, MOD_WEIGHT, MOD_BIAS, MOD_ACTIVATION, ADD_GATE, SUB_GATE, ADD_SELF_CONN, SUB_SELF_CONN, ADD_BACK_CONN, SUB_BACK_CONN, SWAP_NODES
++ * Allowed Activations. List of values: LOGISTIC, TANH, IDENTITY, STEP, RELU, SOFTSIGN, SINUSOID, GAUSSIAN, BENT_IDENTITY, BIPOLAR, BIPOLAR_SIGMOID, HARD_TANH, ABSOLUTE, INVERSE, SELU
++ * Allowed Mutations. List of values: ADD_NODE, SUB_NODE, ADD_CONN, SUB_CONN, MOD_WEIGHT, MOD_BIAS, MOD_ACTIVATION, ADD_GATE, SUB_GATE, ADD_SELF_CONN, SUB_SELF_CONN, ADD_BACK_CONN, SUB_BACK_CONN, SWAP_NODES
 + * Mutation rate. Float value: 0 to 1.
 + * Mutation amount. Any natural positive number
 + * Selection function. Allowed values: FITNESS_PROPORTIONATE, POWER, TOURNAMENT.

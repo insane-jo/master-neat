@@ -3,6 +3,7 @@ import Cost from "../../../src/methods/cost";
 import Selection from "../../../src/methods/selection";
 import Rate from "../../../src/methods/rate";
 import Mutation from "../../../src/methods/mutation";
+import Activation from "../../../src/methods/activation";
 
 interface SettingsState {
   networkRedrawRate: number;
@@ -18,6 +19,9 @@ interface SettingsState {
   allowedMutations: {
     [key: string]: boolean
   };
+  allowedActivations: {
+    [key: string]: boolean
+  }
 }
 
 const initialState: SettingsState = {
@@ -36,7 +40,13 @@ const initialState: SettingsState = {
       res[curr.name] = true;
 
       return res;
-    }, {})
+    }, {}),
+  allowedActivations: Object.keys(Activation)
+    .reduce((res: { [key: string]: boolean }, curr) => {
+      res[curr] = true;
+
+      return res;
+    }, {}),
 };
 
 const settingsSlice = createSlice({
@@ -52,23 +62,24 @@ const settingsSlice = createSlice({
         [settingsKey]: settingsValue
       }
     },
-    updateMutation(state: SettingsState, action: PayloadAction<{ mutationName: string; mutationValue: boolean }>) {
-      const {mutationName, mutationValue} = action.payload;
+    updateAllowedCollection(state: SettingsState, action: PayloadAction<{ collectionName: keyof SettingsState, collectionKey: string; collectionValue: boolean }>) {
+      const {collectionName, collectionKey, collectionValue} = action.payload;
 
-      const mutationsValue = {
-        ...state.allowedMutations
+      const originalCollection: {[key: string]: boolean} = state[collectionName] as unknown as {[key: string]: boolean};
+      const collectionOriginalValue = {
+        ...originalCollection,
       };
-      mutationsValue[mutationName] = mutationValue;
+      collectionOriginalValue[collectionKey] = collectionValue;
 
       return {
         ...state,
-        allowedMutations: {
-          ...mutationsValue,
+        [collectionName]: {
+          ...collectionOriginalValue,
         }
       }
     }
   },
 });
 
-export const {updateSetting, updateMutation} = settingsSlice.actions;
+export const {updateSetting, updateAllowedCollection} = settingsSlice.actions;
 export default settingsSlice.reducer;

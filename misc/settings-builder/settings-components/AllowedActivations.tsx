@@ -4,29 +4,29 @@ import {updateAllowedCollection} from "../store/settingsSlice";
 import SettingField from "../components/SettingFile";
 import React from "react";
 
-const AllowedMutations = () => {
+const AllowedActivations = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const allowedMutationsSettings = useSelector((state: RootState) => state.settings.allowedMutations);
+  const allowedActivationsSetting = useSelector((state: RootState) => state.settings.allowedActivations);
 
   let allowedCount = 0;
-  let totalMutations = 0;
+  let totalActivations = 0;
 
-  const AllowedMutationsCollection = Object.keys(allowedMutationsSettings)
-    .map((mutation) => {
-      const mutationValue = allowedMutationsSettings[mutation];
-      if (mutationValue) {
+  const AllowedActivationsCollection = Object.keys(allowedActivationsSetting)
+    .map((activation) => {
+      const activationValue = allowedActivationsSetting[activation];
+      if (activationValue) {
         allowedCount++;
       }
-      totalMutations++;
+      totalActivations++;
 
       return (
-        <SettingField label={mutation} description="" key={mutation}>
+        <SettingField label={activation} description="" key={activation}>
           <input
             type="checkbox"
-            checked={mutationValue}
+            checked={activationValue}
             onChange={(e) => dispatch(
               updateAllowedCollection({
-                collectionName: 'allowedMutations', collectionKey: mutation, collectionValue: !!(e.target.checked)
+                collectionName: 'allowedActivations', collectionKey: activation, collectionValue: !!(e.target.checked)
               })
             )}
             className="toggle"
@@ -35,7 +35,7 @@ const AllowedMutations = () => {
       );
     });
 
-  const label = `Allowed Mutations: ${allowedCount} of ${totalMutations}`;
+  const label = `Allowed Activations: ${allowedCount} of ${totalActivations}`;
 
   return (
     <div className="grid grid-cols-subgrid gap-4 col-span-1 md:col-span-2 lg:col-span-3 border border-current pt-6 p-2">
@@ -44,9 +44,9 @@ const AllowedMutations = () => {
           <span className="label-text">{label}</span>
         </label>
       </div>
-      {AllowedMutationsCollection}
+      {AllowedActivationsCollection}
     </div>
   );
 }
 
-export default AllowedMutations;
+export default AllowedActivations;
