@@ -12,6 +12,11 @@ const modWeight: IMutationModWeight = {
     let allconnections = network.connections.concat(network.selfconns);
 
     let connection = allconnections[Math.floor(Math.random() * allconnections.length)];
+
+    if (!connection) {
+      return;
+    }
+
     let modification: number = Math.random() * (this.max - this.min) + this.min;
     connection.weight += modification;
   },

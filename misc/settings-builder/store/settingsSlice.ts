@@ -51,8 +51,8 @@ let currentDrawCallback: any;
 const initialState: SettingsState = {
   networkRedrawRate: redrawNetworkIterations,
   costFunction: 'MSE',
-  mutationRate: 0.7,
-  mutationAmount: 1,
+  mutationRate: 0.9,
+  mutationAmount: 5,
   selectionFunction: 'POWER',
   popsize: 250,
   elitism: 50,
