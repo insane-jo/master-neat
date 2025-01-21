@@ -39,9 +39,11 @@ interface SettingsState {
   },
 
   evolving: {
-    network: any
+    networkDate: number
   }
 }
+
+let EVOLVING_NETWORK = new MasterNeat.Network(NETWORK_INPUT_AMOUNT, NETWORK_OUTPUT_AMOUNT);
 
 const initialState: SettingsState = {
   networkRedrawRate: redrawNetworkIterations,
@@ -74,7 +76,7 @@ const initialState: SettingsState = {
     }, {}),
 
   evolving: {
-    network: new MasterNeat.Network(NETWORK_INPUT_AMOUNT, NETWORK_OUTPUT_AMOUNT)
+    networkDate: Date.now()
   }
 };
 
@@ -112,7 +114,7 @@ const settingsSlice = createSlice({
       }
     },
     startEvolve(state: SettingsState) {
-      const network = state.evolving.network;
+      const network = EVOLVING_NETWORK;
 
       const progressCallback = DRAW_RESULTS_CALLBACK(Date.now());
 
