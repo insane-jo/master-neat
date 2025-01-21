@@ -6,7 +6,6 @@ import MutationAmount from "../settings-components/MutationAmount";
 import SelectionFunction from "../settings-components/SelectionFunction";
 import PopulationSize from "../settings-components/PopulationSize";
 import Elitism from "../settings-components/Elitism";
-import RateFunction from "../settings-components/RateFunction";
 import Equal from "../settings-components/Equal";
 import Clear from "../settings-components/Clear";
 import AllowedMutations from "../settings-components/AllowedMutations";
