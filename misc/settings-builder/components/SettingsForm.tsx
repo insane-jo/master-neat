@@ -35,7 +35,7 @@ const SettingsForm: React.FC = () => {
       <SelectionFunction/>
       <PopulationSize/>
       <Elitism/>
-      <RateFunction/>
+      {/*<RateFunction/>*/}
       <Equal/>
       <Clear/>
       <AllowedMutations/>
