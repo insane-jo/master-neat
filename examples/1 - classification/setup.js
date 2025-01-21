@@ -2,6 +2,61 @@ const points = [];
 
 let divisionLineFunctionText;
 
+const BROWSER_WORKER_SCRIPT_URL = "../../dist/worker-browser.js";
+const NETWORK_INPUT_AMOUNT = 2;
+const NETWORK_OUTPUT_AMOUNT = 1;
+let TRAINING_SET;
+
+let DRAW_RESULTS_CALLBACK = (startDate) => {
+  return (bestNetwork, results) => {
+    let correct1 = 0,
+      correct2 = 0,
+      incorrect = 0;
+
+    for (let i = 0; i < points.length; i++) {
+      // push();
+      const currPoint = points[i];
+      const correctType = currPoint.type;
+      const [networkType] = bestNetwork.activate([currPoint.x, currPoint.y]);
+
+      const stepNetworkType = networkType >= 0.5 ? 1 : 0;
+
+      if (correctType === stepNetworkType) {
+        if (correctType === 1) {
+          correct1++;
+        }
+
+        if (correctType === 0) {
+          correct2++;
+        }
+
+      } else {
+        incorrect++;
+      }
+
+      // ellipse(map(currPoint.x, 0, Math.PI * 4, 0, width), currPoint.y * height, 6)
+      // pop();
+      projectPointStyle(i, stepNetworkType, true);
+    }
+
+
+    document.getElementById('correct1-items').innerText = correct1;
+    document.getElementById('correct2-items').innerText = correct2;
+    document.getElementById('incorrect-items').innerText = incorrect;
+
+    document.getElementById('error').innerText = results.error.toFixed(10);
+    document.getElementById('fitness').innerText = results.fitness.toFixed(10);
+
+    document.getElementById('network').innerText = `2 - ${bestNetwork.nodes.length - 3} - 1 (${bestNetwork.connections.length})`;
+
+    const currDate = Date.now();
+    const msPerIteration = (currDate - startDate) / results.iteration;
+    document.getElementById('iteration').innerText = `${results.iteration} (${msPerIteration.toFixed(4)} ms)`;
+
+    drawNetwork(bestNetwork, results);
+  };
+};
+
 const divisionLineFunction = (() => {
   // Randomize the parameters to make the line function look random
   const a = Math.random();
@@ -124,5 +179,13 @@ function setup() {
 
   document.getElementById('division-line-function').innerText = divisionLineFunctionText;
 
-  evolve();
+  TRAINING_SET = points
+    .map((p) => {
+      return {
+        input: [p.x, p.y],
+        output: [p.type]
+      }
+    });
 }
+
+setup();
