@@ -1,7 +1,8 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import Cost from "../../../src/methods/cost";
 import Selection from "../../../src/methods/selection";
 import Rate from "../../../src/methods/rate";
+import Mutation from "../../../src/methods/mutation";
 
 interface SettingsState {
   networkRedrawRate: number;
@@ -14,7 +15,9 @@ interface SettingsState {
   rateFunction: keyof typeof Rate;
   equal: boolean;
   clear: boolean;
-  // Add other settings
+  allowedMutations: {
+    [key: string]: boolean
+  };
 }
 
 const initialState: SettingsState = {
@@ -27,8 +30,13 @@ const initialState: SettingsState = {
   elitism: 50,
   rateFunction: 'FIXED',
   equal: true,
-  clear: false
-  // Initialize other settings
+  clear: false,
+  allowedMutations: Mutation.ALL
+    .reduce((res: { [key: string]: boolean }, curr) => {
+      res[curr.name] = true;
+
+      return res;
+    }, {})
 };
 
 const settingsSlice = createSlice({
@@ -44,8 +52,23 @@ const settingsSlice = createSlice({
         [settingsKey]: settingsValue
       }
     },
+    updateMutation(state: SettingsState, action: PayloadAction<{ mutationName: string; mutationValue: boolean }>) {
+      const {mutationName, mutationValue} = action.payload;
+
+      const mutationsValue = {
+        ...state.allowedMutations
+      };
+      mutationsValue[mutationName] = mutationValue;
+
+      return {
+        ...state,
+        allowedMutations: {
+          ...mutationsValue,
+        }
+      }
+    }
   },
 });
 
-export const { updateSetting } = settingsSlice.actions;
+export const {updateSetting, updateMutation} = settingsSlice.actions;
 export default settingsSlice.reducer;

@@ -32,6 +32,7 @@ export type INetworkTrainingOptions = {
   equal?: boolean;
   elitism?: number;
   mutationRate?: number;
+  mutationAmount?: number;
 
   ratePolicy?: IRateFunction;
 
