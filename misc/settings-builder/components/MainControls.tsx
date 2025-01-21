@@ -11,10 +11,10 @@ const MainControls: React.FC = () => {
   };
 
   return (
-    <div className="grid grid-cols-subgrid gap-4 col-span-1 md:col-span-2 lg:col-span-3">
+    <div className="col-span-1 md:col-span-2 lg:col-span-3">
       <div className="divider "></div>
 
-      <button className="btn btn-neutral"
+      <button className="btn btn-active mr-4"
               onClick={() => dispatch(startEvolve())}
       >Start Evolve</button>
       <button className="btn btn-error"
