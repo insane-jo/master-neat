@@ -135,7 +135,7 @@ function setup() {
     .attr("id", "division-line");
 
   // Draw the points
-  const pointGroups = svg.selectAll(".point")
+  svg.selectAll(".point")
     .data(points)
     .enter().append("g")
     .attr("transform", d => `translate(${map(d.x, 0, Math.PI * 4, 0, container.node().clientWidth)}, ${d.y * 300})`)

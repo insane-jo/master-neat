@@ -114,11 +114,6 @@ function setup() {
     const width = container.node().clientWidth;
     svg.attr('width', width);
 
-    const divisionLineDataResized = d3.range(0, width, 1).map(d => ({
-      x: d,
-      y: divisionLineFunction(map(d, 0, width, 0, Math.PI * 4)) * 300
-    }));
-
     drawLineByPoints(points, '#06b6d4', 'original-function');
   });
 
