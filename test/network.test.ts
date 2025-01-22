@@ -4,7 +4,8 @@ const assert = chai.assert;
 
 import {IMutation} from "../src/methods/mutation";
 import * as MasterNeat from "../src";
-const { architect, config } = MasterNeat;
+const { config } = MasterNeat;
+const {architect} = MasterNeat.helpers;
 import Network from "../src/architecture/network";
 import addGate from "../src/methods/mutation/add-gate";
 import addBackConn from "../src/methods/mutation/add-back-conn";

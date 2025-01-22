@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 import * as MasterNeat from '../src';
-const {architect} = MasterNeat;
+const {architect} = MasterNeat.helpers;
 
 
 describe('Neat XOR', function () {

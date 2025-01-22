@@ -1,13 +1,13 @@
-import Network from "./architecture/network";
-import { ICrossover } from "./methods/crossover";
-import { IMutation } from "./methods/mutation";
-import { ISelection } from "./methods/selection";
+import Network from "../architecture/network";
+import { ICrossover } from "../methods/crossover";
+import { IMutation } from "../methods/mutation";
+import { ISelection } from "../methods/selection";
 
-import methods from './methods/methods';
-import config from './config';
-import addNode from "./methods/mutation/add-node";
-import addConn from "./methods/mutation/add-conn";
-import addGate from "./methods/mutation/add-gate";
+import methods from '../methods/methods';
+import config from '../config';
+import addNode from "../methods/mutation/add-node";
+import addConn from "../methods/mutation/add-conn";
+import addGate from "../methods/mutation/add-gate";
 
 /* Easier variable naming */
 var selection = methods.selection;

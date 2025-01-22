@@ -8,7 +8,7 @@ import NodeElement from "./node";
 import * as multi from '../multithreading/multi';
 import methods from '../methods/methods';
 import config from '../config';
-import Neat, {IFitnessFunction} from '../neat';
+import Neat, {IFitnessFunction} from '../helpers/neat';
 import BrowserTestWorker from "../multithreading/workers/browser/testworker";
 import NodeTestWorker from "../multithreading/workers/node/testworker";
 import {NodeTypeEnum} from "../types/node-type-enum";

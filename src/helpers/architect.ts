@@ -1,9 +1,9 @@
 /* Import */
 import methods from '../methods/methods';
-import Network from './network';
-import Layer from './layer';
-import Group from './group';
-import NodeElement from './node';
+import Network from '../architecture/network';
+import Layer from '../architecture/layer';
+import Group from '../architecture/group';
+import NodeElement from '../architecture/node';
 import {NodeTypeEnum} from "../types/node-type-enum";
 import addNode from "../methods/mutation/add-node";
 import addConn from "../methods/mutation/add-conn";

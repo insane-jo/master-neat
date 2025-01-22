@@ -6,7 +6,7 @@ import Mutation, {IMutation} from "../../../src/methods/mutation";
 import Activation from "../../../src/methods/activation";
 import Crossover from "../../../src/methods/crossover";
 import {INetworkTrainingOptions} from "../../../src/architecture/network";
-import {INeatOptions} from "../../../src/neat";
+import {INeatOptions} from "../../../src/helpers/neat";
 
 declare var redrawNetworkIterations: number;
 declare const BROWSER_WORKER_SCRIPT_URL: string;
@@ -14,7 +14,6 @@ declare const DRAW_RESULTS_CALLBACK: (startDate: number) => any; //(n: any, resu
 declare const NETWORK_INPUT_AMOUNT: number;
 declare const NETWORK_OUTPUT_AMOUNT: number;
 declare const TRAINING_SET: any;
-declare const globalResults: any;
 declare const drawNetwork: any;
 
 declare const MasterNeat: any;
