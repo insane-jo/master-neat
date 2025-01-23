@@ -6,6 +6,10 @@ let globalBestNetwork,
 let redrawNetworkIterations = 1000;
 
 const drawNetwork = (network, results, forceRedraw = false, containerId = "best-network", width = 400, height = 300) => {
+  if (!forceRedraw && globalBestNetwork) {
+    forceRedraw = network.nodes.length !== globalBestNetwork.nodes.length || network.connections.length !== globalBestNetwork.connections.length;
+  }
+
   if (!forceRedraw && drawInitted && results.iteration % redrawNetworkIterations !== 0) {
     return;
   }
