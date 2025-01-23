@@ -94,15 +94,27 @@ const drawNetwork = (network, results, forceRedraw = false, containerId = "best-
     .attr("class", "node")
     .call(d3.drag()
       .on("start", d => {
+        if (!d3.event) {
+          return;
+        }
+
         if (!d3.event.active) force.alphaTarget(0.3).restart();
         d.fx = d.x;
         d.fy = d.y;
       })
       .on("drag", d => {
+        if (!d3.event) {
+          return;
+        }
+
         d.fx = d3.event.x;
         d.fy = d3.event.y;
       })
       .on("end", d => {
+        if (!d3.event) {
+          return;
+        }
+
         if (!d3.event.active) force.alphaTarget(0);
         d.fx = null;
         d.fy = null;

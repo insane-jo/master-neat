@@ -111,7 +111,7 @@ function setup() {
 
   // Ensure the SVG resizes properly
   d3.select(window).on('resize.points', function () {
-    const width = container.node().clientWidth;
+    const width = container.node().parentElement.parentElement.clientWidth;
     svg.attr('width', width);
 
     drawLineByPoints(points, '#06b6d4', 'original-function');
