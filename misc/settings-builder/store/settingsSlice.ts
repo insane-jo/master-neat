@@ -18,6 +18,11 @@ declare const drawNetwork: any;
 
 declare const MasterNeat: any;
 
+export enum EEvolveRunningState {
+  Running = 'Running',
+  Stopped = 'Stopped'
+}
+
 interface SettingsState {
   networkRedrawRate: number;
   costFunction: string;// keyof typeof Cost;
@@ -41,7 +46,9 @@ interface SettingsState {
 
   evolving: {
     networkDate: number
-  }
+  },
+
+  evolveRunningState: EEvolveRunningState
 }
 
 let EVOLVING_NETWORK = new MasterNeat.Network(NETWORK_INPUT_AMOUNT, NETWORK_OUTPUT_AMOUNT);
@@ -79,7 +86,9 @@ const initialState: SettingsState = {
 
   evolving: {
     networkDate: Date.now()
-  }
+  },
+
+  evolveRunningState: EEvolveRunningState.Stopped
 };
 
 const createSettings = (state: SettingsState): INetworkTrainingOptions & INeatOptions => {
@@ -159,12 +168,22 @@ const settingsSlice = createSlice({
 
         callback: currentDrawCallback
       });
+
+      return {
+        ...state,
+        evolveRunningState: EEvolveRunningState.Running
+      }
     },
     stopEvolve(state: SettingsState) {
       EVOLVING_NETWORK.stopEvolve()
         .then((results: any) => {
           drawNetwork(EVOLVING_NETWORK, {...results, iteration: 0}, true);
         });
+
+      return {
+        ...state,
+        evolveRunningState: EEvolveRunningState.Stopped
+      }
     }
   },
 });
