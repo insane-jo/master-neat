@@ -27,21 +27,37 @@ const SettingsForm: React.FC = () => {
 
   return (
     <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      <RedrawRate/>
-      <CostFunction/>
-      <MutationRate/>
-      <MutationAmount/>
-      <SelectionFunction/>
-      <PopulationSize/>
-      <Elitism/>
-      {/*<RateFunction/>*/}
-      <Equal/>
-      <Clear/>
+
+      <div className="grid-cols-subgrid col-span-1 md:col-span-2 lg:col-span-3">
+        <div tabIndex={0} className="collapse collapse-open collapse-arrow border-base-300 bg-base-200 border">
+          <input type="checkbox"/>
+          <div className="collapse-title text-xl font-medium">General Settings</div>
+          <div className="collapse-content">
+
+            <div
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-6 p-2 rounded-lg">
+
+              <RedrawRate/>
+              <CostFunction/>
+              <MutationRate/>
+              <MutationAmount/>
+              <SelectionFunction/>
+              <PopulationSize/>
+              <Elitism/>
+              {/*<RateFunction/>*/}
+              <Equal/>
+              <Clear/>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
       <AllowedMutations/>
       <AllowedActivations/>
       <AllowedCrossovers/>
 
-      <MainControls />
+      <MainControls/>
     </div>
   );
 };

@@ -38,13 +38,18 @@ const AllowedCrossovers = () => {
   const label = `Allowed Crossover: ${allowedCount} of ${totalCrossovers}`;
 
   return (
-    <div className="grid grid-cols-subgrid gap-4 col-span-1 md:col-span-2 lg:col-span-3 border border-current pt-6 p-2 rounded-lg">
-      <div className="form-control absolute -mt-8">
-        <label className="label">
-          <span className="label-text">{label}</span>
-        </label>
+    <div className="grid-cols-subgrid col-span-1 md:col-span-2 lg:col-span-3">
+      <div tabIndex={0} className="collapse collapse-arrow border-base-300 bg-base-200 border">
+        <input type="checkbox"/>
+        <div className="collapse-title text-xl font-medium">{label}</div>
+        <div className="collapse-content">
+          <div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-6 p-2 rounded-lg">
+            {AllowedCrossoversCollection}
+          </div>
+
+        </div>
       </div>
-      {AllowedCrossoversCollection}
     </div>
   );
 }
