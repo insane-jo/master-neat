@@ -5,6 +5,7 @@ import {EEvolveRunningState, startEvolve, stopEvolve} from "../store/settingsSli
 
 const MainControls: React.FC = () => {
   const evolveRunningState = useSelector((state: RootState) => state.settings.evolveRunningState);
+  const changedSettings = useSelector((state: RootState) => state.settings.changedSettings);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -12,14 +13,21 @@ const MainControls: React.FC = () => {
     dispatch(stopEvolve());
   };
 
+  const hasChangedSettings = (changedSettings.length && evolveRunningState === EEvolveRunningState.Running);
+
   const evolveRunningStateElement = (
     <span className="flex flex-wrap self-center items-center h-full gap-1">
           <div>Running state: </div>
           <div className="relative flex">
-            {evolveRunningState === EEvolveRunningState.Running ? <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span> : null}
+            {evolveRunningState === EEvolveRunningState.Running ? <span
+              className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span> : null}
             <span
-              className={`relative inline-flex rounded-full px-2 py-1 text-white ${evolveRunningState === EEvolveRunningState.Running ? 'bg-green-500' : 'bg-amber-500'}`}
-            >{evolveRunningState}</span>
+              className={`relative inline-flex rounded-full px-2 py-1 text-white ${evolveRunningState === EEvolveRunningState.Running ? 'bg-green-500' : 'bg-amber-500'} ${hasChangedSettings ? 'indicator' : ''}`}
+            >
+              {evolveRunningState}
+              {hasChangedSettings ? <span className="indicator-item badge badge-error tooltip absolute"
+                                          data-tip="You have some settings changed. You need to restart evolve process to apply them."></span> : null}
+            </span>
           </div>
       </span>
   )

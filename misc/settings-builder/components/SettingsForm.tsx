@@ -35,7 +35,7 @@ const SettingsForm: React.FC = () => {
           <div className="collapse-content">
 
             <div
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-6 p-2 rounded-lg">
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-2 rounded-lg">
 
               <RedrawRate/>
               <CostFunction/>

@@ -48,7 +48,9 @@ interface SettingsState {
     networkDate: number
   },
 
-  evolveRunningState: EEvolveRunningState
+  evolveRunningState: EEvolveRunningState,
+
+  changedSettings: (keyof SettingsState)[]
 }
 
 let EVOLVING_NETWORK = new MasterNeat.Network(NETWORK_INPUT_AMOUNT, NETWORK_OUTPUT_AMOUNT);
@@ -88,7 +90,9 @@ const initialState: SettingsState = {
     networkDate: Date.now()
   },
 
-  evolveRunningState: EEvolveRunningState.Stopped
+  evolveRunningState: EEvolveRunningState.Stopped,
+
+  changedSettings: []
 };
 
 const createSettings = (state: SettingsState): INetworkTrainingOptions & INeatOptions => {
@@ -137,7 +141,11 @@ const settingsSlice = createSlice({
 
       return {
         ...state,
-        [settingsKey]: settingsValue
+        [settingsKey]: settingsValue,
+        changedSettings: [
+          ...state.changedSettings,
+          settingsKey
+        ]
       }
     },
     updateAllowedCollection(state: SettingsState, action: PayloadAction<{ collectionName: keyof SettingsState, collectionKey: string; collectionValue: boolean }>) {
@@ -153,7 +161,11 @@ const settingsSlice = createSlice({
         ...state,
         [collectionName]: {
           ...collectionOriginalValue,
-        }
+        },
+        changedSettings: [
+          ...state.changedSettings,
+          collectionName
+        ]
       }
     },
     startEvolve(state: SettingsState) {
@@ -171,6 +183,7 @@ const settingsSlice = createSlice({
 
       return {
         ...state,
+        changedSettings: [],
         evolveRunningState: EEvolveRunningState.Running
       }
     },
