@@ -11,13 +11,9 @@ const MainControls: React.FC = () => {
   };
 
   return (
-    <div className="col-span-1 md:col-span-2 lg:col-span-3">
-      <div className="divider "></div>
-
-      <div className="fixed left-0 bottom-0 w-full text-center p-2 bg-neutral shadow shadow-xl">
-        <button className="btn btn-active mr-4" onClick={() => dispatch(startEvolve())}>Start Evolve</button>
-        <button className="btn btn-error" onClick={dispatchStopEvolving}>Stop Evolve</button>
-      </div>
+    <div className="fixed left-0 bottom-0 w-full text-center p-2 bg-neutral shadow shadow-xl border-t border-current">
+      <button className="btn btn-active mr-4" onClick={() => dispatch(startEvolve())}>Start Evolve</button>
+      <button className="btn btn-error" onClick={dispatchStopEvolving}>Stop Evolve</button>
     </div>
   )
 };
