@@ -188,19 +188,15 @@ export default class Neat {
    * Selects a random mutation method for a genome according to the parameters
    */
   selectMutationMethod(genome: Network) {
-    var mutationMethod = this.mutation[Math.floor(Math.random() * this.mutation.length)];
+    const mutationMethod = this.mutation[Math.floor(Math.random() * this.mutation.length)];
 
     if (mutationMethod === addNode && genome.nodes.length >= this.maxNodes) {
       if (config.warnings) console.warn('maxNodes exceeded!');
       return;
-    }
-
-    if (mutationMethod === addConn && genome.connections.length >= this.maxConns) {
+    } else if (mutationMethod === addConn && genome.connections.length >= this.maxConns) {
       if (config.warnings) console.warn('maxConns exceeded!');
       return;
-    }
-
-    if (mutationMethod === addGate && genome.gates.length >= this.maxGates) {
+    } else if (mutationMethod === addGate && genome.gates.length >= this.maxGates) {
       if (config.warnings) console.warn('maxGates exceeded!');
       return;
     }
