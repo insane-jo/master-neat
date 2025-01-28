@@ -15,6 +15,7 @@ declare const NETWORK_INPUT_AMOUNT: number;
 declare const NETWORK_OUTPUT_AMOUNT: number;
 declare const TRAINING_SET: any;
 declare const drawNetwork: any;
+declare const DEFAULT_SETTINGS: SettingsState;
 
 declare const MasterNeat: any;
 
@@ -127,9 +128,14 @@ const createSettings = (state: SettingsState): INetworkTrainingOptions & INeatOp
   }
 };
 
+const stateToSet: SettingsState = {
+  ...initialState,
+  ...(typeof DEFAULT_SETTINGS === 'undefined' ? {} : DEFAULT_SETTINGS)
+} as SettingsState;
+
 const settingsSlice = createSlice({
   name: 'settings',
-  initialState,
+  initialState: stateToSet,
   reducers: {
     updateSetting(state: SettingsState, action: PayloadAction<{ key: keyof SettingsState; value: any }>) {
       const settingsKey = action.payload.key;

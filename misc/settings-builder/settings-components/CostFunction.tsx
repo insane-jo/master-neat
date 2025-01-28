@@ -17,6 +17,7 @@ const CostFunction = () => {
         value={costFunction}
         onChange={(e) => dispatch(updateSetting({key: 'costFunction', value: e.target.value}))}
         className="select select-bordered"
+        id="cost-function"
       >
         {costFunctions.map((func) => (
           <option key={func} value={func}>{func}</option>
