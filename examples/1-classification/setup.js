@@ -98,7 +98,7 @@ function projectPointStyle(pointIndex, assumedType, updatePointCenter = false) {
   }
 }
 
-function setup() {
+async function setup() {
   // Select the resizable #points-distribution element
   const container = d3.select("#points-distribution")
     .style("height", "300px")
@@ -188,4 +188,4 @@ function setup() {
     });
 }
 
-setup();
+const readyPromise = setup();

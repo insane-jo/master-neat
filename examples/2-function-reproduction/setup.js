@@ -83,7 +83,7 @@ const divisionLineFunction = (() => {
   };
 })();
 
-function setup() {
+async function setup() {
   // Select the resizable #points-distribution element
   const container = d3.select("#points-distribution")
     .style("height", "300px")
@@ -130,4 +130,8 @@ function setup() {
   // evolve();
 }
 
-setup();
+// This promise will be called to render settings component
+const readyPromise = setup();
+
+
+
