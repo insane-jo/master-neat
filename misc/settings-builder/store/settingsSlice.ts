@@ -137,15 +137,20 @@ const settingsSlice = createSlice({
 
       if (settingsKey === 'networkRedrawRate') {
         redrawNetworkIterations = settingsValue;
-      }
 
-      return {
-        ...state,
-        [settingsKey]: settingsValue,
-        changedSettings: [
-          ...state.changedSettings,
-          settingsKey
-        ]
+        return {
+          ...state,
+          [settingsKey]: settingsValue
+        }
+      } else {
+        return {
+          ...state,
+          [settingsKey]: settingsValue,
+          changedSettings: [
+            ...state.changedSettings,
+            settingsKey
+          ]
+        }
       }
     },
     updateAllowedCollection(state: SettingsState, action: PayloadAction<{ collectionName: keyof SettingsState, collectionKey: string; collectionValue: boolean }>) {
