@@ -6,6 +6,7 @@
     "build:dist": "webpack",
     "build:watch": "webpack --watch",
     "build": "npm run build:dist",
+    "build:full-code": "find ./src -type f -name '*.ts' -exec echo \"//File content {}\" \\; > demo.txt -exec cat {} \\; > ./dist/full-code.txt",
     "deploy": "npm run build && npm run test:ts && npm publish",
     "test:ts": "mocha -r ts-node/register test/**/*.test.ts"
   },
