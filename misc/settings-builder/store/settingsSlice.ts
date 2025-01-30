@@ -212,7 +212,5 @@ const settingsSlice = createSlice({
   },
 });
 
-export const createSettingsSelector = createSelector([createSettings], (settings) => settings);
-
 export const {updateSetting, updateAllowedCollection, startEvolve, stopEvolve} = settingsSlice.actions;
 export default settingsSlice.reducer;
