@@ -26,7 +26,7 @@ export enum EEvolveRunningState {
 
 interface SettingsState {
   networkRedrawRate: number;
-  costFunction: string;// keyof typeof Cost;
+  costFunction: keyof typeof Cost;
   mutationRate: number;
   mutationAmount: number;
   selectionFunction: keyof typeof Selection;
