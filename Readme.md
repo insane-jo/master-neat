@@ -88,7 +88,7 @@ Make sure to adjust the paths and configurations according to your project's set
 
 ## Examples
 
-For more detailed examples and use cases, please refer to the [examples folder](./examples/index.html).
+For more detailed examples and use cases, please refer to the [examples page](https://insane-jo.github.io/master-neat/examples/index.html).
 
 ## Contributing
 
