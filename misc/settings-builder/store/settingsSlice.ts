@@ -1,4 +1,4 @@
-import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import Cost from "../../../src/methods/cost";
 import Selection from "../../../src/methods/selection";
 import Rate from "../../../src/methods/rate";
