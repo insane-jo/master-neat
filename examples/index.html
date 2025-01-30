@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head data-theme="dark">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explore NEAT (NeuroEvolution of Augmenting Topologies) with interactive examples. Learn how NEAT evolves neural networks for diverse challenges like classification, function reproduction, and Titanic challenge.">
+    <meta name="author" content="Alexei F.">
+    <meta name="keywords" content="NEAT, neuroevolution, machine learning, evolutionary algorithms, examples, demo, javascript, d3.js">
+    <title>NEAT Algorithm Demos</title>
+
+    <!-- DaisyUI & Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.23/dist/full.min.css" rel="stylesheet" type="text/css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+
+<div class="container mx-auto p-6">
+    <!-- Page Heading -->
+    <header class="text-center mb-8">
+        <h1 class="text-5xl font-bold">Explore NEAT Algorithm Demos</h1>
+        <p class="mt-4 text-lg text-gray-400">Dive into interactive examples that showcase the power of the NEAT algorithm in evolving neural networks for various challenges.</p>
+    </header>
+
+    <!-- Examples Section -->
+    <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Example 1 -->
+        <div class="card bg-neutral shadow-xl">
+            <div class="card-body">
+                <h2 class="card-title text-xl">Classification Evolution</h2>
+                <p class="text-gray-300">Visualize how the NEAT algorithm evolves a neural network to classify points in real-time.</p>
+                <a href="1-classification/index.html" class="btn btn-primary mt-4">View Demo</a>
+            </div>
+        </div>
+
+        <!-- Example 2 -->
+        <div class="card bg-neutral shadow-xl">
+            <div class="card-body">
+                <h2 class="card-title text-xl">Function Reproduction</h2>
+                <p class="text-gray-300">Observe the NEAT algorithm approximating a target function with visualized progress on fitness and error.</p>
+                <a href="2-function-reproduction/index.html" class="btn btn-primary mt-4">View Demo</a>
+            </div>
+        </div>
+
+        <!-- Example 3 -->
+        <div class="card bg-neutral shadow-xl">
+            <div class="card-body">
+                <h2 class="card-title text-xl">Titanic Challenge</h2>
+                <p class="text-gray-300">See the NEAT algorithm tackle Kaggle's Titanic challenge and achieve its goal through evolution.</p>
+                <a href="3-kaggle-titanic-challenge/index.html" class="btn btn-primary mt-4">View Demo</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="mt-16 text-center text-gray-400">
+        <p>Created by Alexei F. | <a href="https://github.com/your-repo" target="_blank" class="link">GitHub Repository</a></p>
+    </footer>
+</div>
+
+</body>
+</html>
