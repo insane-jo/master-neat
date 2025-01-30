@@ -2,10 +2,14 @@
   "name": "master-neat",
   "version": "0.0.1",
   "description": "",
+  "main": "./dist/master-neat.js",
+  "types": "./lib/index.d.ts",
   "scripts": {
     "build:dist": "webpack",
+    "build:lib": "tsc && tsc -m es6 --outDir lib-esm",
+    "build:remove": "shx rm -rf dist lib lib-esm",
     "build:watch": "webpack --watch",
-    "build": "npm run build:dist",
+    "build": "npm run build:remove && npm run build:dist && npm run build:lib",
     "build:full-code": "find ./src -type f -name '*.ts' -exec echo \"//File content {}\" \\; > demo.txt -exec cat {} \\; > ./dist/full-code.txt",
     "deploy": "npm run build && npm run test:ts && npm publish",
     "test:ts": "mocha -r ts-node/register test/**/*.test.ts"
@@ -24,6 +28,7 @@
     "react-dom": "^19.0.0",
     "react-redux": "^9.2.0",
     "semistandard": "*",
+    "shx": "^0.3.4",
     "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3",
