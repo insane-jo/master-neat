@@ -58,7 +58,7 @@ console.log(output); // Output will be close to [1]
 Here's an example of how to use Master-Neat to evolve a neural network using the provided TypeScript code:
 
 ```javascript
-const {MasterNeat} = require('master-neat');
+const {MasterNeat} = require('./master-neat');
 const { Network } = MasterNeat;
 
 const network = new Network(2, 1);
@@ -103,4 +103,8 @@ We welcome contributions from the community! Please follow these guidelines:
 ## License
 
 Master-Neat is released under the MIT License. See [LICENSE](LICENSE) for more details.
-```
+
+## Acknowledgments
+Master-Neat has been inspired by the following projects:
+* [neataptic](https://github.com/wagenaartje/neataptic)
+* [neatjs](https://github.com/GabrielTavernini/NeatJS)

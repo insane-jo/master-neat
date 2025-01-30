@@ -7,12 +7,13 @@ import {EWokerMessageType, IWorkerInitMessage, IWorkerIterationMessage} from "..
 export default class NodeTestWorker {
   public worker: cp.ChildProcess;
 
-  // @todo: выкосить any
   constructor(dataSet: INetworkTrainingSetItem[], cost: ICostFunction) {
     if (typeof require !== 'undefined' && '.ts' in eval('require.extensions')) {
       this.worker = cp.fork(path.join(__dirname, '/worker.ts'), [], { execArgv: ['-r', 'ts-node/register'] });
     } else {
-      this.worker = cp.fork(path.join(process.env.PWD as string, './dist/worker.js'));
+      // this.worker = cp.fork(path.join(process.env.PWD as string, '../../../../dist/worker'));
+      console.log('CURRENT FILE', __dirname, __filename);
+      this.worker = cp.fork(path.join(__dirname, './worker'));
     }
 
     const msgPayload: IWorkerInitMessage = {
