@@ -11,10 +11,29 @@
     <!-- DaisyUI & Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.23/dist/full.min.css" rel="stylesheet" type="text/css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        .main-content {
+            flex: 1;
+        }
+        footer {
+            position: fixed; /* Change to fixed */
+            bottom: 0; /* Stick to the bottom */
+            left: 0;
+            right: 0;
+            border-top: 1px solid #333; /* Add top border */
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); /* Add shadow */
+            padding: 16px; /* Add inner padding */
+            background-color: white; /* Ensure the footer has a background color */
+        }
+    </style>
 </head>
-<body>
+<body class="flex flex-col min-h-screen">
 
-<div class="container mx-auto p-6">
+<div class="main-content container mx-auto p-6">
     <!-- Page Heading -->
     <header class="text-center mb-8">
         <h1 class="text-5xl font-bold">Explore NEAT Algorithm Demos</h1>
@@ -51,11 +70,12 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="mt-16 text-center text-gray-400">
-        <p>Created by Alexei F. | <a href="https://github.com/your-repo" target="_blank" class="link">GitHub Repository</a></p>
-    </footer>
 </div>
+
+<!-- Footer -->
+<footer class="mt-16 text-center text-gray-400">
+    <p>Created by Alexei F. | <a href="https://github.com/your-repo" target="_blank" class="link">GitHub Repository</a></p>
+</footer>
 
 </body>
 </html>
