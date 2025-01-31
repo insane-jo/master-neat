@@ -140,7 +140,7 @@ export default class Network {
     var output = [];
 
     // Activate nodes chronologically
-    for (var i = 0; i < this.nodes.length; i++) {
+    for (var i = 0, l = this.nodes.length; i < l; i++) {
       if (this.nodes[i].type === NodeTypeEnum.input) {
         this.nodes[i].noTraceActivate(input[i]);
       } else if (this.nodes[i].type === NodeTypeEnum.output) {
@@ -165,13 +165,12 @@ export default class Network {
     var targetIndex = target.length;
 
     // Propagate output nodes
-    var i;
-    for (i = this.nodes.length - 1; i >= this.nodes.length - this.output; i--) {
+    for (let i = this.nodes.length - 1, nl = this.nodes.length; i >= nl - this.output; i--) {
       this.nodes[i].propagate(rate, momentum, update, target[--targetIndex]);
     }
 
     // Propagate hidden and input nodes
-    for (i = this.nodes.length - this.output - 1; i >= this.input; i--) {
+    for (let i = this.nodes.length - this.output - 1; i >= this.input; i--) {
       this.nodes[i].propagate(rate, momentum, update);
     }
   }
@@ -180,7 +179,7 @@ export default class Network {
    * Clear the context of the network
    */
   clear() {
-    for (var i = 0; i < this.nodes.length; i++) {
+    for (var i = 0, nl = this.nodes.length; i < nl; i++) {
       this.nodes[i].clear();
     }
   }
@@ -191,7 +190,7 @@ export default class Network {
   connect(from: NodeElement, to: NodeElement, weight?: number) {
     const connections: Connection[] = from.connect(to, weight);
 
-    for (let i = 0; i < connections.length; i++) {
+    for (let i = 0, cl = connections.length; i < cl; i++) {
       const connection: Connection = connections[i];
       if (from !== to) {
         this.connections.push(connection);
@@ -210,7 +209,7 @@ export default class Network {
     // Delete the connection in the network's connection array
     var connections = from === to ? this.selfconns : this.connections;
 
-    for (var i = 0; i < connections.length; i++) {
+    for (var i = 0, cl = connections.length; i < cl; i++) {
       var connection = connections[i];
       if (connection.from === from && connection.to === to) {
         if (connection.gater !== null) this.ungate(connection);
@@ -268,7 +267,7 @@ export default class Network {
 
     // Get all its inputting nodes
     var inputs = [];
-    for (var i = node.connections.in.length - 1; i >= 0; i--) {
+    for (let i = node.connections.in.length - 1; i >= 0; i--) {
       let connection = node.connections.in[i];
       if (subNode.keep_gates && connection.gater !== null && connection.gater !== node) {
         gaters.push(connection.gater);
@@ -279,7 +278,7 @@ export default class Network {
 
     // Get all its outputing nodes
     var outputs = [];
-    for (i = node.connections.out.length - 1; i >= 0; i--) {
+    for (let i = node.connections.out.length - 1; i >= 0; i--) {
       let connection = node.connections.out[i];
       if (subNode.keep_gates && connection.gater !== null && connection.gater !== node) {
         gaters.push(connection.gater);
@@ -290,9 +289,9 @@ export default class Network {
 
     // Connect the input nodes to the output nodes (if not already connected)
     var connections = [];
-    for (i = 0; i < inputs.length; i++) {
+    for (let i = 0, il = inputs.length; i < il; i++) {
       let input = inputs[i];
-      for (var j = 0; j < outputs.length; j++) {
+      for (let j = 0, ol = outputs.length; j < ol; j++) {
         let output = outputs[j];
         if (!input.isProjectingTo(output)) {
           var conn = this.connect(input, output);
@@ -302,7 +301,7 @@ export default class Network {
     }
 
     // Gate random connections with gaters
-    for (i = 0; i < gaters.length; i++) {
+    for (let i = 0, gl = gaters.length; i < gl; i++) {
       if (connections.length === 0) break;
 
       let gater = gaters[i];
@@ -313,7 +312,7 @@ export default class Network {
     }
 
     // Remove gated connections gated by this node
-    for (i = node.connections.gated.length - 1; i >= 0; i--) {
+    for (let i = node.connections.gated.length - 1; i >= 0; i--) {
       let conn = node.connections.gated[i];
       this.ungate(conn);
     }
@@ -428,7 +427,7 @@ export default class Network {
     if (options.clear) this.clear();
 
     if (dropout) {
-      for (let i = 0; i < this.nodes.length; i++) {
+      for (let i = 0, nl = this.nodes.length; i < nl; i++) {
         if (this.nodes[i].type === NodeTypeEnum.hidden || this.nodes[i].type === NodeTypeEnum.constant) {
           this.nodes[i].mask = 1 - this.dropout;
         }
@@ -448,7 +447,7 @@ export default class Network {
    */
   _trainSet(set: INetworkTrainingSetItem[], batchSize: number, currentRate: number, momentum: number, costFunction: ICostFunction) {
     let errorSum = 0;
-    for (var i = 0; i < set.length; i++) {
+    for (var i = 0, sl = set.length; i < sl; i++) {
       const input = set[i].input;
       const target = set[i].output;
 
@@ -467,9 +466,9 @@ export default class Network {
    */
   test(set: INetworkTrainingSetItem[], cost = methods.cost.MSE) {
     // Check if dropout is enabled, set correct mask
-    var i;
+    // var i;
     if (this.dropout) {
-      for (i = 0; i < this.nodes.length; i++) {
+      for (let i = 0, nl = this.nodes.length; i < nl; i++) {
         if (this.nodes[i].type === NodeTypeEnum.hidden || this.nodes[i].type === NodeTypeEnum.constant) {
           this.nodes[i].mask = 1 - this.dropout;
         }
@@ -479,7 +478,7 @@ export default class Network {
     var error = 0;
     var start = Date.now();
 
-    for (i = 0; i < set.length; i++) {
+    for (let i = 0, sl = set.length; i < sl; i++) {
       let input = set[i].input;
       let target = set[i].output;
       let output = this.noTraceActivate(input);

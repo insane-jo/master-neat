@@ -51,7 +51,9 @@ interface SettingsState {
 
   evolveRunningState: EEvolveRunningState,
 
-  changedSettings: (keyof SettingsState)[]
+  changedSettings: (keyof SettingsState)[],
+
+  threads?: number;
 }
 
 let EVOLVING_NETWORK = new MasterNeat.Network(NETWORK_INPUT_AMOUNT, NETWORK_OUTPUT_AMOUNT);
@@ -124,7 +126,9 @@ const createSettings = (state: SettingsState): INetworkTrainingOptions & INeatOp
     crossover: crossovers,
 
     error: Number.NEGATIVE_INFINITY,
-    browserWorkerScriptUrl: BROWSER_WORKER_SCRIPT_URL
+    browserWorkerScriptUrl: BROWSER_WORKER_SCRIPT_URL,
+
+    threads: state.threads
   }
 };
 

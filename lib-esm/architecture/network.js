@@ -100,7 +100,7 @@ var Network = /** @class */ (function () {
     Network.prototype.noTraceActivate = function (input) {
         var output = [];
         // Activate nodes chronologically
-        for (var i = 0; i < this.nodes.length; i++) {
+        for (var i = 0, l = this.nodes.length; i < l; i++) {
             if (this.nodes[i].type === NodeTypeEnum.input) {
                 this.nodes[i].noTraceActivate(input[i]);
             }
@@ -123,12 +123,11 @@ var Network = /** @class */ (function () {
         }
         var targetIndex = target.length;
         // Propagate output nodes
-        var i;
-        for (i = this.nodes.length - 1; i >= this.nodes.length - this.output; i--) {
+        for (var i = this.nodes.length - 1, nl = this.nodes.length; i >= nl - this.output; i--) {
             this.nodes[i].propagate(rate, momentum, update, target[--targetIndex]);
         }
         // Propagate hidden and input nodes
-        for (i = this.nodes.length - this.output - 1; i >= this.input; i--) {
+        for (var i = this.nodes.length - this.output - 1; i >= this.input; i--) {
             this.nodes[i].propagate(rate, momentum, update);
         }
     };
@@ -136,7 +135,7 @@ var Network = /** @class */ (function () {
      * Clear the context of the network
      */
     Network.prototype.clear = function () {
-        for (var i = 0; i < this.nodes.length; i++) {
+        for (var i = 0, nl = this.nodes.length; i < nl; i++) {
             this.nodes[i].clear();
         }
     };
@@ -145,7 +144,7 @@ var Network = /** @class */ (function () {
      */
     Network.prototype.connect = function (from, to, weight) {
         var connections = from.connect(to, weight);
-        for (var i = 0; i < connections.length; i++) {
+        for (var i = 0, cl = connections.length; i < cl; i++) {
             var connection = connections[i];
             if (from !== to) {
                 this.connections.push(connection);
@@ -162,7 +161,7 @@ var Network = /** @class */ (function () {
     Network.prototype.disconnect = function (from, to) {
         // Delete the connection in the network's connection array
         var connections = from === to ? this.selfconns : this.connections;
-        for (var i = 0; i < connections.length; i++) {
+        for (var i = 0, cl = connections.length; i < cl; i++) {
             var connection = connections[i];
             if (connection.from === from && connection.to === to) {
                 if (connection.gater !== null)
@@ -225,7 +224,7 @@ var Network = /** @class */ (function () {
         }
         // Get all its outputing nodes
         var outputs = [];
-        for (i = node.connections.out.length - 1; i >= 0; i--) {
+        for (var i = node.connections.out.length - 1; i >= 0; i--) {
             var connection = node.connections.out[i];
             if (subNode.keep_gates && connection.gater !== null && connection.gater !== node) {
                 gaters.push(connection.gater);
@@ -235,9 +234,9 @@ var Network = /** @class */ (function () {
         }
         // Connect the input nodes to the output nodes (if not already connected)
         var connections = [];
-        for (i = 0; i < inputs.length; i++) {
+        for (var i = 0, il = inputs.length; i < il; i++) {
             var input = inputs[i];
-            for (var j = 0; j < outputs.length; j++) {
+            for (var j = 0, ol = outputs.length; j < ol; j++) {
                 var output = outputs[j];
                 if (!input.isProjectingTo(output)) {
                     var conn = this.connect(input, output);
@@ -246,7 +245,7 @@ var Network = /** @class */ (function () {
             }
         }
         // Gate random connections with gaters
-        for (i = 0; i < gaters.length; i++) {
+        for (var i = 0, gl = gaters.length; i < gl; i++) {
             if (connections.length === 0)
                 break;
             var gater = gaters[i];
@@ -255,7 +254,7 @@ var Network = /** @class */ (function () {
             connections.splice(connIndex, 1);
         }
         // Remove gated connections gated by this node
-        for (i = node.connections.gated.length - 1; i >= 0; i--) {
+        for (var i = node.connections.gated.length - 1; i >= 0; i--) {
             var conn_1 = node.connections.gated[i];
             this.ungate(conn_1);
         }
@@ -359,7 +358,7 @@ var Network = /** @class */ (function () {
         if (options.clear)
             this.clear();
         if (dropout) {
-            for (var i = 0; i < this.nodes.length; i++) {
+            for (var i = 0, nl = this.nodes.length; i < nl; i++) {
                 if (this.nodes[i].type === NodeTypeEnum.hidden || this.nodes[i].type === NodeTypeEnum.constant) {
                     this.nodes[i].mask = 1 - this.dropout;
                 }
@@ -377,7 +376,7 @@ var Network = /** @class */ (function () {
      */
     Network.prototype._trainSet = function (set, batchSize, currentRate, momentum, costFunction) {
         var errorSum = 0;
-        for (var i = 0; i < set.length; i++) {
+        for (var i = 0, sl = set.length; i < sl; i++) {
             var input = set[i].input;
             var target = set[i].output;
             var update = ((i + 1) % batchSize === 0 || (i + 1) === set.length);
@@ -393,9 +392,9 @@ var Network = /** @class */ (function () {
     Network.prototype.test = function (set, cost) {
         if (cost === void 0) { cost = methods.cost.MSE; }
         // Check if dropout is enabled, set correct mask
-        var i;
+        // var i;
         if (this.dropout) {
-            for (i = 0; i < this.nodes.length; i++) {
+            for (var i = 0, nl = this.nodes.length; i < nl; i++) {
                 if (this.nodes[i].type === NodeTypeEnum.hidden || this.nodes[i].type === NodeTypeEnum.constant) {
                     this.nodes[i].mask = 1 - this.dropout;
                 }
@@ -403,7 +402,7 @@ var Network = /** @class */ (function () {
         }
         var error = 0;
         var start = Date.now();
-        for (i = 0; i < set.length; i++) {
+        for (var i = 0, sl = set.length; i < sl; i++) {
             var input = set[i].input;
             var target = set[i].output;
             var output = this.noTraceActivate(input);

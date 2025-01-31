@@ -32,6 +32,7 @@ interface SettingsState {
     };
     evolveRunningState: EEvolveRunningState;
     changedSettings: (keyof SettingsState)[];
+    threads?: number;
 }
 export declare const updateSetting: import("@reduxjs/toolkit").ActionCreatorWithPayload<{
     key: keyof SettingsState;

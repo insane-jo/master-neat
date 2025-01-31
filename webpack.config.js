@@ -7,7 +7,7 @@ var license = fs.readFileSync('./LICENSE', 'utf-8');
 
 /* Export config */
 module.exports = [{
-  // mode: 'development',
+  mode: NODE_ENV='development' ? 'development' : undefined,
   context: __dirname,
   entry: {
     'dist/master-neat-browser': './src/index.ts',
@@ -50,7 +50,7 @@ module.exports = [{
     __dirname: false
   }
 }, {
-  // mode: 'development',
+  mode: NODE_ENV='development' ? 'development' : undefined,
   context: __dirname,
   entry: {
     'dist/master-neat': './src/index.ts',
@@ -108,5 +108,5 @@ module.exports = [{
       },
     ],
   },
-  // mode: 'development',
+  mode: NODE_ENV='development' ? 'development' : undefined,
 }];
