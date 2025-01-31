@@ -75,7 +75,7 @@ export default class NodeElement {
     this.state = this.connections.self.gain * this.connections.self.weight * this.state + this.bias;
 
     // Activation sources coming from connections
-    for (let i = 0; i < this.connections.in.length; i++) {
+    for (let i = 0, cil = this.connections.in.length; i < cil; i++) {
       var connection = this.connections.in[i];
       this.state += connection.from.activation * connection.weight * connection.gain;
     }
@@ -88,7 +88,7 @@ export default class NodeElement {
     var nodes = [];
     var influences = [];
 
-    for (let i = 0; i < this.connections.gated.length; i++) {
+    for (let i = 0, cgl = this.connections.gated.length; i < cgl; i++) {
       let conn = this.connections.gated[i];
       let node = conn.to;
 
@@ -105,7 +105,7 @@ export default class NodeElement {
       conn.gain = this.activation;
     }
 
-    for (let i = 0; i < this.connections.in.length; i++) {
+    for (let i = 0, cil = this.connections.in.length; i < cil; i++) {
       let connection = this.connections.in[i];
 
       // Elegibility trace
@@ -113,7 +113,7 @@ export default class NodeElement {
         connection.elegibility + connection.from.activation * connection.gain;
 
       // Extended trace
-      for (var j = 0; j < nodes.length; j++) {
+      for (let j = 0, nl = nodes.length; j < nl; j++) {
         let node = nodes[j];
         let influence = influences[j];
 
@@ -147,8 +147,7 @@ export default class NodeElement {
     this.state = this.connections.self.gain * this.connections.self.weight * this.state + this.bias;
 
     // Activation sources coming from connections
-    var i;
-    for (i = 0; i < this.connections.in.length; i++) {
+    for (let i = 0, cil = this.connections.in.length; i < cil; i++) {
       var connection = this.connections.in[i];
       this.state += connection.from.activation * connection.weight * connection.gain;
     }
@@ -156,7 +155,7 @@ export default class NodeElement {
     // Squash the values received
     this.activation = this.squash(this.state);
 
-    for (i = 0; i < this.connections.gated.length; i++) {
+    for (let i = 0, cgl = this.connections.gated.length; i < cgl; i++) {
       this.connections.gated[i].gain = this.activation;
     }
 

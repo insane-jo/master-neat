@@ -41,7 +41,7 @@ var NodeElement = /** @class */ (function () {
         // All activation sources coming from the node itself
         this.state = this.connections.self.gain * this.connections.self.weight * this.state + this.bias;
         // Activation sources coming from connections
-        for (var i = 0; i < this.connections.in.length; i++) {
+        for (var i = 0, cil = this.connections.in.length; i < cil; i++) {
             var connection = this.connections.in[i];
             this.state += connection.from.activation * connection.weight * connection.gain;
         }
@@ -51,7 +51,7 @@ var NodeElement = /** @class */ (function () {
         // Update traces
         var nodes = [];
         var influences = [];
-        for (var i = 0; i < this.connections.gated.length; i++) {
+        for (var i = 0, cgl = this.connections.gated.length; i < cgl; i++) {
             var conn = this.connections.gated[i];
             var node = conn.to;
             var index = nodes.indexOf(node);
@@ -66,13 +66,13 @@ var NodeElement = /** @class */ (function () {
             // Adjust the gain to this nodes' activation
             conn.gain = this.activation;
         }
-        for (var i = 0; i < this.connections.in.length; i++) {
+        for (var i = 0, cil = this.connections.in.length; i < cil; i++) {
             var connection_1 = this.connections.in[i];
             // Elegibility trace
             connection_1.elegibility = this.connections.self.gain * this.connections.self.weight *
                 connection_1.elegibility + connection_1.from.activation * connection_1.gain;
             // Extended trace
-            for (var j = 0; j < nodes.length; j++) {
+            for (var j = 0, nl = nodes.length; j < nl; j++) {
                 var node = nodes[j];
                 var influence = influences[j];
                 var index = connection_1.xtrace.nodes.indexOf(node);
@@ -101,14 +101,13 @@ var NodeElement = /** @class */ (function () {
         // All activation sources coming from the node itself
         this.state = this.connections.self.gain * this.connections.self.weight * this.state + this.bias;
         // Activation sources coming from connections
-        var i;
-        for (i = 0; i < this.connections.in.length; i++) {
+        for (var i = 0, cil = this.connections.in.length; i < cil; i++) {
             var connection = this.connections.in[i];
             this.state += connection.from.activation * connection.weight * connection.gain;
         }
         // Squash the values received
         this.activation = this.squash(this.state);
-        for (i = 0; i < this.connections.gated.length; i++) {
+        for (var i = 0, cgl = this.connections.gated.length; i < cgl; i++) {
             this.connections.gated[i].gain = this.activation;
         }
         return this.activation;

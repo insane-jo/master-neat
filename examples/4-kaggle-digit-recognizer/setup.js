@@ -9,7 +9,7 @@ let redrawNetworkIterations = 1000;
 const DEFAULT_SETTINGS = {
   costFunction: 'BINARY',
   mutationRate: 0.5,
-  mutationAmount: 5,
+  mutationAmount: 25,
   elitism: 1,
   selectionFunction: 'TOURNAMENT',
   popsize: 50,

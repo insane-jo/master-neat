@@ -99,17 +99,21 @@ var Network = /** @class */ (function () {
      */
     Network.prototype.noTraceActivate = function (input) {
         var output = [];
+        var inputType = NodeTypeEnum.input, outputType = NodeTypeEnum.output;
+        var nodes = this.nodes;
         // Activate nodes chronologically
-        for (var i = 0, l = this.nodes.length; i < l; i++) {
-            if (this.nodes[i].type === NodeTypeEnum.input) {
-                this.nodes[i].noTraceActivate(input[i]);
+        for (var i = 0, l = nodes.length; i < l; i++) {
+            var currNode = nodes[i];
+            var currNodeType = currNode.type;
+            if (currNodeType === inputType) {
+                currNode.noTraceActivate(input[i]);
             }
-            else if (this.nodes[i].type === NodeTypeEnum.output) {
-                var activation = this.nodes[i].noTraceActivate();
+            else if (currNodeType === outputType) {
+                var activation = currNode.noTraceActivate();
                 output.push(activation);
             }
             else {
-                this.nodes[i].noTraceActivate();
+                currNode.noTraceActivate();
             }
         }
         return output;
@@ -391,27 +395,31 @@ var Network = /** @class */ (function () {
      */
     Network.prototype.test = function (set, cost) {
         if (cost === void 0) { cost = methods.cost.MSE; }
-        // Check if dropout is enabled, set correct mask
-        // var i;
-        if (this.dropout) {
-            for (var i = 0, nl = this.nodes.length; i < nl; i++) {
-                if (this.nodes[i].type === NodeTypeEnum.hidden || this.nodes[i].type === NodeTypeEnum.constant) {
-                    this.nodes[i].mask = 1 - this.dropout;
+        var nodes = this.nodes;
+        var dropout = this.dropout;
+        // Set the correct mask for dropout in a single loop if enabled
+        if (dropout) {
+            var maskValue = 1 - dropout;
+            for (var i = 0, nl = nodes.length; i < nl; i++) {
+                var node = nodes[i];
+                if (node.type === NodeTypeEnum.hidden || node.type === NodeTypeEnum.constant) {
+                    node.mask = maskValue;
                 }
             }
         }
-        var error = 0;
-        var start = Date.now();
-        for (var i = 0, sl = set.length; i < sl; i++) {
-            var input = set[i].input;
-            var target = set[i].output;
+        var totalError = 0;
+        var setLength = set.length;
+        var startTime = Date.now();
+        // Compute error in a single loop
+        for (var i = 0; i < setLength; i++) {
+            var _a = set[i], input = _a.input, target = _a.output;
             var output = this.noTraceActivate(input);
-            error += cost(target, output);
+            totalError += cost(target, output);
         }
-        error /= set.length;
+        var averageError = totalError / setLength;
         return {
-            error: error,
-            time: Date.now() - start
+            error: averageError,
+            time: Date.now() - startTime
         };
     };
     /**

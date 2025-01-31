@@ -137,17 +137,24 @@ export default class Network {
    * Activates the network without calculating elegibility traces and such
    */
   noTraceActivate(input: number[]) {
-    var output = [];
+    const output = [];
+    const inputType = NodeTypeEnum.input,
+      outputType = NodeTypeEnum.output;
+
+    const nodes = this.nodes;
 
     // Activate nodes chronologically
-    for (var i = 0, l = this.nodes.length; i < l; i++) {
-      if (this.nodes[i].type === NodeTypeEnum.input) {
-        this.nodes[i].noTraceActivate(input[i]);
-      } else if (this.nodes[i].type === NodeTypeEnum.output) {
-        var activation = this.nodes[i].noTraceActivate();
+    for (let i = 0, l = nodes.length; i < l; i++) {
+      const currNode = nodes[i];
+      const currNodeType = currNode.type;
+
+      if (currNodeType === inputType) {
+        currNode.noTraceActivate(input[i]);
+      } else if (currNodeType === outputType) {
+        let activation = currNode.noTraceActivate();
         output.push(activation);
       } else {
-        this.nodes[i].noTraceActivate();
+        currNode.noTraceActivate();
       }
     }
 
@@ -465,31 +472,37 @@ export default class Network {
    * Tests a set and returns the error and elapsed time
    */
   test(set: INetworkTrainingSetItem[], cost = methods.cost.MSE) {
-    // Check if dropout is enabled, set correct mask
-    // var i;
-    if (this.dropout) {
-      for (let i = 0, nl = this.nodes.length; i < nl; i++) {
-        if (this.nodes[i].type === NodeTypeEnum.hidden || this.nodes[i].type === NodeTypeEnum.constant) {
-          this.nodes[i].mask = 1 - this.dropout;
+    const nodes = this.nodes;
+    const dropout = this.dropout;
+
+    // Set the correct mask for dropout in a single loop if enabled
+    if (dropout) {
+      const maskValue = 1 - dropout;
+      for (let i = 0, nl = nodes.length; i < nl; i++) {
+        const node = nodes[i];
+        if (node.type === NodeTypeEnum.hidden || node.type === NodeTypeEnum.constant) {
+          node.mask = maskValue;
         }
       }
     }
 
-    var error = 0;
-    var start = Date.now();
+    let totalError = 0;
+    const setLength = set.length;
 
-    for (let i = 0, sl = set.length; i < sl; i++) {
-      let input = set[i].input;
-      let target = set[i].output;
-      let output = this.noTraceActivate(input);
-      error += cost(target, output);
+    const startTime = Date.now();
+
+    // Compute error in a single loop
+    for (let i = 0; i < setLength; i++) {
+      const { input, output: target } = set[i];
+      const output = this.noTraceActivate(input);
+      totalError += cost(target, output);
     }
 
-    error /= set.length;
+    const averageError = totalError / setLength;
 
     return {
-      error: error,
-      time: Date.now() - start
+      error: averageError,
+      time: Date.now() - startTime
     };
   }
 
