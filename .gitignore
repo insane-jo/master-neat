@@ -11,3 +11,7 @@ npm-debug.log
 dummy-tests
 
 .goose
+
+dist
+lib
+lib-esm
