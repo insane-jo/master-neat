@@ -1,1 +1,0 @@
-{"version":3,"file":"gating.js","sourceRoot":"","sources":["../../src/methods/gating.ts"],"names":[],"mappings":"AAEA,4EAA4E;AAC5E,IAAM,MAAM,GAAoB;IAC9B,MAAM,EAAE;QACN,IAAI,EAAE,QAAQ;KACf;IACD,KAAK,EAAE;QACL,IAAI,EAAE,OAAO;KACd;IACD,IAAI,EAAE;QACJ,IAAI,EAAE,MAAM;KACb;CACF,CAAC;AAEF,eAAe,MAAM,CAAC"}

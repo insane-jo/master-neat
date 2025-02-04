@@ -77,7 +77,7 @@ export default class Layer {
   connect(target: Group | NodeElement | Layer, method?: IConnectionDescription, weight?: number): Connection[] {
     var connections: Connection[];
     if (target instanceof Group || target instanceof NodeElement) {
-      connections = (this.output as Group).connect(target, method, weight);
+      connections = this.output.connect(target, method, weight);
     } else {
       connections = target.input(this, method, weight);
     }
@@ -124,7 +124,7 @@ export default class Layer {
           this.nodes[i].disconnect(target.nodes[j], twosided);
 
           for (k = this.connections.out.length - 1; k >= 0; k--) {
-            let conn = this.connections.out[k] as Connection;
+            let conn = this.connections.out[k];
 
             if (conn.from === this.nodes[i] && conn.to === target.nodes[j]) {
               this.connections.out.splice(k, 1);
@@ -134,7 +134,7 @@ export default class Layer {
 
           if (twosided) {
             for (k = this.connections.in.length - 1; k >= 0; k--) {
-              let conn = this.connections.in[k] as Connection;
+              let conn = this.connections.in[k];
 
               if (conn.from === target.nodes[j] && conn.to === this.nodes[i]) {
                 this.connections.in.splice(k, 1);
@@ -149,7 +149,7 @@ export default class Layer {
         this.nodes[i].disconnect(target, twosided);
 
         for (j = this.connections.out.length - 1; j >= 0; j--) {
-          let conn = this.connections.out[j] as Connection;
+          let conn = this.connections.out[j];
 
           if (conn.from === this.nodes[i] && conn.to === target) {
             this.connections.out.splice(j, 1);
@@ -159,7 +159,7 @@ export default class Layer {
 
         if (twosided) {
           for (k = this.connections.in.length - 1; k >= 0; k--) {
-            let conn = this.connections.in[k] as Connection;
+            let conn = this.connections.in[k];
 
             if (conn.from === target && conn.to === this.nodes[i]) {
               this.connections.in.splice(k, 1);
