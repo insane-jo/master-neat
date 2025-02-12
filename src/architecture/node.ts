@@ -146,18 +146,26 @@ export default class NodeElement {
     // All activation sources coming from the node itself
     this.state = this.connections.self.gain * this.connections.self.weight * this.state + this.bias;
 
-    // Activation sources coming from connections
-    for (let i = 0, cil = this.connections.in.length; i < cil; i++) {
-      var connection = this.connections.in[i];
+    for (const connection of this.connections.in) {
       this.state += connection.from.activation * connection.weight * connection.gain;
     }
+
+    // // Activation sources coming from connections
+    // for (let i = 0, cil = this.connections.in.length; i < cil; i++) {
+    //   var connection = this.connections.in[i];
+    //   this.state += connection.from.activation * connection.weight * connection.gain;
+    // }
 
     // Squash the values received
     this.activation = this.squash(this.state);
 
-    for (let i = 0, cgl = this.connections.gated.length; i < cgl; i++) {
-      this.connections.gated[i].gain = this.activation;
+    for (const connection of this.connections.gated) {
+      connection.gain = this.activation;
     }
+
+    // for (let i = 0, cgl = this.connections.gated.length; i < cgl; i++) {
+    //   this.connections.gated[i].gain = this.activation;
+    // }
 
     return this.activation;
   }

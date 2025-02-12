@@ -21,7 +21,7 @@ let DRAW_RESULTS_CALLBACK = (startDate) => {
     document.getElementById('error').innerText = results.error.toFixed(10);
     document.getElementById('fitness').innerText = results.fitness.toFixed(10);
 
-    document.getElementById('network').innerText = `${NETWORK_INPUT_AMOUNT} - ${bestNetwork.nodes.length - 2} - ${NETWORK_OUTPUT_AMOUNT} (${bestNetwork.connections.length})`;
+    document.getElementById('network').innerText = `${NETWORK_INPUT_AMOUNT} - ${bestNetwork.nodes.length - NETWORK_INPUT_AMOUNT - NETWORK_OUTPUT_AMOUNT} - ${NETWORK_OUTPUT_AMOUNT} (${bestNetwork.connections.length})`;
 
     const currDate = Date.now();
     const msPerIteration = (currDate - startDate) / results.iteration;

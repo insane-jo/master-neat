@@ -142,21 +142,41 @@ export default class Network {
       outputType = NodeTypeEnum.output;
 
     const nodes = this.nodes;
+    let i = 0;
 
-    // Activate nodes chronologically
-    for (let i = 0, l = nodes.length; i < l; i++) {
-      const currNode = nodes[i];
+    for (const currNode of nodes) {
       const currNodeType = currNode.type;
 
-      if (currNodeType === inputType) {
-        currNode.noTraceActivate(input[i]);
-      } else if (currNodeType === outputType) {
-        let activation = currNode.noTraceActivate();
-        output.push(activation);
-      } else {
-        currNode.noTraceActivate();
+      switch (currNodeType) {
+        case inputType:
+          currNode.noTraceActivate(input[i]);
+          break;
+        case outputType:
+          let activation = currNode.noTraceActivate();
+          output.push(activation);
+          break;
+        default:
+          currNode.noTraceActivate();
+          break;
       }
+
+      i++;
     }
+
+    // // Activate nodes chronologically
+    // for (let i = 0, l = nodes.length; i < l; i++) {
+    //   const currNode = nodes[i];
+    //   const currNodeType = currNode.type;
+    //
+    //   if (currNodeType === inputType) {
+    //     currNode.noTraceActivate(input[i]);
+    //   } else if (currNodeType === outputType) {
+    //     let activation = currNode.noTraceActivate();
+    //     output.push(activation);
+    //   } else {
+    //     currNode.noTraceActivate();
+    //   }
+    // }
 
     return output;
   }

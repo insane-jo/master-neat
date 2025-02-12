@@ -12,6 +12,5 @@ dummy-tests
 
 .goose
 
-dist
 lib
 lib-esm
