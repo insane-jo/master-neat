@@ -121,6 +121,9 @@ module.exports = [{
     extensions: ['.ts', '.tsx', '.js', '.mjs'],
     alias: {
       "lightweight-charts": path.resolve('./node_modules/lightweight-charts/dist/lightweight-charts.development.mjs')
+    },
+    fallback: {
+      "path": require.resolve("path-browserify")
     }
   },
   module: {
@@ -131,6 +134,9 @@ module.exports = [{
         exclude: /node_modules/,
       },
     ],
+  },
+  externals: {
+    fs: 'throw new Error("no \'fs\'")',
   },
   devtool: 'source-map',
   mode: 'development' // NODE_ENV='development' ? 'development' : 'production',

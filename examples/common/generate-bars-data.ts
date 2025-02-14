@@ -1,11 +1,11 @@
 import {Time} from "lightweight-charts";
 
-type LineData = {
+export type LineData = {
   time: Time;
   value: number;
 };
 
-type CandleData = {
+export type CandleData = {
   time: Time;
   high: number;
   low: number;

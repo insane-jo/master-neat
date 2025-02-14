@@ -30,6 +30,63 @@ License: MIT
 
 /***/ }),
 
+/***/ "./examples/6-bars-predictor/config.ts":
+/*!*********************************************!*\
+  !*** ./examples/6-bars-predictor/config.ts ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+window.redrawNetworkIterations = 1000;
+window.DEFAULT_SETTINGS = {};
+window.BROWSER_WORKER_SCRIPT_URL = "../../dist/worker-browser.js";
+window.NETWORK_INPUT_AMOUNT = 56;
+window.NETWORK_OUTPUT_AMOUNT = 1;
+window.DRAW_RESULTS_CALLBACK = function (startDate) {
+    return function (bestNetwork, results) {
+        document.getElementById('error').innerText = results.error.toFixed(10);
+        document.getElementById('fitness').innerText = results.fitness.toFixed(10);
+        document.getElementById('network').innerText = "".concat(NETWORK_INPUT_AMOUNT, " - ").concat(bestNetwork.nodes.length - NETWORK_INPUT_AMOUNT - NETWORK_OUTPUT_AMOUNT, " - ").concat(NETWORK_OUTPUT_AMOUNT, " (").concat(bestNetwork.connections.length, ")");
+        var currDate = Date.now();
+        var msPerIteration = (currDate - startDate) / results.iteration;
+        document.getElementById('iteration').innerText = "".concat(results.iteration, " (").concat(msPerIteration.toFixed(4), " ms)");
+        var correct = 0, incorrect = 0, total = TEST_SET.length;
+        for (var i = 0, l = total; i < l; i++) {
+            var item = TEST_SET[i];
+            var result = bestNetwork.activate(item.input);
+            var bestResult = result
+                .reduce(function (res, curr, idx) {
+                if (res.val < curr) {
+                    return {
+                        idx: idx,
+                        val: curr
+                    };
+                }
+                return res;
+            }, {
+                idx: -1,
+                val: Number.NEGATIVE_INFINITY
+            });
+            if (item.output[bestResult.idx] == 1) {
+                correct++;
+            }
+            else {
+                incorrect++;
+            }
+        }
+        (document.getElementById('correct-prediction')).innerText = correct;
+        (document.getElementById('incorrect-prediction')).innerText = incorrect;
+        document.getElementById('total-items').innerText = total;
+        var totalTest = bestNetwork.test(TEST_SET, MasterNeat.methods.cost[document.getElementById('cost-function').value]);
+        document.getElementById('test-error').innerText = totalTest.error.toFixed(10);
+    };
+};
+
+
+/***/ }),
+
 /***/ "./examples/6-bars-predictor/get-bars-data.ts":
 /*!****************************************************!*\
   !*** ./examples/6-bars-predictor/get-bars-data.ts ***!
@@ -74,76 +131,203 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getBarsData = void 0;
 var papaparse_1 = __importDefault(__webpack_require__(/*! papaparse */ "./node_modules/papaparse/papaparse.min.js"));
-var getBarsData = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var readFetchCsv, data, returnValue, _i, data_1, row, dt, time, open_1, high, low, close_1, volume;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                readFetchCsv = function (url) { return __awaiter(void 0, void 0, void 0, function () {
-                    var result, text, data;
-                    return __generator(this, function (_a) {
-                        switch (_a.label) {
-                            case 0: return [4 /*yield*/, fetch(url)];
-                            case 1:
-                                result = _a.sent();
-                                return [4 /*yield*/, result.text()];
-                            case 2:
-                                text = _a.sent();
-                                data = papaparse_1.default.parse(text.trim(), {
-                                    header: true,
-                                    delimiter: ";"
-                                });
-                                return [2 /*return*/, data.data];
+var getBarsData = function () {
+    var args_1 = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        args_1[_i] = arguments[_i];
+    }
+    return __awaiter(void 0, __spreadArray([], args_1, true), void 0, function (groupByDay) {
+        var readFetchCsv, data, returnValue, prevTime, timeOpen, timeHigh, timeLow, timeClose, timeVolume, _a, data_1, row, dt, time, timeChanged;
+        if (groupByDay === void 0) { groupByDay = true; }
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    readFetchCsv = function (url) { return __awaiter(void 0, void 0, void 0, function () {
+                        var result, text, data;
+                        return __generator(this, function (_a) {
+                            switch (_a.label) {
+                                case 0: return [4 /*yield*/, fetch(url)];
+                                case 1:
+                                    result = _a.sent();
+                                    return [4 /*yield*/, result.text()];
+                                case 2:
+                                    text = _a.sent();
+                                    data = papaparse_1.default.parse(text.trim(), {
+                                        header: true,
+                                        delimiter: ";"
+                                    });
+                                    return [2 /*return*/, data.data];
+                            }
+                        });
+                    }); };
+                    return [4 /*yield*/, readFetchCsv('./data/bars-15mi.csv')];
+                case 1:
+                    data = _b.sent();
+                    returnValue = {
+                        volumes: [],
+                        bars: []
+                    };
+                    prevTime = Number.NEGATIVE_INFINITY;
+                    timeOpen = 0, timeHigh = 0, timeLow = 0, timeClose = 0, timeVolume = 0;
+                    for (_a = 0, data_1 = data; _a < data_1.length; _a++) {
+                        row = data_1[_a];
+                        if (row.START_TIME.length === 10) {
+                            // console.warn(`passed row, ${JSON.stringify(row)}`);
+                            continue;
                         }
-                    });
-                }); };
-                return [4 /*yield*/, readFetchCsv('./data/bars-15mi.csv')];
-            case 1:
-                data = _a.sent();
-                returnValue = {
-                    volumes: [],
-                    bars: []
-                };
-                for (_i = 0, data_1 = data; _i < data_1.length; _i++) {
-                    row = data_1[_i];
-                    if (row.START_TIME.length === 10) {
-                        console.warn("passed row, ".concat(JSON.stringify(row)));
-                        continue;
+                        dt = row.START_TIME.split(/[\.\s\:]/);
+                        time = void 0;
+                        if (groupByDay) {
+                            time = (new Date(+dt[2], +dt[1] - 1, +dt[0]).valueOf() / 1000);
+                        }
+                        else {
+                            time = (new Date(+dt[2], +dt[1] - 1, +dt[0], +dt[3], +dt[4], +dt[5]).valueOf() / 1000);
+                        }
+                        time = Math.round(time);
+                        timeChanged = time !== prevTime;
+                        if (timeChanged && time < prevTime) {
+                            console.info('Passed postponed candle', new Date(time * 1000).toISOString(), new Date(prevTime * 1000).toISOString());
+                            continue;
+                        }
+                        if (timeChanged) {
+                            returnValue.bars.push({
+                                time: prevTime,
+                                open: timeOpen,
+                                high: timeHigh,
+                                low: timeLow,
+                                close: timeClose
+                            });
+                            returnValue.volumes.push({
+                                time: prevTime,
+                                value: timeVolume
+                            });
+                            prevTime = time;
+                            timeOpen = +row.FIRST;
+                            timeHigh = Number.NEGATIVE_INFINITY;
+                            timeLow = Number.POSITIVE_INFINITY;
+                            timeVolume = 0;
+                        }
+                        timeHigh = Math.max(timeHigh, +row.HIGH);
+                        timeLow = Math.min(timeLow, +row.LOW);
+                        timeClose = +row.LAST;
+                        timeVolume = timeVolume + (+row.VOLUME);
                     }
-                    dt = row.START_TIME.split(/[\.\s\:]/);
-                    time = new Date(+dt[2], +dt[1] - 1, +dt[0], +dt[3], +dt[4], +dt[5]).valueOf();
-                    open_1 = +row.FIRST;
-                    high = +row.HIGH;
-                    low = +row.LOW;
-                    close_1 = +row.LAST;
-                    volume = +row.VOLUME;
                     returnValue.bars.push({
-                        time: time,
-                        open: open_1,
-                        high: high,
-                        low: low,
-                        close: close_1
+                        time: prevTime,
+                        open: timeOpen,
+                        high: timeHigh,
+                        low: timeLow,
+                        close: timeClose
                     });
                     returnValue.volumes.push({
-                        time: time,
-                        value: volume
+                        time: prevTime,
+                        value: timeVolume
                     });
-                }
-                // returnValue.bars = returnValue.bars.splice(4890,10);
-                returnValue.bars = returnValue.bars.sort(function (a, b) { return a.time - b.time; });
-                // returnValue.volumes = returnValue.volumes.splice(4890,10);
-                returnValue.volumes = returnValue.volumes.sort(function (a, b) { return a.time - b.time; });
-                return [2 /*return*/, returnValue];
-        }
+                    // returnValue.bars = returnValue.bars.splice(4890,10);
+                    returnValue.bars = returnValue.bars.sort(function (a, b) { return a.time - b.time; });
+                    // returnValue.volumes = returnValue.volumes.splice(4890,10);
+                    returnValue.volumes = returnValue.volumes.sort(function (a, b) { return a.time - b.time; });
+                    return [2 /*return*/, returnValue];
+            }
+        });
     });
-}); };
+};
 exports.getBarsData = getBarsData;
+
+
+/***/ }),
+
+/***/ "./examples/6-bars-predictor/get-points-set.ts":
+/*!*****************************************************!*\
+  !*** ./examples/6-bars-predictor/get-points-set.ts ***!
+  \*****************************************************/
+/***/ (function(__unused_webpack_module, exports) {
+
+"use strict";
+
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getPointsSet = void 0;
+var POINTS_PER_ITERATION = 10;
+var PRICE_STEP = .01;
+var baseToArray = function (base, value) {
+    var result = new Array(base);
+    result.fill(0);
+    result[value] = 1;
+    return result;
+};
+var dayToArray = function (day) {
+    return baseToArray(31, day);
+};
+var monthToArray = function (month) {
+    return baseToArray(12, month);
+};
+var dowToArray = function (dow) {
+    return baseToArray(7, dow);
+};
+var getPointsSet = function (data) {
+    var result = [];
+    var _loop_1 = function (i, l) {
+        var currBand = data.middleBand[i];
+        var nextBand = data.middleBand[i + 1];
+        var currCandle = data.candles[i];
+        var currVolume = data.volumes[i];
+        var lowBandValue = data.lowerBand[i].value;
+        var upBandValue = data.upperBand[i].value;
+        var nextBandValue = nextBand.value;
+        var ts = currBand.time;
+        var dt = new Date(ts * 1000);
+        var dow = dowToArray(dt.getDay());
+        var day = dayToArray(dt.getDate());
+        var month = monthToArray(dt.getMonth());
+        var inputTradeData = [
+            currCandle.open,
+            currCandle.high,
+            currCandle.low,
+            currCandle.close,
+            currVolume.value
+        ];
+        var localStep = (upBandValue - lowBandValue) / POINTS_PER_ITERATION;
+        var priceCollection = new Array(POINTS_PER_ITERATION).fill(0)
+            .map(function (_, idx) { return Math.round(lowBandValue + idx * localStep); });
+        for (var _i = 0, priceCollection_1 = priceCollection; _i < priceCollection_1.length; _i++) {
+            var currPrice = priceCollection_1[_i];
+            var output = [+(currPrice < nextBandValue)];
+            var input = __spreadArray(__spreadArray(__spreadArray(__spreadArray(__spreadArray([], dow, true), day, true), month, true), inputTradeData, true), [
+                currPrice
+            ], false);
+            result.push({ input: input, output: output });
+        }
+    };
+    for (var i = 0, l = data.candles.length - 1; i < l; i++) {
+        _loop_1(i, l);
+    }
+    return result;
+};
+exports.getPointsSet = getPointsSet;
 
 
 /***/ }),
@@ -194,10 +378,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.readyPromise = void 0;
+__webpack_require__(/*! ./config */ "./examples/6-bars-predictor/config.ts");
 var lightweight_charts_1 = __webpack_require__(/*! lightweight-charts */ "./node_modules/lightweight-charts/dist/lightweight-charts.development.mjs");
 var get_bars_data_1 = __webpack_require__(/*! ./get-bars-data */ "./examples/6-bars-predictor/get-bars-data.ts");
+var stddev_1 = __webpack_require__(/*! ./stddev */ "./examples/6-bars-predictor/stddev.ts");
+var get_points_set_1 = __webpack_require__(/*! ./get-points-set */ "./examples/6-bars-predictor/get-points-set.ts");
 var setupExample = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var chart, barsData, candleSeries, data, volumeSeries;
+    var chart, barsData, candlesData, volumesData, stddevSrcData, stddevData, lowerBandData, upperBandData, middleBandData, i, l, middleValue, stdDevValue, time, pointsSet, delimiterIdx;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -207,28 +394,147 @@ var setupExample = function () { return __awaiter(void 0, void 0, void 0, functi
                 return [4 /*yield*/, (0, get_bars_data_1.getBarsData)()];
             case 1:
                 barsData = _a.sent();
-                candleSeries = chart.addSeries(lightweight_charts_1.CandlestickSeries);
-                data = barsData.bars;
-                candleSeries.setData(data);
-                volumeSeries = chart.addSeries(lightweight_charts_1.HistogramSeries, {
-                    priceFormat: {
-                        type: 'volume',
-                    },
-                    priceScaleId: '', // set as an overlay by setting a blank priceScaleId
+                candlesData = barsData.bars;
+                volumesData = barsData.volumes;
+                stddevSrcData = barsData.bars.map(function (v) { return v.close; }).reverse();
+                stddevData = (0, stddev_1.stddev)(stddevSrcData, 5);
+                stddevSrcData = stddevSrcData.reverse();
+                while (!stddevData[0] && stddevData.length) {
+                    stddevSrcData.shift();
+                    stddevData.shift();
+                    candlesData.shift();
+                    volumesData.shift();
+                }
+                lowerBandData = [];
+                upperBandData = [];
+                middleBandData = [];
+                for (i = 0, l = stddevData.length - 1; i <= l; i++) {
+                    middleValue = stddevSrcData[i];
+                    stdDevValue = stddevData[i];
+                    time = candlesData[i].time;
+                    lowerBandData.push({
+                        value: middleValue - 2 * stdDevValue,
+                        time: time
+                    });
+                    upperBandData.push({
+                        value: middleValue + 2 * stdDevValue,
+                        time: time
+                    });
+                    middleBandData.push({
+                        value: middleValue,
+                        time: time
+                    });
+                }
+                // // Because we shifted arr of stddev to the right - we're removing blank data
+                // candlesData.shift();
+                // volumesData.shift();
+                console.log(candlesData.length, candlesData);
+                console.log(volumesData.length, volumesData);
+                console.log(stddevData.length, stddevData);
+                console.log(lowerBandData.length, lowerBandData);
+                console.log(upperBandData.length, upperBandData);
+                // Settingup chart series
+                (function () {
+                    // Adding bbands
+                    var upperBandSeries = chart.addSeries(lightweight_charts_1.LineSeries, {
+                        lineWidth: 1
+                    });
+                    upperBandSeries.setData(upperBandData);
+                    var lowerBandSeries = chart.addSeries(lightweight_charts_1.LineSeries, {
+                        lineWidth: 1
+                    });
+                    lowerBandSeries.setData(lowerBandData);
+                    var middleBandSeries = chart.addSeries(lightweight_charts_1.LineSeries, {
+                        lineWidth: 1
+                    });
+                    middleBandSeries.setData(middleBandData);
+                    // setup candles
+                    var candleSeries = chart.addSeries(lightweight_charts_1.CandlestickSeries);
+                    candleSeries.setData(candlesData);
+                    // setup volumes
+                    var volumeSeries = chart.addSeries(lightweight_charts_1.HistogramSeries, {
+                        priceFormat: {
+                            type: 'volume',
+                        },
+                        priceScaleId: '', // set as an overlay by setting a blank priceScaleId
+                    });
+                    volumeSeries.priceScale().applyOptions({
+                        // set the positioning of the volume series
+                        scaleMargins: {
+                            top: 0.7, // highest point of the series will be 70% away from the top
+                            bottom: 0,
+                        },
+                    });
+                    volumeSeries.setData(volumesData);
+                })();
+                pointsSet = (0, get_points_set_1.getPointsSet)({
+                    candles: candlesData,
+                    volumes: volumesData,
+                    lowerBand: lowerBandData,
+                    upperBand: upperBandData,
+                    middleBand: middleBandData
                 });
-                volumeSeries.priceScale().applyOptions({
-                    // set the positioning of the volume series
-                    scaleMargins: {
-                        top: 0.7, // highest point of the series will be 70% away from the top
-                        bottom: 0,
-                    },
-                });
-                volumeSeries.setData(barsData.volumes);
-                return [2 /*return*/, new Promise(function () { })];
+                console.log(pointsSet.length, pointsSet);
+                window.NETWORK_INPUT_AMOUNT = pointsSet[0].input.length;
+                delimiterIdx = Math.round(pointsSet.length * 0.5);
+                window.TRAINING_SET = pointsSet.slice(0, delimiterIdx);
+                window.TEST_SET = pointsSet.slice(delimiterIdx);
+                return [2 /*return*/];
         }
     });
 }); };
 exports.readyPromise = setupExample();
+
+
+/***/ }),
+
+/***/ "./examples/6-bars-predictor/stddev.ts":
+/*!*********************************************!*\
+  !*** ./examples/6-bars-predictor/stddev.ts ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.stddev = void 0;
+function stdDevElement(InArr) {
+    //Calculate Mean
+    var l = InArr.length;
+    var sum = InArr.reduce(function (a, b) {
+        return a + b;
+    }, 0);
+    var mean = sum / l;
+    //find difs and square
+    var sqdifs = [];
+    for (var i = 0; i < InArr.length; i++) { //loop through array
+        sqdifs.push(Math.pow(Math.abs(InArr[i] - mean), 2)); //square of absolute difference for each item in array
+    }
+    var SD = Math.sqrt((sqdifs.reduce(function (a, b) {
+        return a + b;
+    }, 0)) / sqdifs.length); //square root of the Mean of sqdifs (SD)
+    return SD;
+}
+var stddev = function (arr, window) {
+    if (window === void 0) { window = 14; }
+    var stdArr = [];
+    var result = [];
+    for (var _i = 0, arr_1 = arr; _i < arr_1.length; _i++) {
+        var curr = arr_1[_i];
+        if (stdArr.length === window) {
+            stdArr.shift();
+        }
+        stdArr.push(curr);
+        if (stdArr.length < window) {
+            result.push(0);
+        }
+        else {
+            result.push(stdDevElement(stdArr));
+        }
+    }
+    return result;
+};
+exports.stddev = stddev;
 
 
 /***/ }),
