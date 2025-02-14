@@ -1,6 +1,6 @@
 import {CandleData, LineData} from "../common/generate-bars-data";
 
-const POINTS_PER_ITERATION = 10;
+const POINTS_PER_ITERATION = 20;
 const PRICE_STEP = .01;
 
 type PointData = {

@@ -7,7 +7,13 @@ declare const TEST_SET: any;
 declare const MasterNeat: any;
 
 (window as any).redrawNetworkIterations = 1000;
-(window as any).DEFAULT_SETTINGS = {};
+(window as any).DEFAULT_SETTINGS = {
+  mutationAmount: 50,
+  mutationRate: .1,
+  costFunction: 'MSE', // 'CROSS_ENTROPY',
+  selectionFunction: 'FITNESS_PROPORTIONATE',
+  elitism: 10
+};
 
 (window as any).BROWSER_WORKER_SCRIPT_URL = "../../dist/worker-browser.js";
 (window as any).NETWORK_INPUT_AMOUNT = 56;
@@ -32,21 +38,8 @@ declare const MasterNeat: any;
       const item = TEST_SET[i];
 
       const result = bestNetwork.activate(item.input);
-      const bestResult = result
-        .reduce((res, curr, idx) => {
-          if (res.val < curr) {
-            return {
-              idx,
-              val: curr
-            }
-          }
-          return res;
-        }, {
-          idx: -1,
-          val: Number.NEGATIVE_INFINITY
-        });
 
-      if (item.output[bestResult.idx] == 1) {
+      if (Math.round(result[0]) === item.output[0]) {
         correct++;
       } else {
         incorrect++;

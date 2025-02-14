@@ -40,7 +40,13 @@ License: MIT
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 window.redrawNetworkIterations = 1000;
-window.DEFAULT_SETTINGS = {};
+window.DEFAULT_SETTINGS = {
+    mutationAmount: 50,
+    mutationRate: .1,
+    costFunction: 'MSE', // 'CROSS_ENTROPY',
+    selectionFunction: 'FITNESS_PROPORTIONATE',
+    elitism: 10
+};
 window.BROWSER_WORKER_SCRIPT_URL = "../../dist/worker-browser.js";
 window.NETWORK_INPUT_AMOUNT = 56;
 window.NETWORK_OUTPUT_AMOUNT = 1;
@@ -56,20 +62,7 @@ window.DRAW_RESULTS_CALLBACK = function (startDate) {
         for (var i = 0, l = total; i < l; i++) {
             var item = TEST_SET[i];
             var result = bestNetwork.activate(item.input);
-            var bestResult = result
-                .reduce(function (res, curr, idx) {
-                if (res.val < curr) {
-                    return {
-                        idx: idx,
-                        val: curr
-                    };
-                }
-                return res;
-            }, {
-                idx: -1,
-                val: Number.NEGATIVE_INFINITY
-            });
-            if (item.output[bestResult.idx] == 1) {
+            if (Math.round(result[0]) === item.output[0]) {
                 correct++;
             }
             else {
@@ -271,7 +264,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getPointsSet = void 0;
-var POINTS_PER_ITERATION = 10;
+var POINTS_PER_ITERATION = 20;
 var PRICE_STEP = .01;
 var baseToArray = function (base, value) {
     var result = new Array(base);
@@ -476,7 +469,7 @@ var setupExample = function () { return __awaiter(void 0, void 0, void 0, functi
                 });
                 console.log(pointsSet.length, pointsSet);
                 window.NETWORK_INPUT_AMOUNT = pointsSet[0].input.length;
-                delimiterIdx = Math.round(pointsSet.length * 0.5);
+                delimiterIdx = Math.round(pointsSet.length * 0.75);
                 window.TRAINING_SET = pointsSet.slice(0, delimiterIdx);
                 window.TEST_SET = pointsSet.slice(delimiterIdx);
                 return [2 /*return*/];

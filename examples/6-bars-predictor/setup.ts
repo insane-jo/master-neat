@@ -113,7 +113,7 @@ const setupExample = async () => {
 
   (window as any).NETWORK_INPUT_AMOUNT = pointsSet[0].input.length;
 
-  const delimiterIdx = Math.round(pointsSet.length * 0.5);
+  const delimiterIdx = Math.round(pointsSet.length * 0.75);
   (window as any).TRAINING_SET = pointsSet.slice(0, delimiterIdx);
   (window as any).TEST_SET = pointsSet.slice(delimiterIdx);
 
