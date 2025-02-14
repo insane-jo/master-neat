@@ -109,4 +109,29 @@ module.exports = [{
     ],
   },
   mode: NODE_ENV='development' ? 'development' : undefined,
+}, {
+  entry: {
+    './6-bars-predictor/setup': './examples/6-bars-predictor/setup.ts'
+  },
+  output: {
+    path: path.resolve('./examples'),
+    libraryTarget: 'umd'
+  },
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js', '.mjs'],
+    alias: {
+      "lightweight-charts": path.resolve('./node_modules/lightweight-charts/dist/lightweight-charts.development.mjs')
+    }
+  },
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
+    ],
+  },
+  devtool: 'source-map',
+  mode: 'development' // NODE_ENV='development' ? 'development' : 'production',
 }];

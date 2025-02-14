@@ -23,6 +23,7 @@
     "@types/react": "^19.0.7",
     "@types/react-dom": "^19.0.3",
     "chai": "^4.5.0",
+    "lightweight-charts": "^5.0.2",
     "mocha": "^3.5.3",
     "papaparse": "^5.5.2",
     "path-browserify": "^1.0.1",

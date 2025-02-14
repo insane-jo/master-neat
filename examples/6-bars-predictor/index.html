@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head data-theme="dark">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Discover how the NEAT algorithm evolves to solve Kaggle's MNIST digit recognition challenge, learning to classify handwritten digits through evolutionary computation. Track its progress with real-time visualizations of evolution, fitness, and error.">
+    <meta name="author" content="Alexei F.">
+    <meta name="keywords" content="NEAT, neuroevolution, evolutionary algorithms, machine learning, digit recognition, fitness, error, JavaScript, D3">
+    <title>NEAT Example: Kaggle MNIST Challenge</title>
+
+    <!-- DaisyUI & Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.23/dist/full.min.css" rel="stylesheet" type="text/css">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!--  csv parser  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js" integrity="sha512-dfX5uYVXzyU8+KHqj8bjo7UkOdg18PaOtpa48djpNbZHwExddghZ+ZmzWT06R5v6NSk3ZUfsH6FNEDepLx9hPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- D3.js -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
+    <!-- Custom JS for your setup -->
+    <script src="../../dist/master-neat-browser.js"></script>
+
+    <!-- SEO optimized meta tags for social sharing -->
+    <meta property="og:title" content="NEAT Kaggle MNIST Challenge">
+    <meta property="og:description" content="Discover how the NEAT algorithm evolves to solve Kaggle's MNIST digit recognition challenge, learning to classify handwritten digits through evolutionary computation. Track its progress with real-time visualizations of evolution, fitness, and error.">
+    <meta property="og:image" content="link-to-your-image.jpg">
+    <meta property="og:url" content="your-website-url.com">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="NEAT Digit Recognition Test">
+    <meta name="twitter:description" content="Interactive demo of the NEAT algorithm working to achieve its goal in Kaggle's MNIST challenge.">
+</head>
+<body>
+
+<!-- Main Container for the Page -->
+<div class="container mx-auto p-2">
+
+    <!-- Page Heading -->
+    <header class="text-center">
+        <h1 class="text-4xl font-semibold text-light">NEAT Goal Achievement Test: Kaggle's MNIST Challenge</h1>
+        <p class="mt-2 text-xl">Watch as the NEAT algorithm evolves to classify handwritten digits in Kaggle's MNIST digit recognition challenge. See real-time updates on fitness, error, and network structure.</p>
+    </header>
+
+    <!-- Points Distribution Section -->
+    <section class="card bg-neutral shadow-xl mt-6">
+        <div class="card-body">
+            <h2 class="card-title">Test Set Results</h2>
+            <div class="w-full">
+                <!-- Graph Display -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4 md:mb-0">
+                    <div class="stats shadow">
+                        <div class="stat">
+                            <div class="stat-title">Correct Predictions</div>
+                            <div class="stat-value">
+                                <span id="correct-prediction">0</span> / <span id="total-items">28000</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stats shadow">
+                        <div class="stat">
+                            <div class="stat-title">Incorrect Predictions</div>
+                            <div class="stat-value">
+                                <span id="incorrect-prediction">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stats shadow">
+                        <div class="stat">
+                            <div class="stat-title">Error Rate</div>
+                            <div class="stat-value" id="test-error">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="card card-side bg-neutral shadow-xl mt-6">
+        <div class="card-body p-2">
+            <h2 class="card-title">Points Distribution</h2>
+            <div class="flex flex-col md:flex-row w-full">
+                <!-- Graph Display -->
+                <div class="min-h-[300px] flex-1 mb-4 md:mb-0">
+                    <div id="chart" class="w-full h-full"></div>
+                </div>
+
+                <!-- Stats Display -->
+                <div class="flex flex-wrap flex-row md:flex-col justify-between mt-4 md:mt-0">
+                    <div class="stat flex-1">
+                        <div class="stat-title">Class 1 <span class="badge badge-outline tooltip" data-tip="Correctly identified points of class 1">?</span></div>
+                        <div class="stat-value text-3xl text-[#A2D8A1]" id="correct1-items">0</div>
+                    </div>
+                    <div class="stat flex-1">
+                        <div class="stat-title">Class 2 <span class="badge badge-outline tooltip" data-tip="Correctly identified points of class 2">?</span></div>
+                        <div class="stat-value text-3xl text-[#A2C9E0]" id="correct2-items">0</div>
+                    </div>
+                    <div class="stat flex-1">
+                        <div class="stat-title">Incorrect <span class="badge badge-outline tooltip" data-tip="Incorrectly identified points">?</span></div>
+                        <div class="stat-value text-3xl text-[#FFB3B3]" id="incorrect-items">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Network Graph Section -->
+    <section class="card card-side bg-neutral shadow-xl mt-6">
+        <div class="card-body">
+
+        </div>
+
+        <div class="flex flex-col md:flex-row w-full">
+            <!-- Graph Display -->
+            <div class="min-h-[600px] flex-1 mb-4 md:mb-0">
+                <div id="best-network" class="w-full h-full flex items-center">
+                    <div role="alert" class="alert alert-error mr-4">
+                        <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="h-6 w-6 shrink-0 stroke-current"
+                                fill="none"
+                                viewBox="0 0 24 24">
+                            <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span>This Network is too complex to display the network graph.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Display -->
+            <div class="flex flex-wrap flex-row md:flex-col justify-between mt-4 md:mt-0">
+                <div class="stat flex-1">
+                    <div class="stat-title">Error</div>
+                    <div class="stat-value text-xl font-normal font-mono" id="error">0.0</div>
+                </div>
+                <div class="stat flex-1">
+                    <div class="stat-title">Fitness</div>
+                    <div class="stat-value text-xl font-normal font-mono" id="fitness">0.0</div>
+                </div>
+                <div class="stat flex-1">
+                    <div class="stat-title">Iteration</div>
+                    <div class="stat-value text-xl font-normal font-mono" id="iteration">0</div>
+                </div>
+                <div class="stat flex-1">
+                    <div class="stat-title">Network Configuration</div>
+                    <div class="stat-value text-xl font-normal font-mono" id="network">0-0-0</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="card bg-neutral mt-6 mb-20">
+        <div class="card-body">
+            <div class="card-title">Settings</div>
+            <div class="flex flex-wrap w-full" id="settings-controller">
+
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<script type="module" src="./setup.js"></script>
+
+<script src="../../dist/settings-builder.js"></script>
+
+</body>
+</html>
