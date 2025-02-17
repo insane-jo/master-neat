@@ -3,99 +3,96 @@
 <head data-theme="dark">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Discover how the NEAT algorithm evolves to solve Kaggle's MNIST digit recognition challenge, learning to classify handwritten digits through evolutionary computation. Track its progress with real-time visualizations of evolution, fitness, and error.">
+
+    <!-- SEO Optimized Meta Description -->
+    <meta name="description" content="Master-NEAT predicts bars using NEAT (NeuroEvolution of Augmenting Topologies) technology. See real-time results, fitness metrics, and error rates with interactive charts.">
     <meta name="author" content="Alexei F.">
-    <meta name="keywords" content="NEAT, neuroevolution, evolutionary algorithms, machine learning, digit recognition, fitness, error, JavaScript, D3">
-    <title>NEAT Example: Kaggle MNIST Challenge</title>
+    <meta name="keywords" content="NEAT, neuroevolution, AI, evolutionary algorithms, machine learning, bar predictions, JavaScript, D3.js, data visualization">
+
+    <title>Master-NEAT: Bar Prediction with NEAT AI</title>
 
     <!-- DaisyUI & Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.23/dist/full.min.css" rel="stylesheet" type="text/css">
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!--  csv parser  -->
+    <!-- CSV Parser -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js" integrity="sha512-dfX5uYVXzyU8+KHqj8bjo7UkOdg18PaOtpa48djpNbZHwExddghZ+ZmzWT06R5v6NSk3ZUfsH6FNEDepLx9hPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <!-- D3.js -->
+    <!-- D3.js for Data Visualization -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
 
-    <!-- Custom JS for your setup -->
+    <!-- Custom JS -->
     <script src="../../dist/master-neat-browser.js"></script>
 
-    <!-- SEO optimized meta tags for social sharing -->
-    <meta property="og:title" content="NEAT Kaggle MNIST Challenge">
-    <meta property="og:description" content="Discover how the NEAT algorithm evolves to solve Kaggle's MNIST digit recognition challenge, learning to classify handwritten digits through evolutionary computation. Track its progress with real-time visualizations of evolution, fitness, and error.">
-    <meta property="og:image" content="link-to-your-image.jpg">
+    <!-- SEO & Social Media Meta Tags -->
+    <meta property="og:title" content="Master-NEAT: Bar Prediction with AI">
+    <meta property="og:description" content="Discover how NEAT technology predicts bar patterns using neuroevolutionary AI. Explore live data charts and network evolution insights.">
+    <meta property="og:image" content="your-image-link.jpg">
     <meta property="og:url" content="your-website-url.com">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="NEAT Digit Recognition Test">
-    <meta name="twitter:description" content="Interactive demo of the NEAT algorithm working to achieve its goal in Kaggle's MNIST challenge.">
+    <meta name="twitter:title" content="NEAT AI for Bar Predictions">
+    <meta name="twitter:description" content="Live demo of Master-NEAT predicting bar patterns with neuroevolutionary technology.">
 </head>
 <body>
 
-<!-- Main Container for the Page -->
-<div class="container mx-auto p-2">
+<!-- Main Page Container -->
+<div class="container mx-auto p-4">
 
-    <!-- Page Heading -->
+    <!-- Page Header -->
     <header class="text-center">
-        <h1 class="text-4xl font-semibold text-light">NEAT Goal Achievement Test: Kaggle's MNIST Challenge</h1>
-        <p class="mt-2 text-xl">Watch as the NEAT algorithm evolves to classify handwritten digits in Kaggle's MNIST digit recognition challenge. See real-time updates on fitness, error, and network structure.</p>
+        <h1 class="text-4xl font-semibold text-light">Master-NEAT: Predicting Bars with AI</h1>
+        <p class="mt-2 text-lg">See how NEAT technology evolves to predict bar patterns with high accuracy. Monitor fitness, error rates, and network changes in real time.</p>
     </header>
 
-    <!-- Points Distribution Section -->
+    <!-- Test Set Results -->
     <section class="card bg-neutral shadow-xl mt-6">
         <div class="card-body">
-            <h2 class="card-title">Test Set Results</h2>
-            <div class="w-full">
-                <!-- Graph Display -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4 md:mb-0">
-                    <div class="stats shadow">
-                        <div class="stat">
-                            <div class="stat-title">Correct Predictions</div>
-                            <div class="stat-value">
-                                <span id="correct-prediction">0</span> / <span id="total-items">28000</span>
-                            </div>
-                        </div>
-                    </div>
+            <h2 class="card-title">Test Results</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4 md:mb-0">
 
-                    <div class="stats shadow">
-                        <div class="stat">
-                            <div class="stat-title">Incorrect Predictions</div>
-                            <div class="stat-value">
-                                <span id="incorrect-prediction">0</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="stats shadow">
-                        <div class="stat">
-                            <div class="stat-title">Error Rate</div>
-                            <div class="stat-value" id="test-error">
-
-                            </div>
+                <div class="stats shadow">
+                    <div class="stat">
+                        <div class="stat-title">Correct Predictions</div>
+                        <div class="stat-value">
+                            <span id="correct-prediction">0</span> / <span id="total-items">28000</span>
                         </div>
                     </div>
                 </div>
+
+                <div class="stats shadow">
+                    <div class="stat">
+                        <div class="stat-title">Incorrect Predictions</div>
+                        <div class="stat-value">
+                            <span id="incorrect-prediction">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats shadow">
+                    <div class="stat">
+                        <div class="stat-title">Error Rate</div>
+                        <div class="stat-value" id="test-error">0.0%</div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
 
+    <!-- Chart Info Section -->
     <section class="card card-side bg-neutral shadow-xl mt-6">
         <div class="card-body p-2">
-            <h2 class="card-title">Chart Info</h2>
-            <div class="flex flex-col md:flex-row w-full">
-                <!-- Graph Display -->
-                <div class="min-h-[300px] flex-1 mb-4 md:mb-0">
-                    <div id="chart" class="w-full h-full"></div>
-                </div>
+            <h2 class="card-title">Performance Graph</h2>
+            <div class="min-h-[300px] flex-1">
+                <div id="chart" class="w-full h-full"></div>
             </div>
         </div>
-
     </section>
 
     <!-- Network Graph Section -->
     <section class="card card-side bg-neutral shadow-xl mt-6">
         <div class="card-body">
-
+            <h2 class="card-title">Neural Network Evolution</h2>
         </div>
 
         <div class="flex flex-col md:flex-row w-full">
@@ -103,57 +100,48 @@
             <div class="min-h-[600px] flex-1 mb-4 md:mb-0">
                 <div id="best-network" class="w-full h-full flex items-center">
                     <div role="alert" class="alert alert-error mr-4">
-                        <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                class="h-6 w-6 shrink-0 stroke-current"
-                                fill="none"
-                                viewBox="0 0 24 24">
-                            <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        <span>This Network is too complex to display the network graph.</span>
+                        <span>Network too complex to display.</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Stats Display -->
+            <!-- Performance Stats -->
             <div class="flex flex-wrap flex-row md:flex-col justify-between mt-4 md:mt-0">
                 <div class="stat flex-1">
                     <div class="stat-title">Error</div>
-                    <div class="stat-value text-xl font-normal font-mono" id="error">0.0</div>
+                    <div class="stat-value text-xl font-mono" id="error">0.0</div>
                 </div>
                 <div class="stat flex-1">
                     <div class="stat-title">Fitness</div>
-                    <div class="stat-value text-xl font-normal font-mono" id="fitness">0.0</div>
+                    <div class="stat-value text-xl font-mono" id="fitness">0.0</div>
                 </div>
                 <div class="stat flex-1">
                     <div class="stat-title">Iteration</div>
-                    <div class="stat-value text-xl font-normal font-mono" id="iteration">0</div>
+                    <div class="stat-value text-xl font-mono" id="iteration">0</div>
                 </div>
                 <div class="stat flex-1">
                     <div class="stat-title">Network Configuration</div>
-                    <div class="stat-value text-xl font-normal font-mono" id="network">0-0-0</div>
+                    <div class="stat-value text-xl font-mono" id="network">0-0-0</div>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Settings Section -->
     <section class="card bg-neutral mt-6 mb-20">
         <div class="card-body">
-            <div class="card-title">Settings</div>
-            <div class="flex flex-wrap w-full" id="settings-controller">
-
-            </div>
+            <h2 class="card-title">Configuration Settings</h2>
+            <div class="flex flex-wrap w-full" id="settings-controller"></div>
         </div>
     </section>
 
 </div>
 
+<!-- Custom Scripts -->
 <script type="text/javascript" src="./setup.js"></script>
-
 <script src="../../dist/settings-builder.js"></script>
 
 </body>
