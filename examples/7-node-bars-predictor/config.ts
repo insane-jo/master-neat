@@ -16,7 +16,7 @@ export const DEFAULT_SETTINGS = {
 export const NETWORK_INPUT_AMOUNT = 56;
 export const NETWORK_OUTPUT_AMOUNT = 1;
 
-const SAVE_NETWORK_ITERATIONS = 100;
+const SAVE_NETWORK_ITERATIONS = 10;
 
 export const DRAW_RESULTS_CALLBACK = (startDate: number, TEST_SET: PointData[]) => {
   return (bestNetwork: MasterNeat.Network, results: any) => {
