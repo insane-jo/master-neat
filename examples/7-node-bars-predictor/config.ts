@@ -3,14 +3,16 @@ import {PointData} from "./get-points-set";
 
 import fs from 'fs';
 import path from "path";
+import {INetworkTrainingOptions} from "../../src/architecture/network";
+import {INeatOptions} from "../../src/helpers/neat";
 
-export const DEFAULT_SETTINGS = {
+export const DEFAULT_SETTINGS: INetworkTrainingOptions & INeatOptions = {
   mutationAmount: 50,
   mutationRate: .1,
-  costFunction: MasterNeat.methods.cost.CROSS_ENTROPY,
-  selectionFunction: 'POWER',
+  cost: MasterNeat.methods.cost.CROSS_ENTROPY,
+  selection: MasterNeat.methods.selection.POWER,
   elitism: 5,
-  allowedMutations: MasterNeat.methods.mutation.ALL
+  mutation: MasterNeat.methods.mutation.ALL
 };
 
 export const NETWORK_INPUT_AMOUNT = 56;
