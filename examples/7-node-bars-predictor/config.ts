@@ -7,8 +7,8 @@ import {INetworkTrainingOptions} from "../../src/architecture/network";
 import {INeatOptions} from "../../src/helpers/neat";
 
 export const DEFAULT_SETTINGS: INetworkTrainingOptions & INeatOptions = {
-  mutationAmount: 50,
-  mutationRate: .1,
+  mutationAmount: 100,
+  mutationRate: .05,
   cost: MasterNeat.methods.cost.CROSS_ENTROPY,
   selection: MasterNeat.methods.selection.POWER,
   elitism: 5,
@@ -16,7 +16,7 @@ export const DEFAULT_SETTINGS: INetworkTrainingOptions & INeatOptions = {
 };
 
 export const NETWORK_INPUT_AMOUNT = 56;
-export const NETWORK_OUTPUT_AMOUNT = 1;
+export const NETWORK_OUTPUT_AMOUNT = 2;
 
 const SAVE_NETWORK_ITERATIONS = 10;
 
@@ -33,11 +33,15 @@ export const DRAW_RESULTS_CALLBACK = (startDate: number, TEST_SET: PointData[]) 
       total = TEST_SET.length
 
     for(let i = 0, l = total; i < l; i++) {
-      const item = TEST_SET[i];
+      const testItem = TEST_SET[i];
+      const [correctCategory1, correctCategory2] = testItem.output;
 
-      const result = bestNetwork.activate(item.input);
+      const result = bestNetwork.activate(testItem.input);
 
-      if (Math.round(result[0]) === item.output[0]) {
+      const predictedCategory1 = Math.round(result[0]);
+      const predictedCategory2 = Math.round(result[1]);
+
+      if (correctCategory1 === predictedCategory1 && correctCategory2 === predictedCategory2) {
         correct++;
       } else {
         incorrect++;

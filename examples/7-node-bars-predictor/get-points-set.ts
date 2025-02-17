@@ -73,7 +73,7 @@ export const getPointsSet = (data: PointDataSource): PointData[] => {
       .map((_, idx) => Math.round(lowBandValue + idx * localStep));
 
     for(let currPrice of priceCollection) {
-      const output = [+(currPrice < nextBandValue)];
+      const output = currPrice < nextBandValue ? [1, 0] : [0, 1]; // [+(currPrice < nextBandValue)];
       const input: number[] = [
         ...dow,
         ...day,
