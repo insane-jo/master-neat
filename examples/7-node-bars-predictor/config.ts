@@ -1,6 +1,8 @@
 import * as MasterNeat from '../../src/index';
 import {PointData} from "./get-points-set";
-import {ICostFunction} from "../../lib/methods/cost";
+
+import fs from 'fs';
+import path from "path";
 
 export const DEFAULT_SETTINGS = {
   mutationAmount: 50,
@@ -13,6 +15,8 @@ export const DEFAULT_SETTINGS = {
 
 export const NETWORK_INPUT_AMOUNT = 56;
 export const NETWORK_OUTPUT_AMOUNT = 1;
+
+const SAVE_NETWORK_ITERATIONS = 100;
 
 export const DRAW_RESULTS_CALLBACK = (startDate: number, TEST_SET: PointData[]) => {
   return (bestNetwork: MasterNeat.Network, results: any) => {
@@ -43,5 +47,13 @@ export const DRAW_RESULTS_CALLBACK = (startDate: number, TEST_SET: PointData[]) 
     const testError = totalTest.error.toFixed(10);
 
     console.log(`Iteration: ${iterationTest}, train error: ${results.error.toFixed(10)}. Test error: ${testError}. Predictions: (+${correct})|(-${incorrect})/${total} Network configuration: ${networkConfiguration}.`)
+
+    if (results.iteration % SAVE_NETWORK_ITERATIONS == 0) {
+      fs.writeFile(
+        path.resolve(__dirname, './network-export.json'),
+        JSON.stringify(bestNetwork),
+        () => {}
+      );
+    }
   };
 }
