@@ -43,9 +43,14 @@ window.redrawNetworkIterations = 1000;
 window.DEFAULT_SETTINGS = {
     mutationAmount: 50,
     mutationRate: .1,
-    costFunction: 'MSE', // 'CROSS_ENTROPY',
-    selectionFunction: 'FITNESS_PROPORTIONATE',
-    elitism: 10
+    costFunction: 'CROSS_ENTROPY',
+    selectionFunction: 'POWER',
+    elitism: 5,
+    allowedMutations: MasterNeat.methods.mutation.ALL
+        .reduce(function (res, curr) {
+        res[curr.name] = MasterNeat.methods.mutation.FFW.indexOf(curr) > -1;
+        return res;
+    }, {})
 };
 window.BROWSER_WORKER_SCRIPT_URL = "../../dist/worker-browser.js";
 window.NETWORK_INPUT_AMOUNT = 56;
@@ -283,6 +288,8 @@ var dowToArray = function (dow) {
 };
 var getPointsSet = function (data) {
     var result = [];
+    var priceMaxValue = Math.max.apply(Math, data.upperBand.map(function (v) { return v.value; })) * 1.1;
+    var volumeMaxValue = Math.max.apply(Math, data.volumes.map(function (v) { return v.value; })) * 1.1;
     var _loop_1 = function (i, l) {
         var currBand = data.middleBand[i];
         var nextBand = data.middleBand[i + 1];
@@ -297,11 +304,11 @@ var getPointsSet = function (data) {
         var day = dayToArray(dt.getDate());
         var month = monthToArray(dt.getMonth());
         var inputTradeData = [
-            currCandle.open,
-            currCandle.high,
-            currCandle.low,
-            currCandle.close,
-            currVolume.value
+            currCandle.open / priceMaxValue,
+            currCandle.high / priceMaxValue,
+            currCandle.low / priceMaxValue,
+            currCandle.close / priceMaxValue,
+            currVolume.value / volumeMaxValue
         ];
         var localStep = (upBandValue - lowBandValue) / POINTS_PER_ITERATION;
         var priceCollection = new Array(POINTS_PER_ITERATION).fill(0)
@@ -310,7 +317,7 @@ var getPointsSet = function (data) {
             var currPrice = priceCollection_1[_i];
             var output = [+(currPrice < nextBandValue)];
             var input = __spreadArray(__spreadArray(__spreadArray(__spreadArray(__spreadArray([], dow, true), day, true), month, true), inputTradeData, true), [
-                currPrice
+                currPrice / priceMaxValue
             ], false);
             result.push({ input: input, output: output });
         }

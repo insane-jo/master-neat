@@ -39,6 +39,9 @@ const dowToArray = (dow: number) => {
 export const getPointsSet = (data: PointDataSource): PointData[] => {
   const result: PointData[] = [];
 
+  const priceMaxValue = Math.max(...data.upperBand.map(v => v.value)) * 1.1;
+  const volumeMaxValue = Math.max(...data.volumes.map(v => v.value)) * 1.1;
+
   for(let i = 0, l = data.candles.length - 1; i < l; i++) {
     const currBand = data.middleBand[i];
     const nextBand = data.middleBand[i + 1];
@@ -57,11 +60,11 @@ export const getPointsSet = (data: PointDataSource): PointData[] => {
     const month = monthToArray(dt.getMonth());
 
     const inputTradeData = [
-      currCandle.open,
-      currCandle.high,
-      currCandle.low,
-      currCandle.close,
-      currVolume.value
+      currCandle.open / priceMaxValue,
+      currCandle.high / priceMaxValue,
+      currCandle.low / priceMaxValue,
+      currCandle.close / priceMaxValue,
+      currVolume.value / volumeMaxValue
     ];
 
     const localStep = (upBandValue - lowBandValue) / POINTS_PER_ITERATION;
@@ -76,7 +79,7 @@ export const getPointsSet = (data: PointDataSource): PointData[] => {
         ...day,
         ...month,
         ...inputTradeData,
-        currPrice
+        currPrice / priceMaxValue
       ];
 
       result.push({input, output});
