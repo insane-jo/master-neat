@@ -7,7 +7,7 @@ import path from "path";
 export const DEFAULT_SETTINGS = {
   mutationAmount: 50,
   mutationRate: .1,
-  costFunction: 'CROSS_ENTROPY',
+  costFunction: MasterNeat.methods.cost.CROSS_ENTROPY,
   selectionFunction: 'POWER',
   elitism: 5,
   allowedMutations: MasterNeat.methods.mutation.ALL
