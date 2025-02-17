@@ -7,12 +7,14 @@ import {INetworkTrainingOptions} from "../../src/architecture/network";
 import {INeatOptions} from "../../src/helpers/neat";
 
 export const DEFAULT_SETTINGS: INetworkTrainingOptions & INeatOptions = {
-  mutationAmount: 100,
-  mutationRate: .05,
+  mutationAmount: 250,
+  mutationRate: .01,
   cost: MasterNeat.methods.cost.CROSS_ENTROPY,
   selection: MasterNeat.methods.selection.POWER,
-  elitism: 5,
-  mutation: MasterNeat.methods.mutation.ALL
+  elitism: 25,
+  mutation: MasterNeat.methods.mutation.ALL,
+  popsize: 1000,
+  clear: true
 };
 
 export const NETWORK_INPUT_AMOUNT = 56;
