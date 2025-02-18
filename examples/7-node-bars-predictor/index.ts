@@ -4,13 +4,19 @@ import fs from 'fs';
 import path from "path";
 
 import {readyPromise} from "./setup";
-import {DRAW_RESULTS_CALLBACK, DEFAULT_SETTINGS, NETWORK_INPUT_AMOUNT, NETWORK_OUTPUT_AMOUNT} from "./config";
+import {
+  DRAW_RESULTS_CALLBACK,
+  DEFAULT_SETTINGS,
+  NETWORK_INPUT_AMOUNT,
+  NETWORK_OUTPUT_AMOUNT,
+  GROUP_DATA_BY_DAYS
+} from "./config";
 
 readyPromise
   .then(({trainingSet, testSet}) => {
     const iterationCallback = DRAW_RESULTS_CALLBACK(Date.now(), testSet);
 
-    const pathToNetworkFile = path.resolve(__dirname, './network-export.json');
+    const pathToNetworkFile = path.resolve(__dirname, `./network-export-${GROUP_DATA_BY_DAYS ? '1d' : '15m'}.json`);
 
     let network: MasterNeat.Network;
     if (fs.existsSync(pathToNetworkFile)) {

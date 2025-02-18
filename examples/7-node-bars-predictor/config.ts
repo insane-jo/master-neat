@@ -7,18 +7,19 @@ import {INetworkTrainingOptions} from "../../src/architecture/network";
 import {INeatOptions} from "../../src/helpers/neat";
 
 export const DEFAULT_SETTINGS: INetworkTrainingOptions & INeatOptions = {
-  mutationAmount: 250,
-  mutationRate: .01,
+  mutationAmount: 25,
+  mutationRate: .04,
   cost: MasterNeat.methods.cost.CROSS_ENTROPY,
   selection: MasterNeat.methods.selection.POWER,
   elitism: 25,
   mutation: MasterNeat.methods.mutation.ALL,
-  popsize: 1000,
+  popsize: 250,
   clear: true
 };
 
 export const NETWORK_INPUT_AMOUNT = 56;
 export const NETWORK_OUTPUT_AMOUNT = 2;
+export const GROUP_DATA_BY_DAYS = false;
 
 const SAVE_NETWORK_ITERATIONS = 10;
 
@@ -58,7 +59,7 @@ export const DRAW_RESULTS_CALLBACK = (startDate: number, TEST_SET: PointData[]) 
 
     if (results.iteration % SAVE_NETWORK_ITERATIONS == 0) {
       fs.writeFile(
-        path.resolve(__dirname, './network-export.json'),
+        path.resolve(__dirname, `./network-export-${GROUP_DATA_BY_DAYS ? '1d' : '15m'}.json`),
         JSON.stringify(bestNetwork),
         () => {}
       );

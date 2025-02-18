@@ -1,12 +1,11 @@
-import './config';
-
 import {LineData} from 'lightweight-charts';
 import {getBarsData} from "./get-bars-data";
 import {stddev} from "./stddev";
 import {getPointsSet} from "./get-points-set";
+import {GROUP_DATA_BY_DAYS} from "./config";
 
 const setupExample = async () => {
-  const barsData = await getBarsData();
+  const barsData = await getBarsData(GROUP_DATA_BY_DAYS);
 
   let candlesData = barsData.bars;
   let volumesData = barsData.volumes;
@@ -61,7 +60,7 @@ const setupExample = async () => {
 
   // (window as any).NETWORK_INPUT_AMOUNT = pointsSet[0].input.length;
 
-  const delimiterIdx = Math.round(pointsSet.length * 0.75);
+  const delimiterIdx = Math.round(pointsSet.length * 0.5);
   const trainingSet = pointsSet.slice(0, delimiterIdx);
   const testSet = pointsSet.slice(delimiterIdx);
 
