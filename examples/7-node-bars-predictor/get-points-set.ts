@@ -2,6 +2,7 @@ import {CandleData, LineData} from "../common/generate-bars-data";
 
 const POINTS_PER_ITERATION = 20;
 const PRICE_STEP = .01;
+const PRICE_DECIMALS = 2;
 
 export type PointData = {
   input: number[];
@@ -70,16 +71,32 @@ export const getPointsSet = (data: PointDataSource): PointData[] => {
     const localStep = (upBandValue - lowBandValue) / POINTS_PER_ITERATION;
 
     const priceCollection = new Array(POINTS_PER_ITERATION).fill(0)
-      .map((_, idx) => Math.round(lowBandValue + idx * localStep));
+      .map((_, idx) => {
+        let currPrice = lowBandValue + idx * localStep;
 
+        currPrice = Math.round(currPrice / PRICE_STEP) * PRICE_STEP;
+
+        return +currPrice.toFixed(PRICE_DECIMALS);
+      })
+      .filter((price, idx, arr) => {
+        return arr.indexOf(price) === idx;
+      });
+
+    let prevPrice: number = -1;
     for(let currPrice of priceCollection) {
-      const output = currPrice < nextBandValue ? [1, 0] : [0, 1]; // [+(currPrice < nextBandValue)];
+      const priceToCheck = Math.round(currPrice / PRICE_STEP) * PRICE_STEP;
+      if (priceToCheck === prevPrice) {
+        continue;
+      }
+      prevPrice = priceToCheck;
+
+      const output = priceToCheck < nextBandValue ? [1, 0] : [0, 1]; // [+(currPrice < nextBandValue)];
       const input: number[] = [
         ...dow,
         ...day,
         ...month,
         ...inputTradeData,
-        currPrice / priceMaxValue
+        priceToCheck / priceMaxValue
       ];
 
       result.push({input, output});
