@@ -23,7 +23,7 @@ export const GROUP_DATA_BY_DAYS = false;
 
 export const TRAIN_TEST_SPLIT_RATIO = .75;
 
-export const POINTS_PER_ITERATION = 20;
+export const POINTS_PER_ITERATION = 10;
 export const PRICE_STEP = .01;
 export const PRICE_DECIMALS = 2;
 
