@@ -226,7 +226,7 @@ export const PRICE_DECIMALS = 2;
 
 const EXPORT_FILENAME_PREFIX = args.prefix;
 
-args.export_filename = args.export_filename || `${EXPORT_FILENAME_PREFIX}-network-export-${NETWORK_OUTPUT_AMOUNT}.json`;
+args.export_filename = args.export_filename || `${EXPORT_FILENAME_PREFIX}-network-export-${NETWORK_OUTPUT_AMOUNT}${NORMALIZE_POINTS_DATA ? '-norm' : ''}.json`;
 export const EXPORT_FILENAME = path.resolve(__dirname, './network-export/' + args.export_filename);
 
 const SAVE_NETWORK_ITERATIONS = 10;
