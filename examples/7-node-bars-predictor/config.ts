@@ -233,17 +233,31 @@ export const DRAW_RESULTS_CALLBACK = (startDate: number, TEST_SET: PointData[]) 
 
     for(let i = 0, l = total; i < l; i++) {
       const testItem = TEST_SET[i];
-      const [correctCategory1, correctCategory2] = testItem.output;
 
-      const result = bestNetwork.activate(testItem.input);
+      if (NETWORK_OUTPUT_AMOUNT === 2) {
+        const [correctCategory1, correctCategory2] = testItem.output;
 
-      const predictedCategory1 = Math.round(result[0]);
-      const predictedCategory2 = Math.round(result[1]);
+        const result = bestNetwork.activate(testItem.input);
 
-      if (correctCategory1 === predictedCategory1 && correctCategory2 === predictedCategory2) {
-        correct++;
+        const predictedCategory1 = Math.round(result[0]);
+        const predictedCategory2 = Math.round(result[1]);
+
+        if (correctCategory1 === predictedCategory1 && correctCategory2 === predictedCategory2) {
+          correct++;
+        } else {
+          incorrect++;
+        }
       } else {
-        incorrect++;
+        const [correctCategory] = testItem.output;
+        const [result] = bestNetwork.activate(testItem.input);
+
+        const predictedCategory = Math.round(result);
+
+        if (correctCategory === predictedCategory) {
+          correct++;
+        } else {
+          incorrect++;
+        }
       }
     }
 
