@@ -1,5 +1,5 @@
 import {CandleData, LineData} from "../common/generate-bars-data";
-import {POINTS_PER_ITERATION, PRICE_DECIMALS, PRICE_STEP} from "./config";
+import {NETWORK_OUTPUT_AMOUNT, POINTS_PER_ITERATION, PRICE_DECIMALS, PRICE_STEP} from "./config";
 
 export type PointData = {
   input: number[];
@@ -87,7 +87,14 @@ export const getPointsSet = (data: PointDataSource): PointData[] => {
       }
       prevPrice = priceToCheck;
 
-      const output = priceToCheck < nextBandValue ? [1, 0] : [0, 1]; // [+(currPrice < nextBandValue)];
+      let output = priceToCheck < nextBandValue ? [1, 0] : [0, 1]; // [+(currPrice < nextBandValue)];
+
+      if (NETWORK_OUTPUT_AMOUNT === 2) {
+        output = priceToCheck < nextBandValue ? [1, 0] : [0, 1]; // [+(currPrice < nextBandValue)];
+      } else {
+        output = [+(currPrice > nextBandValue)];
+      }
+
       const input: number[] = [
         ...dow,
         ...day,

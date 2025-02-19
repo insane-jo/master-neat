@@ -27,6 +27,8 @@ export const POINTS_PER_ITERATION = 10;
 export const PRICE_STEP = .01;
 export const PRICE_DECIMALS = 2;
 
+export const EXPORT_FILENAME = path.resolve(__dirname, `./network-export-${GROUP_DATA_BY_DAYS ? '1d' : '15m'}-${NETWORK_OUTPUT_AMOUNT}.json`);
+
 const SAVE_NETWORK_ITERATIONS = 10;
 
 export const DRAW_RESULTS_CALLBACK = (startDate: number, TEST_SET: PointData[]) => {
@@ -65,7 +67,7 @@ export const DRAW_RESULTS_CALLBACK = (startDate: number, TEST_SET: PointData[]) 
 
     if (results.iteration % SAVE_NETWORK_ITERATIONS == 0) {
       fs.writeFile(
-        path.resolve(__dirname, `./network-export-${GROUP_DATA_BY_DAYS ? '1d' : '15m'}.json`),
+        EXPORT_FILENAME,
         JSON.stringify(bestNetwork),
         () => {}
       );
