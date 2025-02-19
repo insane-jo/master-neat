@@ -149,6 +149,16 @@ parser.add_argument(
 );
 
 parser.add_argument(
+  '-npd',
+  '--normalize-points-data',
+  {
+    default: 1,
+    choices: ['1', '0'],
+    help: 'Enable min-max normalization of prices and volumes'
+  }
+);
+
+parser.add_argument(
   '-ts',
   '--train-test-split-ratio',
   {
@@ -201,6 +211,8 @@ export const DEFAULT_SETTINGS: INetworkTrainingOptions & INeatOptions = {
   popsize: +args.popsize,
   clear: args.clear == 1
 };
+
+export const NORMALIZE_POINTS_DATA = args.normalize_points_data == 1;
 
 export const NETWORK_INPUT_AMOUNT = 56;
 export const NETWORK_OUTPUT_AMOUNT = +args.output;

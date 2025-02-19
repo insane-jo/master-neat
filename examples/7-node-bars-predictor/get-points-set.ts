@@ -1,5 +1,5 @@
 import {CandleData, LineData} from "../common/generate-bars-data";
-import {NETWORK_OUTPUT_AMOUNT, POINTS_PER_ITERATION, PRICE_DECIMALS, PRICE_STEP} from "./config";
+import {NETWORK_OUTPUT_AMOUNT, NORMALIZE_POINTS_DATA, POINTS_PER_ITERATION, PRICE_DECIMALS, PRICE_STEP} from "./config";
 
 export type PointData = {
   input: number[];
@@ -37,8 +37,8 @@ const dowToArray = (dow: number) => {
 export const getPointsSet = (data: PointDataSource): PointData[] => {
   const result: PointData[] = [];
 
-  const priceMaxValue = Math.max(...data.upperBand.map(v => v.value)) * 1.1;
-  const volumeMaxValue = Math.max(...data.volumes.map(v => v.value)) * 1.1;
+  const priceMaxValue = NORMALIZE_POINTS_DATA ? Math.max(...data.upperBand.map(v => v.value)) * 1.1 : 1;
+  const volumeMaxValue = NORMALIZE_POINTS_DATA ? Math.max(...data.volumes.map(v => v.value)) * 1.1 : 1;
 
   for(let i = 0, l = data.candles.length - 1; i < l; i++) {
     const currBand = data.middleBand[i];
