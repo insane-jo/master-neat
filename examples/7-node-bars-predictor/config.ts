@@ -169,6 +169,26 @@ parser.add_argument(
   }
 );
 
+parser.add_argument(
+  '-efn',
+  '--export-filename',
+  {
+    type: function (value: string) {
+      if (!value) {
+        return;
+      }
+
+      if (!value.endsWith('.json')) {
+        throw new Error('Filename for export must have .json extension')
+      }
+
+      return value;
+    },
+    default: '',
+    help: 'Export filename for evolving network.'
+  }
+);
+
 const args = parser.parse_args();
 
 export const DEFAULT_SETTINGS: INetworkTrainingOptions & INeatOptions = {
@@ -193,7 +213,9 @@ export const PRICE_STEP = .01;
 export const PRICE_DECIMALS = 2;
 
 const EXPORT_FILENAME_PREFIX = args.prefix;
-export const EXPORT_FILENAME = path.resolve(__dirname, `./${EXPORT_FILENAME_PREFIX}-network-export-${NETWORK_OUTPUT_AMOUNT}.json`);
+
+args.export_filename = args.export_filename || `./${EXPORT_FILENAME_PREFIX}-network-export-${NETWORK_OUTPUT_AMOUNT}.json`;
+export const EXPORT_FILENAME = path.resolve(__dirname, args.export_filename);
 
 const SAVE_NETWORK_ITERATIONS = 10;
 
