@@ -10,10 +10,16 @@ import {
   NETWORK_OUTPUT_AMOUNT,
   EXPORT_FILENAME
 } from "./config";
+import path from "path";
 
 readyPromise
   .then(({trainSet, testSet}) => {
     let network: MasterNeat.Network;
+
+    if (!fs.existsSync(path.dirname(EXPORT_FILENAME))) {
+      fs.mkdirSync(path.dirname(EXPORT_FILENAME), {recursive: true});
+    }
+
     if (fs.existsSync(EXPORT_FILENAME)) {
       const networkConfiguration = fs.readFileSync(EXPORT_FILENAME, 'utf-8');
       const networkJson = JSON.parse(networkConfiguration);

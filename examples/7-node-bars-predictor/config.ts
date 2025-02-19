@@ -214,8 +214,8 @@ export const PRICE_DECIMALS = 2;
 
 const EXPORT_FILENAME_PREFIX = args.prefix;
 
-args.export_filename = args.export_filename || `./${EXPORT_FILENAME_PREFIX}-network-export-${NETWORK_OUTPUT_AMOUNT}.json`;
-export const EXPORT_FILENAME = path.resolve(__dirname, args.export_filename);
+args.export_filename = args.export_filename || `${EXPORT_FILENAME_PREFIX}-network-export-${NETWORK_OUTPUT_AMOUNT}.json`;
+export const EXPORT_FILENAME = path.resolve(__dirname, './network-export/' + args.export_filename);
 
 const SAVE_NETWORK_ITERATIONS = 10;
 
@@ -275,8 +275,7 @@ export const DRAW_RESULTS_CALLBACK = (startDate: number, TEST_SET: PointData[]) 
       fs.writeFile(
         EXPORT_FILENAME,
         JSON.stringify(bestNetwork),
-        () => {
-        }
+        () => {}
       );
     }
   };

@@ -16,3 +16,4 @@ lib
 lib-esm
 
 *network-export*.json
+**/network-export/**/*
