@@ -12,9 +12,7 @@ import {
 } from "./config";
 
 readyPromise
-  .then(({trainingSet, testSet}) => {
-    const iterationCallback = DRAW_RESULTS_CALLBACK(Date.now(), testSet);
-
+  .then(({trainSet, testSet}) => {
     let network: MasterNeat.Network;
     if (fs.existsSync(EXPORT_FILENAME)) {
       const networkConfiguration = fs.readFileSync(EXPORT_FILENAME, 'utf-8');
@@ -25,7 +23,8 @@ readyPromise
       network = new MasterNeat.Network(NETWORK_INPUT_AMOUNT, NETWORK_OUTPUT_AMOUNT);
     }
 
-    network.evolve(trainingSet, {
+    const iterationCallback = DRAW_RESULTS_CALLBACK(Date.now(), testSet);
+    network.evolve(trainSet, {
       ...DEFAULT_SETTINGS,
       error: Number.NEGATIVE_INFINITY,
 

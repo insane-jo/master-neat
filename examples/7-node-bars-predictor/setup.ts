@@ -61,11 +61,11 @@ const setupExample = async () => {
   // (window as any).NETWORK_INPUT_AMOUNT = pointsSet[0].input.length;
 
   const delimiterIdx = Math.round(pointsSet.length * TRAIN_TEST_SPLIT_RATIO);
-  const trainingSet = pointsSet.slice(0, delimiterIdx);
+  const trainSet = pointsSet.slice(0, delimiterIdx);
   const testSet = pointsSet.slice(delimiterIdx);
 
   return {
-    trainingSet, testSet
+    trainSet, testSet
   }
 };
 
