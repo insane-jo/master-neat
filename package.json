@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "@reduxjs/toolkit": "^2.5.0",
+    "@types/argparse": "^2.0.17",
     "@types/chai": "^5.0.1",
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.10.6",
@@ -49,5 +50,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/insane-jo/master-neat.git"
+  },
+  "dependencies": {
+    "argparse": "^2.0.1"
   }
 }
