@@ -32,9 +32,9 @@ const modActivation: IMutationModActivation = {
   allowed: [
     activation.LOGISTIC,
     activation.TANH,
-    activation.RELU,
     activation.IDENTITY,
     activation.STEP,
+    activation.RELU,
     activation.SOFTSIGN,
     activation.SINUSOID,
     activation.GAUSSIAN,
@@ -44,7 +44,19 @@ const modActivation: IMutationModActivation = {
     activation.HARD_TANH,
     activation.ABSOLUTE,
     activation.INVERSE,
-    activation.SELU
+    activation.SELU,
+    activation.LEAKY_RELU,
+    activation.PRELU,
+    activation.ELU,
+    activation.SWISH,
+    activation.SOFTPLUS,
+    activation.MISH,
+    activation.GELU,
+    activation.ARCTAN,
+    activation.SINC,
+    activation.SOFT_CLIPPING,
+    activation.EXPONENTIAL,
+    activation.CUBE
   ]
 };
 
