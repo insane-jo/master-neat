@@ -7,7 +7,7 @@ type ICostCollection = ICommonCollection<ICostFunction>;
 // Additional refs: Huber (https://en.wikipedia.org/wiki/Huber_loss), Focal Loss (https://arxiv.org/abs/1708.02002)
 const cost: ICostCollection = {
   // Cross Entropy Loss: For classification, measures probability divergence
-  CROSS_ENTROPY: function (target, output) {
+  CROSS_ENTROPY: (target, output) => {
     let error: number = 0;
     const l = output.length;
     for (let i = 0; i < l; i++) {
@@ -19,7 +19,7 @@ const cost: ICostCollection = {
   },
 
   // Mean Squared Error: Quadratic loss for regression
-  MSE: function (target, output) {
+  MSE: (target, output) => {
     let error = 0;
     const l = output.length;
     for (let i = 0; i < l; i++) {
@@ -29,7 +29,7 @@ const cost: ICostCollection = {
   },
 
   // Binary Error: Counts classification mistakes (0 or 1)
-  BINARY: function (target, output) {
+  BINARY: (target, output) => {
     let misses: number = 0;
     const l = output.length;
     for (let i = 0; i < l; i++) {
@@ -39,7 +39,7 @@ const cost: ICostCollection = {
   },
 
   // Mean Absolute Error: L1 loss, robust to outliers
-  MAE: function (target, output) {
+  MAE: (target, output) => {
     let error = 0;
     const l = output.length;
     for (let i = 0; i < l; i++) {
@@ -49,7 +49,7 @@ const cost: ICostCollection = {
   },
 
   // Mean Absolute Percentage Error: Relative error measure
-  MAPE: function (target, output) {
+  MAPE: (target, output) => {
     let error = 0;
     const l = output.length;
     for (let i = 0; i < l; i++) {
@@ -60,7 +60,7 @@ const cost: ICostCollection = {
   },
 
   // Mean Squared Logarithmic Error: Penalizes underestimation more
-  MSLE: function (target, output) {
+  MSLE: (target, output) => {
     let error = 0;
     const l = output.length;
     for (let i = 0; i < l; i++) {
@@ -72,7 +72,7 @@ const cost: ICostCollection = {
   },
 
   // Hinge Loss: For SVMs and binary classifiers
-  HINGE: function (target, output) {
+  HINGE: (target, output) => {
     let error = 0;
     const l = output.length;
     for (let i = 0; i < l; i++) {
@@ -82,7 +82,7 @@ const cost: ICostCollection = {
   },
 
   // Squared Hinge Loss: Quadratic penalty for hinge violations
-  SQUARED_HINGE: function (target, output) {
+  SQUARED_HINGE: (target, output) => {
     let error = 0;
     const l = output.length;
     for (let i = 0; i < l; i++) {
@@ -93,7 +93,7 @@ const cost: ICostCollection = {
   },
 
   // Huber Loss: Combines MSE and MAE, robust to outliers
-  HUBER: function (target, output) {
+  HUBER: (target, output) => {
     let error = 0;
     const l = output.length;
     const delta = 1.0; // Common threshold
@@ -105,7 +105,7 @@ const cost: ICostCollection = {
   },
 
   // Log-Cosh Loss: Smooth approximation of absolute error
-  LOG_COSH: function (target, output) {
+  LOG_COSH: (target, output) => {
     let error = 0;
     const l = output.length;
     for (let i = 0; i < l; i++) {
@@ -116,7 +116,7 @@ const cost: ICostCollection = {
   },
 
   // Quantile Loss: For quantile regression
-  QUANTILE: function (target, output) {
+  QUANTILE: (target, output) => {
     let error = 0;
     const l = output.length;
     const quantile = 0.5; // Median by default
@@ -128,7 +128,7 @@ const cost: ICostCollection = {
   },
 
   // Kullback-Leibler Divergence: Measures distribution difference
-  KL_DIVERGENCE: function (target, output) {
+  KL_DIVERGENCE: (target, output) => {
     let error = 0;
     const l = output.length;
     for (let i = 0; i < l; i++) {
@@ -140,7 +140,7 @@ const cost: ICostCollection = {
   },
 
   // Focal Loss: For imbalanced classification (Lin et al., 2017)
-  FOCAL: function (target, output) {
+  FOCAL: (target, output) => {
     let error = 0;
     const l = output.length;
     const gamma = 2.0; // Focusing parameter
@@ -154,7 +154,7 @@ const cost: ICostCollection = {
   },
 
   // Dice Loss: For segmentation tasks, overlap-based
-  DICE: function (target, output) {
+  DICE: (target, output) => {
     let intersection = 0;
     let union = 0;
     const l = output.length;
@@ -169,7 +169,7 @@ const cost: ICostCollection = {
   },
 
   // Cosine Similarity Loss: Measures angle between vectors
-  COSINE: function (target, output) {
+  COSINE: (target, output) => {
     let dot = 0;
     let normT = 0;
     let normO = 0;
@@ -183,7 +183,7 @@ const cost: ICostCollection = {
   },
 
   // Mean Squared Logarithmic Absolute Error: Variant of MSLE
-  MSLAE: function (target, output) {
+  MSLAE: (target, output) => {
     let error = 0;
     const l = output.length;
     for (let i = 0; i < l; i++) {
@@ -194,7 +194,7 @@ const cost: ICostCollection = {
   },
 
   // Poisson Loss: For count data regression
-  POISSON: function (target, output) {
+  POISSON: (target, output) => {
     let error = 0;
     const l = output.length;
     for (let i = 0; i < l; i++) {
@@ -205,7 +205,7 @@ const cost: ICostCollection = {
   },
 
   // L1 Regularized MSE: MSE with L1 penalty on outputs
-  L1_MSE: function (target, output) {
+  L1_MSE: (target, output) => {
     let error = 0;
     const l = output.length;
     const lambda = 0.01; // Regularization strength
@@ -219,7 +219,7 @@ const cost: ICostCollection = {
   },
 
   // L2 Regularized MSE: MSE with L2 penalty on outputs
-  L2_MSE: function (target, output) {
+  L2_MSE: (target, output) => {
     let error = 0;
     const l = output.length;
     const lambda = 0.01; // Regularization strength
