@@ -40,9 +40,9 @@ const cost: ICostCollection = {
   },
   // Mean Absolute Error
   MAE: function (target, output) {
-    var error = 0;
+    let error = 0;
     const l = output.length;
-    for (var i = 0; i < l; i++) {
+    for (let i = 0; i < l; i++) {
       error += Math.abs(target[i] - output[i]);
     }
 
@@ -50,9 +50,9 @@ const cost: ICostCollection = {
   },
   // Mean Absolute Percentage Error
   MAPE: function (target, output) {
-    var error = 0;
+    let error = 0;
     const l = output.length;
-    for (var i = 0; i < l; i++) {
+    for (let i = 0; i < l; i++) {
       const ti = target[i];
       error += Math.abs((output[i] - ti) / Math.max(ti, 1e-15));
     }
@@ -61,10 +61,10 @@ const cost: ICostCollection = {
   },
   // Mean Squared Logarithmic Error
   MSLE: function (target, output) {
-    var error = 0;
+    let error = 0;
     const l = output.length;
 
-    for (var i = 0; i < l; i++) {
+    for (let i = 0; i < l; i++) {
       error += Math.log(Math.max(target[i], 1e-15)) - Math.log(Math.max(output[i], 1e-15));
     }
 
@@ -72,10 +72,10 @@ const cost: ICostCollection = {
   },
   // Hinge loss, for classifiers
   HINGE: function (target, output) {
-    var error = 0;
+    let error = 0;
     const l = output.length;
 
-    for (var i = 0; i < l; i++) {
+    for (let i = 0; i < l; i++) {
       error += Math.max(0, 1 - target[i] * output[i]);
     }
 
