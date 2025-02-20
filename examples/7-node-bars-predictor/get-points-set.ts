@@ -62,7 +62,10 @@ export const getPointsSet = (data: PointDataSource): PointData[] => {
       currCandle.high / priceMaxValue,
       currCandle.low / priceMaxValue,
       currCandle.close / priceMaxValue,
-      currVolume.value / volumeMaxValue
+      currVolume.value / volumeMaxValue,
+      lowBandValue / priceMaxValue,
+      upBandValue / priceMaxValue,
+      currBand.value / priceMaxValue
     ];
 
     const localStep = (upBandValue - lowBandValue) / POINTS_PER_ITERATION;

@@ -236,7 +236,7 @@ export const BARS_FILENAME_CSV = args.bars_filename;
 
 export const NORMALIZE_POINTS_DATA = args.normalize_points_data == 1;
 
-export const NETWORK_INPUT_AMOUNT = 56;
+export const NETWORK_INPUT_AMOUNT = 59;
 export const NETWORK_OUTPUT_AMOUNT = +args.output;
 export const GROUP_DATA_BY_DAYS = args.group_data_by_days == 1;
 
