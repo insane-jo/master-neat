@@ -8,25 +8,31 @@ const cost: ICostCollection = {
   // Cross entropy error
   CROSS_ENTROPY: function (target, output) {
     let error: number = 0;
-    for (let i = 0; i < output.length; i++) {
+    const l = output.length;
+    for (let i = 0; i < l; i++) {
       // Avoid negative and zero numbers, use 1e-15 http://bit.ly/2p5W29A
-      error -= target[i] * Math.log(Math.max(output[i], 1e-15)) + (1 - target[i]) * Math.log(1 - Math.max(output[i], 1e-15));
+      const ti = target[i];
+      const oi = output[i];
+
+      error -= ti * Math.log(Math.max(oi, 1e-15)) + (1 - ti) * Math.log(1 - Math.max(oi, 1e-15));
     }
-    return error / output.length;
+    return error / l;
   },
   // Mean Squared Error
   MSE: function (target, output) {
     let error = 0;
-    for (let i = 0; i < output.length; i++) {
+    const l = output.length;
+    for (let i = 0; i < l; i++) {
       error += Math.pow(target[i] - output[i], 2);
     }
 
-    return error / output.length;
+    return error / l;
   },
   // Binary error
   BINARY: function (target, output) {
     let misses: number = 0;
-    for (let i = 0; i < output.length; i++) {
+    const l = output.length;
+    for (let i = 0; i < l; i++) {
       misses = misses + Number(Math.round(target[i] * 2) !== Math.round(output[i] * 2));
     }
 
@@ -35,25 +41,30 @@ const cost: ICostCollection = {
   // Mean Absolute Error
   MAE: function (target, output) {
     var error = 0;
-    for (var i = 0; i < output.length; i++) {
+    const l = output.length;
+    for (var i = 0; i < l; i++) {
       error += Math.abs(target[i] - output[i]);
     }
 
-    return error / output.length;
+    return error / l;
   },
   // Mean Absolute Percentage Error
   MAPE: function (target, output) {
     var error = 0;
-    for (var i = 0; i < output.length; i++) {
-      error += Math.abs((output[i] - target[i]) / Math.max(target[i], 1e-15));
+    const l = output.length;
+    for (var i = 0; i < l; i++) {
+      const ti = target[i];
+      error += Math.abs((output[i] - ti) / Math.max(ti, 1e-15));
     }
 
-    return error / output.length;
+    return error / l;
   },
   // Mean Squared Logarithmic Error
   MSLE: function (target, output) {
     var error = 0;
-    for (var i = 0; i < output.length; i++) {
+    const l = output.length;
+
+    for (var i = 0; i < l; i++) {
       error += Math.log(Math.max(target[i], 1e-15)) - Math.log(Math.max(output[i], 1e-15));
     }
 
@@ -62,7 +73,9 @@ const cost: ICostCollection = {
   // Hinge loss, for classifiers
   HINGE: function (target, output) {
     var error = 0;
-    for (var i = 0; i < output.length; i++) {
+    const l = output.length;
+
+    for (var i = 0; i < l; i++) {
       error += Math.max(0, 1 - target[i] * output[i]);
     }
 
