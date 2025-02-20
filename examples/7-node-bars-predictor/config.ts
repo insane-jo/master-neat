@@ -199,6 +199,26 @@ parser.add_argument(
   }
 );
 
+parser.add_argument(
+  '-b',
+  '--bars-filename',
+  {
+    type: function (value: string) {
+      if (!value) {
+        return;
+      }
+
+      if (!value.endsWith('.csv')) {
+        throw new Error('Filename for export must have .csv extension')
+      }
+
+      return value;
+    },
+    default: './data/bars-15mi.csv',
+    help: 'CSV file that contains bars data.'
+  }
+);
+
 const args = parser.parse_args();
 
 export const DEFAULT_SETTINGS: INetworkTrainingOptions & INeatOptions = {
@@ -211,6 +231,8 @@ export const DEFAULT_SETTINGS: INetworkTrainingOptions & INeatOptions = {
   popsize: +args.popsize,
   clear: args.clear == 1
 };
+
+export const BARS_FILENAME_CSV = args.bars_filename;
 
 export const NORMALIZE_POINTS_DATA = args.normalize_points_data == 1;
 

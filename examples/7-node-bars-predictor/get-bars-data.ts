@@ -3,6 +3,7 @@ import Papa from "papaparse";
 import fs from 'fs';
 import path from 'path';
 import {Time} from "lightweight-charts";
+import {BARS_FILENAME_CSV} from "./config";
 
 type CSVData = {
   "START_TIME": string,
@@ -29,7 +30,8 @@ export const getBarsData = async (groupByDay: boolean = true): Promise<BarsData>
     return data.data;
   }
 
-  let data = await readFetchCsv('./data/bars-15mi.csv');
+  // let data = await readFetchCsv('./data/bars-15mi.csv');
+  let data = await readFetchCsv(BARS_FILENAME_CSV);
 
   const returnValue: BarsData = {
     volumes: [],
