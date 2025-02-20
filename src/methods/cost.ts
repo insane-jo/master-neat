@@ -159,8 +159,11 @@ const cost: ICostCollection = {
     let union = 0;
     const l = output.length;
     for (let i = 0; i < l; i++) {
-      intersection += target[i] * output[i];
-      union += target[i] + output[i];
+      const ti = target[i];
+      const oi = output[i];
+
+      intersection += ti * oi;
+      union += ti + oi;
     }
     return 1 - (2 * intersection + 1e-15) / (union + 1e-15); // Avoid division by zero
   },
@@ -206,8 +209,11 @@ const cost: ICostCollection = {
     let error = 0;
     const l = output.length;
     const lambda = 0.01; // Regularization strength
+
     for (let i = 0; i < l; i++) {
-      error += Math.pow(target[i] - output[i], 2) + lambda * Math.abs(output[i]);
+      const oi = output[i];
+
+      error += Math.pow(target[i] - oi, 2) + lambda * Math.abs(oi);
     }
     return error / l;
   },
@@ -218,7 +224,9 @@ const cost: ICostCollection = {
     const l = output.length;
     const lambda = 0.01; // Regularization strength
     for (let i = 0; i < l; i++) {
-      error += Math.pow(target[i] - output[i], 2) + lambda * Math.pow(output[i], 2);
+      const oi = output[i];
+
+      error += Math.pow(target[i] - oi, 2) + lambda * Math.pow(oi, 2);
     }
     return error / l;
   }
