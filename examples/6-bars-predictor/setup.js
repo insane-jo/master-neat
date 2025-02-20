@@ -43,14 +43,9 @@ window.redrawNetworkIterations = 1000;
 window.DEFAULT_SETTINGS = {
     mutationAmount: 50,
     mutationRate: .1,
-    costFunction: 'CROSS_ENTROPY',
-    selectionFunction: 'POWER',
-    elitism: 5,
-    allowedMutations: MasterNeat.methods.mutation.ALL
-        .reduce(function (res, curr) {
-        res[curr.name] = MasterNeat.methods.mutation.FFW.indexOf(curr) > -1;
-        return res;
-    }, {})
+    costFunction: 'MSE', // 'CROSS_ENTROPY',
+    selectionFunction: 'FITNESS_PROPORTIONATE',
+    elitism: 10
 };
 window.BROWSER_WORKER_SCRIPT_URL = "../../dist/worker-browser.js";
 window.NETWORK_INPUT_AMOUNT = 56;

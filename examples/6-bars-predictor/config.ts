@@ -1,4 +1,4 @@
-import {Network} from "../../lib";
+import {Network} from "../../src";
 
 declare const NETWORK_INPUT_AMOUNT: number;
 declare const NETWORK_OUTPUT_AMOUNT: number;
