@@ -299,7 +299,7 @@ export const DRAW_RESULTS_CALLBACK = (startDate: number, TEST_SET: PointData[]) 
       }
     }
 
-    const totalTest = bestNetwork.test(TEST_SET, MasterNeat.methods.cost.CROSS_ENTROPY);
+    const totalTest = bestNetwork.test(TEST_SET, DEFAULT_SETTINGS.cost);
 
     const testError = totalTest.error.toFixed(10);
 
