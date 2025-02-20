@@ -107,7 +107,7 @@ const activation: IActivationCollection = {
   },
 
   // Parametric ReLU (PReLU): Learnable slope for x < 0
-  PRELU: function (x, derivate, alpha = 0.25) { // alpha can be learned in practice
+  PRELU: (x, derivate, alpha = 0.25) => { // alpha can be learned in practice
     if (derivate) return x > 0 ? 1 : alpha;
     return x > 0 ? x : alpha * x;
   },
