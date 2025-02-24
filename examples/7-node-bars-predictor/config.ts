@@ -1,12 +1,12 @@
 import * as MasterNeat from '../../src/index';
 import {PointData} from "./get-points-set";
 
-import fs from 'fs';
-import path from "path";
+import * as fs from 'fs';
+import * as path from "path";
 import {INetworkTrainingOptions} from "../../src/architecture/network";
 import {INeatOptions} from "../../src/helpers/neat";
 
-import argparse from 'argparse';
+import * as argparse from 'argparse';
 
 const parser = new argparse.ArgumentParser({
   add_help: true,
@@ -219,6 +219,16 @@ parser.add_argument(
   }
 );
 
+parser.add_argument(
+  '-api',
+  '--add-point-index-to-input',
+  {
+    default: 0,
+    choices: ['1', '0'],
+    help: 'Add point index to input or not'
+  }
+);
+
 const args = parser.parse_args();
 
 export const DEFAULT_SETTINGS: INetworkTrainingOptions & INeatOptions = {
@@ -236,19 +246,22 @@ export const BARS_FILENAME_CSV = args.bars_filename;
 
 export const NORMALIZE_POINTS_DATA = args.normalize_points_data == 1;
 
-export const NETWORK_INPUT_AMOUNT = 59;
+export const POINTS_PER_ITERATION = +args.points_per_iteration;
+
+export const NETWORK_INPUT_AMOUNT = 59 + (args.add_point_index_to_input == 1 ? POINTS_PER_ITERATION : 0);
 export const NETWORK_OUTPUT_AMOUNT = +args.output;
 export const GROUP_DATA_BY_DAYS = args.group_data_by_days == 1;
 
 export const TRAIN_TEST_SPLIT_RATIO = +args.train_test_split_ratio;
 
-export const POINTS_PER_ITERATION = +args.points_per_iteration;
 export const PRICE_STEP = .01;
 export const PRICE_DECIMALS = 2;
 
+export const ADD_POINT_INDEX_TO_INPUT = args.add_point_index_to_input == 1;
+
 const EXPORT_FILENAME_PREFIX = args.prefix;
 
-args.export_filename = args.export_filename || `${EXPORT_FILENAME_PREFIX}-network-export-${NETWORK_OUTPUT_AMOUNT}${NORMALIZE_POINTS_DATA ? '-norm' : ''}.json`;
+args.export_filename = args.export_filename || `${EXPORT_FILENAME_PREFIX}-network-export-${ADD_POINT_INDEX_TO_INPUT ? `${POINTS_PER_ITERATION}-` : ''}${NETWORK_OUTPUT_AMOUNT}${NORMALIZE_POINTS_DATA ? '-norm' : ''}.json`;
 export const EXPORT_FILENAME = path.resolve(__dirname, './network-export/' + args.export_filename);
 
 const SAVE_NETWORK_ITERATIONS = 10;

@@ -1,5 +1,12 @@
 import {CandleData, LineData} from "../common/generate-bars-data";
-import {NETWORK_OUTPUT_AMOUNT, NORMALIZE_POINTS_DATA, POINTS_PER_ITERATION, PRICE_DECIMALS, PRICE_STEP} from "./config";
+import {
+  ADD_POINT_INDEX_TO_INPUT,
+  NETWORK_OUTPUT_AMOUNT,
+  NORMALIZE_POINTS_DATA,
+  POINTS_PER_ITERATION,
+  PRICE_DECIMALS,
+  PRICE_STEP
+} from "./config";
 
 export type PointData = {
   input: number[];
@@ -83,7 +90,8 @@ export const getPointsSet = (data: PointDataSource): PointData[] => {
       });
 
     let prevPrice: number = -1;
-    for(let currPrice of priceCollection) {
+    for(let i = 0; i < POINTS_PER_ITERATION; i++) {
+      const currPrice = priceCollection[i];
       const priceToCheck = Math.round(currPrice / PRICE_STEP) * PRICE_STEP;
       if (priceToCheck === prevPrice) {
         continue;
@@ -103,6 +111,7 @@ export const getPointsSet = (data: PointDataSource): PointData[] => {
         ...day,
         ...month,
         ...inputTradeData,
+        ...(ADD_POINT_INDEX_TO_INPUT ? baseToArray(POINTS_PER_ITERATION, i) : []),
         priceToCheck / priceMaxValue
       ];
 
