@@ -1,7 +1,7 @@
 import {BarsData} from "../common/generate-bars-data";
-import Papa from "papaparse";
-import fs from 'fs';
-import path from 'path';
+import * as Papa from "papaparse";
+import * as fs from 'fs';
+import * as path from 'path';
 import {Time} from "lightweight-charts";
 import {BARS_FILENAME_CSV} from "./config";
 
