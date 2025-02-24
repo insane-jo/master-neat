@@ -54,7 +54,7 @@ export const getPointsSet = (data: PointDataSource): PointData[] => {
     const dt = new Date(<number>ts * 1000);
 
     const dow = dowToArray(dt.getDay());
-    const day = dayToArray(dt.getDate());
+    const day = dayToArray(dt.getDate() - 1);
     const month = monthToArray(dt.getMonth());
 
     const inputTradeData = [
