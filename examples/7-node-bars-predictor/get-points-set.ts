@@ -90,7 +90,7 @@ export const getPointsSet = (data: PointDataSource): PointData[] => {
       });
 
     let prevPrice: number = -1;
-    for(let i = 0; i < POINTS_PER_ITERATION; i++) {
+    for(let i = 0; i < POINTS_PER_ITERATION - 1; i++) {
       const currPrice = priceCollection[i];
       const priceToCheck = Math.round(currPrice / PRICE_STEP) * PRICE_STEP;
       if (priceToCheck === prevPrice) {
