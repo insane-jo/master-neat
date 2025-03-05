@@ -214,7 +214,8 @@ parser.add_argument(
 
       return value;
     },
-    default: './data/bars-15mi.csv',
+    action: 'append',
+    default: [],
     help: 'CSV file that contains bars data.'
   }
 );
@@ -242,7 +243,15 @@ export const DEFAULT_SETTINGS: INetworkTrainingOptions & INeatOptions = {
   clear: args.clear == 1
 };
 
-export const BARS_FILENAME_CSV = args.bars_filename;
+const getDefaultDataFiles = () => {
+  const files = fs.readdirSync(path.resolve(__dirname, './data'));
+
+  return files
+    .filter((v) => v.endsWith('.csv'))
+    .map((v) => `./data/${v}`);
+}
+
+export const BARS_FILENAME_CSV: readonly string[] = args.bars_filename.length ? args.bars_filename : getDefaultDataFiles();
 
 export const NORMALIZE_POINTS_DATA = args.normalize_points_data == 1;
 
