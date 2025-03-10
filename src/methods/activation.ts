@@ -1,6 +1,3 @@
-// https://en.wikipedia.org/wiki/Activation_function
-// https://stats.stackexchange.com/questions/115258/comprehensive-list-of-activation-functions-in-neural-networks-with-pros-cons
-// Additional refs: Swish (https://arxiv.org/abs/1710.05941), ELU (https://arxiv.org/abs/1511.07289)
 import {IActivationCollection} from "../types/activation-types";
 
 const activation: IActivationCollection = {
@@ -180,13 +177,94 @@ const activation: IActivationCollection = {
   // Exponential: Simple unbounded non-linearity
   EXPONENTIAL: (x, derivate) => {
     const fx = Math.exp(x);
-    return derivate ? fx : fx;
+    return fx;
   },
 
   // Cube: Polynomial activation, x^3
   CUBE: (x, derivate) => {
     if (derivate) return 3 * Math.pow(x, 2);
     return Math.pow(x, 3);
+  },
+
+  // Square: Polynomial activation, x^2, simple non-linearity
+  SQUARE: (x, derivate) => {
+    if (derivate) return 2 * x;
+    return Math.pow(x, 2);
+  },
+
+  // Clipped ReLU: Bounded ReLU, caps output at a maximum value
+  CLIPPED_RELU: (x, derivate) => {
+    const cap = 6; // Common default cap, adjustable
+    if (derivate) return x > 0 && x < cap ? 1 : 0;
+    return Math.min(Math.max(x, 0), cap);
+  },
+
+  // Thresholded ReLU: ReLU with a shifted threshold
+  THRESHOLDED_RELU: (x, derivate) => {
+    const theta = 1; // Default threshold, adjustable
+    if (derivate) return x > theta ? 1 : 0;
+    return x > theta ? x : 0;
+  },
+
+  // Logit: Inverse of sigmoid, maps (0, 1) to (-∞, ∞)
+  LOGIT: (x, derivate) => {
+    // Clamp x to avoid domain errors (0 or 1)
+    const clampedX = Math.max(1e-15, Math.min(x, 1 - 1e-15));
+    if (derivate) return 1 / (clampedX * (1 - clampedX));
+    return Math.log(clampedX / (1 - clampedX));
+  },
+
+  // Hard Sigmoid: A piecewise linear approximation to the sigmoid function.
+  HARD_SIGMOID: (x, derivate) => {
+    // Typically defined with a linear region between -2.5 and 2.5
+    if (derivate) {
+      return x > -2.5 && x < 2.5 ? 0.2 : 0;
+    }
+    if (x <= -2.5) return 0;
+    if (x >= 2.5) return 1;
+    return 0.2 * x + 0.5;
+  },
+
+  // Hard Swish: Used in efficient networks, defined as x * HardSigmoid(x)
+  HARD_SWISH: (x, derivate) => {
+    // First compute Hard Sigmoid and its derivative
+    let hardSigmoid, dHardSigmoid;
+    if (x <= -2.5) {
+      hardSigmoid = 0;
+      dHardSigmoid = 0;
+    } else if (x >= 2.5) {
+      hardSigmoid = 1;
+      dHardSigmoid = 0;
+    } else {
+      hardSigmoid = 0.2 * x + 0.5;
+      dHardSigmoid = 0.2;
+    }
+    if (derivate) {
+      // derivative: HardSigmoid(x) + x * dHardSigmoid(x)
+      return hardSigmoid + x * dHardSigmoid;
+    }
+    return x * hardSigmoid;
+  },
+
+  // ELiSH: Exponential Linear Sigmoid Squasher
+  ELISH: (x, derivate) => {
+    // f(x) = { x * sigmoid(x)            if x >= 0
+    //        { (exp(x)-1)*sigmoid(x)       if x < 0
+    const sigmoid = 1 / (1 + Math.exp(-x));
+    if (derivate) {
+      // For x >= 0: derivative = sigmoid(x) * (1 + x*(1-sigmoid(x)))
+      // For x < 0: derivative = sigmoid(x)*((exp(x)-1)*(1-sigmoid(x)) + Math.exp(x))
+      if (x >= 0) {
+        return sigmoid * (1 + x * (1 - sigmoid));
+      } else {
+        return sigmoid * ((Math.exp(x) - 1) * (1 - sigmoid) + Math.exp(x));
+      }
+    }
+    if (x >= 0) {
+      return x * sigmoid;
+    } else {
+      return (Math.exp(x) - 1) * sigmoid;
+    }
   }
 };
 
