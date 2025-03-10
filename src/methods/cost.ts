@@ -229,7 +229,100 @@ const cost: ICostCollection = {
       error += Math.pow(target[i] - oi, 2) + lambda * Math.pow(oi, 2);
     }
     return error / l;
-  }
+  },
+
+  /**
+   * Purpose: A variation of Huber Loss that’s differentiable everywhere, often used in object detection (e.g., Faster R-CNN).
+   */
+  SMOOTH_L1: (target, output) => {
+    let error = 0;
+    const l = output.length;
+    const beta = 1.0; // Threshold
+    for (let i = 0; i < l; i++) {
+      const diff = Math.abs(target[i] - output[i]);
+      error += diff < beta ? 0.5 * diff * diff / beta : diff - 0.5 * beta;
+    }
+    return error / l;
+  },
+
+  /**
+   * IoU Loss (Intersection over Union Loss)
+   * Purpose: Common in segmentation and bounding box regression tasks, complements your Dice Loss.
+   */
+  IOU: (target, output) => {
+    let intersection = 0;
+    let union = 0;
+    const l = output.length;
+    for (let i = 0; i < l; i++) {
+      intersection += Math.min(target[i], output[i]);
+      union += target[i] + output[i] - Math.min(target[i], output[i]);
+    }
+    return 1 - intersection / (union + 1e-15);
+  },
+
+  /**
+   * Tversky Loss
+   * Purpose: A generalization of Dice Loss, useful for imbalanced segmentation tasks with adjustable penalties for false positives/negatives.
+   */
+  TVERSKY: (target, output) => {
+    let intersection = 0;
+    let fp = 0;
+    let fn = 0;
+    const l = output.length;
+    const alpha = 0.3; // Weight for false positives
+    const beta = 0.7;  // Weight for false negatives
+    for (let i = 0; i < l; i++) {
+      intersection += target[i] * output[i];
+      fp += output[i] * (1 - target[i]);
+      fn += target[i] * (1 - output[i]);
+    }
+    return 1 - (intersection + 1e-15) / (intersection + alpha * fp + beta * fn + 1e-15);
+  },
+
+  /**
+   * Wasserstein Loss (Earth Mover’s Distance)
+   * Purpose: Measures the "distance" between distributions, popular in GANs and regression tasks.
+   */
+  WASSERSTEIN: (target, output) => {
+    let error = 0;
+    const l = output.length;
+    const sortedTarget = [...target].sort((a, b) => a - b);
+    const sortedOutput = [...output].sort((a, b) => a - b);
+    for (let i = 0; i < l; i++) {
+      error += Math.abs(sortedTarget[i] - sortedOutput[i]);
+    }
+    return error / l;
+  },
+
+  /**
+   * Categorical Cross-Entropy (Multi-class Extension)
+   * Purpose: Your current CROSS_ENTROPY is binary; this extends it to multi-class problems.
+   */
+  CATEGORICAL_CROSS_ENTROPY: (target, output) => {
+    let error = 0;
+    const l = output.length;
+    for (let i = 0; i < l; i++) {
+      error -= target[i] * Math.log(Math.max(output[i], 1e-15));
+    }
+    return error / l;
+  },
+
+  /**
+   * Margin Ranking Loss
+   * Purpose: For ranking tasks (e.g., learning to rank pairs).
+   */
+  RANKING: (target, output) => {
+    let error = 0;
+    const l = output.length / 2; // Assumes pairs
+    const margin = 1.0;
+    for (let i = 0; i < l; i++) {
+      const x1 = output[2 * i];
+      const x2 = output[2 * i + 1];
+      const y = target[i] === 1 ? 1 : -1; // Assumes target is 1 or 0
+      error += Math.max(0, -y * (x1 - x2) + margin);
+    }
+    return error / l;
+  },
 };
 
 export default cost;
