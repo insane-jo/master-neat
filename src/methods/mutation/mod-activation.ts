@@ -56,7 +56,14 @@ const modActivation: IMutationModActivation = {
     activation.SINC,
     activation.SOFT_CLIPPING,
     activation.EXPONENTIAL,
-    activation.CUBE
+    activation.CUBE,
+    activation.SQUARE,
+    activation.CLIPPED_RELU,
+    activation.THRESHOLDED_RELU,
+    activation.LOGIT,
+    activation.HARD_SIGMOID,
+    activation.HARD_SWISH,
+    activation.ELISH
   ]
 };
 
