@@ -6,7 +6,12 @@ type ICostCollection = ICommonCollection<ICostFunction>;
 // https://en.wikipedia.org/wiki/Loss_function
 // Additional refs: Huber (https://en.wikipedia.org/wiki/Huber_loss), Focal Loss (https://arxiv.org/abs/1708.02002)
 const cost: ICostCollection = {
-  // Cross Entropy Loss: For classification, measures probability divergence
+  /**
+   * Summary: Computes the binary cross-entropy loss between target and output.
+   * Suitability Ranking:
+   * - Classification (binary): 9/10
+   * - Regression: 3/10
+   */
   CROSS_ENTROPY: (target, output) => {
     let error: number = 0;
     const l = output.length;
@@ -18,7 +23,12 @@ const cost: ICostCollection = {
     return error / l;
   },
 
-  // Mean Squared Error: Quadratic loss for regression
+  /**
+   * Summary: Computes the mean squared error between target and output.
+   * Suitability Ranking:
+   * - Regression: 9/10
+   * - Classification: 5/10
+   */
   MSE: (target, output) => {
     let error = 0;
     const l = output.length;
@@ -28,7 +38,12 @@ const cost: ICostCollection = {
     return error / l;
   },
 
-  // Binary Error: Counts classification mistakes (0 or 1)
+  /**
+   * Summary: Counts classification mistakes (0 or 1).
+   * Suitability Ranking:
+   * - Classification: 9/10
+   * - Regression: 3/10
+   */
   BINARY: (target, output) => {
     let misses: number = 0;
     const l = output.length;
@@ -38,7 +53,12 @@ const cost: ICostCollection = {
     return misses / l; // Normalized for consistency
   },
 
-  // Mean Absolute Error: L1 loss, robust to outliers
+  /**
+   * Summary: Computes the mean absolute error between target and output.
+   * Suitability Ranking:
+   * - Regression: 7/10
+   * - Classification: 4/10
+   */
   MAE: (target, output) => {
     let error = 0;
     const l = output.length;
@@ -48,7 +68,12 @@ const cost: ICostCollection = {
     return error / l;
   },
 
-  // Mean Absolute Percentage Error: Relative error measure
+  /**
+   Summary: Computes the mean absolute percentage error between target and output.
+   Suitability Ranking:
+   Regression: 8/10
+   Classification: 2/10
+   */
   MAPE: (target, output) => {
     let error = 0;
     const l = output.length;
@@ -59,7 +84,12 @@ const cost: ICostCollection = {
     return error / l;
   },
 
-  // Mean Squared Logarithmic Error: Penalizes underestimation more
+  /**
+   Summary: Computes the mean squared logarithmic error between target and output.
+   Suitability Ranking:
+   Regression: 8/10
+   Classification: 2/10
+   */
   MSLE: (target, output) => {
     let error = 0;
     const l = output.length;
@@ -71,7 +101,12 @@ const cost: ICostCollection = {
     return error / l;
   },
 
-  // Hinge Loss: For SVMs and binary classifiers
+  /**
+   * Summary: Computes the hinge loss, suitable for binary classification.
+   * Suitability Ranking:
+   * - Classification (binary): 8/10
+   * - Regression: 3/10
+   */
   HINGE: (target, output) => {
     let error = 0;
     const l = output.length;
@@ -81,7 +116,12 @@ const cost: ICostCollection = {
     return error / l; // Normalized
   },
 
-  // Squared Hinge Loss: Quadratic penalty for hinge violations
+  /**
+   * Summary: Computes the squared hinge loss, a variant of hinge loss.
+   * Suitability Ranking:
+   * - Classification (binary): 8/10
+   * - Regression: 3/10
+   */
   SQUARED_HINGE: (target, output) => {
     let error = 0;
     const l = output.length;
@@ -92,7 +132,12 @@ const cost: ICostCollection = {
     return error / l;
   },
 
-  // Huber Loss: Combines MSE and MAE, robust to outliers
+  /**
+   * Summary: Computes the Huber loss, a combination of MSE and MAE.
+   * Suitability Ranking:
+   * - Regression: 8/10
+   * - Classification: 4/10
+   */
   HUBER: (target, output) => {
     let error = 0;
     const l = output.length;
@@ -104,7 +149,12 @@ const cost: ICostCollection = {
     return error / l;
   },
 
-  // Log-Cosh Loss: Smooth approximation of absolute error
+  /**
+   * Summary: Computes the log-cosh loss, a smooth version of MSE.
+   * Suitability Ranking:
+   * - Regression: 7/10
+   * - Classification: 3/10
+   */
   LOG_COSH: (target, output) => {
     let error = 0;
     const l = output.length;
@@ -115,7 +165,12 @@ const cost: ICostCollection = {
     return error / l;
   },
 
-  // Quantile Loss: For quantile regression
+  /**
+   * Summary: Computes the quantile loss, a robust regression loss.
+   * Suitability Ranking:
+   * - Regression: 8/10
+   * - Classification: 4/10
+   */
   QUANTILE: (target, output) => {
     let error = 0;
     const l = output.length;
@@ -127,7 +182,12 @@ const cost: ICostCollection = {
     return error / l;
   },
 
-  // Kullback-Leibler Divergence: Measures distribution difference
+  /**
+   * Summary: Computes the Kullback-Leibler divergence loss.
+   * Suitability Ranking:
+   * - Regression: 6/10
+   * - Classification: 8/10
+   */
   KL_DIVERGENCE: (target, output) => {
     let error = 0;
     const l = output.length;
@@ -139,7 +199,12 @@ const cost: ICostCollection = {
     return error / l;
   },
 
-  // Focal Loss: For imbalanced classification (Lin et al., 2017)
+  /**
+   * Summary: Computes the binary focal loss, a variant of cross-entropy for imbalanced datasets.
+   * Suitability Ranking:
+   * - Classification (binary): 9/10
+   * - Regression: 3/10
+   */
   FOCAL: (target, output) => {
     let error = 0;
     const l = output.length;
@@ -153,7 +218,13 @@ const cost: ICostCollection = {
     return error / l;
   },
 
-  // Dice Loss: For segmentation tasks, overlap-based
+  /**
+   Summary: Computes the Dice loss for segmentation tasks based on overlap.
+   Suitability Ranking:
+   Segmentation: 9/10
+   Classification: 7/10
+   Regression: 2/10
+   */
   DICE: (target, output) => {
     let intersection = 0;
     let union = 0;
@@ -168,7 +239,12 @@ const cost: ICostCollection = {
     return 1 - (2 * intersection + 1e-15) / (union + 1e-15); // Avoid division by zero
   },
 
-  // Cosine Similarity Loss: Measures angle between vectors
+  /**
+   * Summary: Computes the cosine similarity loss between target and output.
+   * Suitability Ranking:
+   * - Regression: 6/10
+   * - Classification: 3/10
+   */
   COSINE: (target, output) => {
     let dot = 0;
     let normT = 0;
@@ -182,7 +258,12 @@ const cost: ICostCollection = {
     return 1 - dot / (Math.sqrt(normT) * Math.sqrt(normO) + 1e-15); // 1 - cosine similarity
   },
 
-  // Mean Squared Logarithmic Absolute Error: Variant of MSLE
+  /**
+   Summary: Computes the mean squared logarithmic absolute error between target and output.
+   Suitability Ranking:
+   Regression: 8/10
+   Classification: 2/10
+   */
   MSLAE: (target, output) => {
     let error = 0;
     const l = output.length;
@@ -193,7 +274,12 @@ const cost: ICostCollection = {
     return error / l;
   },
 
-  // Poisson Loss: For count data regression
+  /**
+   * Summary: Computes the Poisson loss, suitable for count data.
+   * Suitability Ranking:
+   * - Regression: 7/10
+   * - Classification: 3/10
+   */
   POISSON: (target, output) => {
     let error = 0;
     const l = output.length;
@@ -204,7 +290,12 @@ const cost: ICostCollection = {
     return error / l;
   },
 
-  // L1 Regularized MSE: MSE with L1 penalty on outputs
+  /**
+   Summary: Computes the L1 regularized mean squared error between target and output.
+   Suitability Ranking:
+   Regression: 8/10
+   Classification: 6/10
+   */
   L1_MSE: (target, output) => {
     let error = 0;
     const l = output.length;
@@ -218,7 +309,12 @@ const cost: ICostCollection = {
     return error / l;
   },
 
-  // L2 Regularized MSE: MSE with L2 penalty on outputs
+  /**
+   Summary: Computes the L2 regularized mean squared error between target and output.
+   Suitability Ranking:
+   Regression: 8/10
+   Classification: 6/10
+   */
   L2_MSE: (target, output) => {
     let error = 0;
     const l = output.length;
@@ -232,7 +328,10 @@ const cost: ICostCollection = {
   },
 
   /**
-   * Purpose: A variation of Huber Loss that’s differentiable everywhere, often used in object detection (e.g., Faster R-CNN).
+   Summary: Computes the smooth L1 loss, a differentiable version of Huber Loss.
+   Suitability Ranking:
+   Regression: 9/10
+   Classification: 7/10
    */
   SMOOTH_L1: (target, output) => {
     let error = 0;
@@ -246,8 +345,11 @@ const cost: ICostCollection = {
   },
 
   /**
-   * IoU Loss (Intersection over Union Loss)
-   * Purpose: Common in segmentation and bounding box regression tasks, complements your Dice Loss.
+   Summary: Computes the Intersection over Union (IoU) loss for segmentation and bounding box regression tasks.
+   Suitability Ranking:
+   Segmentation: 9/10
+   Classification: 7/10
+   Regression: 8/10
    */
   IOU: (target, output) => {
     let intersection = 0;
@@ -261,8 +363,11 @@ const cost: ICostCollection = {
   },
 
   /**
-   * Tversky Loss
-   * Purpose: A generalization of Dice Loss, useful for imbalanced segmentation tasks with adjustable penalties for false positives/negatives.
+   Summary: Computes the Tversky loss, a generalization of Dice Loss for imbalanced segmentation tasks.
+   Suitability Ranking:
+   Segmentation: 9/10
+   Classification: 7/10
+   Regression: 6/10
    */
   TVERSKY: (target, output) => {
     let intersection = 0;
@@ -280,8 +385,11 @@ const cost: ICostCollection = {
   },
 
   /**
-   * Wasserstein Loss (Earth Mover’s Distance)
-   * Purpose: Measures the "distance" between distributions, popular in GANs and regression tasks.
+   Summary: Computes the Wasserstein loss, also known as Earth Mover’s Distance, for measuring distribution distance.
+   Suitability Ranking:
+   Regression: 8/10
+   Classification: 6/10
+   GANs: 9/10
    */
   WASSERSTEIN: (target, output) => {
     let error = 0;
@@ -295,8 +403,10 @@ const cost: ICostCollection = {
   },
 
   /**
-   * Categorical Cross-Entropy (Multi-class Extension)
-   * Purpose: Your current CROSS_ENTROPY is binary; this extends it to multi-class problems.
+   * Summary: Computes the categorical focal loss, a variant of cross-entropy for multi-class imbalanced datasets.
+   * Suitability Ranking:
+   * - Classification (multi-class): 9/10
+   * - Regression: 3/10
    */
   CATEGORICAL_CROSS_ENTROPY: (target, output) => {
     let error = 0;
@@ -308,8 +418,11 @@ const cost: ICostCollection = {
   },
 
   /**
-   * Margin Ranking Loss
-   * Purpose: For ranking tasks (e.g., learning to rank pairs).
+   Summary: Computes the Margin Ranking Loss for ranking tasks.
+   Suitability Ranking:
+   Ranking: 9/10
+   Classification: 7/10
+   Regression: 5/10
    */
   RANKING: (target, output) => {
     let error = 0;
