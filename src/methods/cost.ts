@@ -414,7 +414,7 @@ const cost: ICostCollection = {
     for (let i = 0; i < l; i++) {
       error -= target[i] * Math.log(Math.max(output[i], 1e-15));
     }
-    return error / l;
+    return Math.abs(error / l);
   },
 
   /**
