@@ -4,7 +4,7 @@ import {PointData} from "./get-points-set";
 import * as fs from 'fs';
 import * as path from "path";
 import {INetworkTrainingOptions} from "../../src/architecture/network";
-import {INeatOptions} from "../../src/helpers/neat";
+import {INeatOptions, ScoreTargetType} from "../../src/helpers/neat";
 
 import * as argparse from 'argparse';
 
@@ -230,6 +230,16 @@ parser.add_argument(
   }
 );
 
+parser.add_argument(
+  '-cft',
+  '--cost-function-target',
+  {
+    default: '-',
+    choices: ['-', '+', '0'],
+    help: 'Target of cost function asc, desc, zero'
+  }
+);
+
 const args = parser.parse_args();
 
 export const DEFAULT_SETTINGS: INetworkTrainingOptions & INeatOptions = {
@@ -240,7 +250,8 @@ export const DEFAULT_SETTINGS: INetworkTrainingOptions & INeatOptions = {
   elitism: +args.elitism,
   mutation: MasterNeat.methods.mutation[args.allowed_mutations],
   popsize: +args.popsize,
-  clear: args.clear == 1
+  clear: args.clear == 1,
+  scoreTarget: args.cost_function_target
 };
 
 const getDefaultDataFiles = () => {

@@ -21,6 +21,8 @@ var selection = methods.selection;
 // type IFitnessFunction = INetworkFitnessFunction | IGenomeFitnessFunction;
 export type IFitnessFunction = (popGenome: Network | Network[]) => (number | Promise<undefined>);
 
+export type ScoreTargetType = '+' | '-' | '0';
+
 export interface INeatOptions {
   equal?: boolean;
   clear?: boolean;
@@ -40,6 +42,7 @@ export interface INeatOptions {
   maxGates?: number;
 
   mutationSelection?: (genome: Network) => IMutation;
+  scoreTarget?: ScoreTargetType;
 }
 
 export default class Neat {
@@ -67,6 +70,8 @@ export default class Neat {
 
   population: Network[] = [];
 
+  public scoreTarget: ScoreTargetType;
+
   constructor(input: number, output: number, fitness: IFitnessFunction, options: INeatOptions) {
     this.input = input; // The input size of the networks
     this.output = output; // The output size of the networks
@@ -83,6 +88,9 @@ export default class Neat {
     this.mutationAmount = options.mutationAmount || 1;
 
     this.fitnessPopulation = options.fitnessPopulation || false;
+
+    // Default to minimizing score
+    this.scoreTarget = options.scoreTarget || '-';
 
     this.selection = options.selection || methods.selection.POWER;
     this.crossover = options.crossover || [
@@ -246,10 +254,66 @@ export default class Neat {
    * Sorts the population by score
    */
   sort() {
-    this.population.sort(function (a, b) {
-      // @ts-ignore
-      return b.score - a.score;
-    });
+    let compareFunction: (a: Network, b: Network) => number;
+
+    switch (this.scoreTarget) {
+      case '+':
+        compareFunction = (a, b) => {
+          // Handle undefined scores
+          if (typeof a.score === 'undefined' || typeof b.score === 'undefined') return 0;
+
+          const aScore = a.score as number;
+          const bScore = b.score as number;
+
+          // Check for NaN or Infinity
+          if (isNaN(aScore) || !isFinite(aScore)) {
+            if (isNaN(bScore) || !isFinite(bScore)) return 0; // Both invalid, keep order
+            return 1; // a is invalid, put it after b
+          }
+          if (isNaN(bScore) || !isFinite(bScore)) return -1; // b is invalid, put it after a
+
+          return bScore - aScore; // Descending (maximize)
+        };
+        break;
+      case '-':
+        compareFunction = (a, b) => {
+          // Handle undefined scores
+          if (typeof a.score === 'undefined' || typeof b.score === 'undefined') return 0;
+
+          const aScore = a.score as number;
+          const bScore = b.score as number;
+
+          // Check for NaN or Infinity
+          if (isNaN(aScore) || !isFinite(aScore)) {
+            if (isNaN(bScore) || !isFinite(bScore)) return 0; // Both invalid, keep order
+            return 1; // a is invalid, put it after b
+          }
+          if (isNaN(bScore) || !isFinite(bScore)) return -1; // b is invalid, put it after a
+
+          return aScore - bScore; // Ascending (minimize)
+        };
+        break;
+      case '0':
+        compareFunction = (a, b) => {
+          // Handle undefined scores
+          if (typeof a.score === 'undefined' || typeof b.score === 'undefined') return 0;
+
+          const aScore = a.score as number;
+          const bScore = b.score as number;
+
+          // Check for NaN or Infinity
+          if (isNaN(aScore) || !isFinite(aScore)) {
+            if (isNaN(bScore) || !isFinite(bScore)) return 0; // Both invalid, keep order
+            return 1; // a is invalid, put it after b
+          }
+          if (isNaN(bScore) || !isFinite(bScore)) return -1; // b is invalid, put it after a
+
+          return Math.abs(aScore) - Math.abs(bScore); // Closest to zero
+        };
+        break;
+    }
+
+    this.population.sort(compareFunction);
   }
 
   /**
