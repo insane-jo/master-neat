@@ -1,6 +1,6 @@
 {
   "name": "master-neat",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Master-Neat is a powerful library designed to facilitate the creation and management of neural networks. It provides a comprehensive set of tools and utilities for developers looking to implement advanced neural network architectures.",
   "main": "./dist/master-neat.js",
   "types": "./lib/index.d.ts",

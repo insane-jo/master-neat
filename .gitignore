@@ -13,8 +13,8 @@ dummy-tests
 
 .goose
 
-lib
-lib-esm
+#lib
+#lib-esm
 
 *network-export*.json
 **/network-export/**/*
