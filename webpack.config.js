@@ -77,8 +77,8 @@ module.exports = [{
   output: {
     path: __dirname,
     filename: '[name].js',
-    library: 'MasterNeat',
-    libraryTarget: 'commonjs'
+    // library: 'MasterNeat',
+    libraryTarget: 'commonjs-module'
   },
   plugins: [
     new webpack.NoEmitOnErrorsPlugin(),

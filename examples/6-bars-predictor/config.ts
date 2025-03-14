@@ -1,4 +1,4 @@
-import {Network} from "../../src";
+import Network from "../../src/architecture/network";
 
 declare const NETWORK_INPUT_AMOUNT: number;
 declare const NETWORK_OUTPUT_AMOUNT: number;
