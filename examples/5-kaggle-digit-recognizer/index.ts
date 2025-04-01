@@ -4,9 +4,10 @@ import fs from 'fs';
 import Papa from 'papaparse';
 
 import {Network, methods} from '../../src/index';
+import {ScoreTargetType} from '../../src/helpers/neat';
 import {INetworkTrainingSetItem} from "../../src/architecture/network";
 
-const PATH_TO_DATA_FOLDER = path.resolve('../4-kaggle-digit-recognizer/data');
+const PATH_TO_DATA_FOLDER = path.resolve(__dirname, '../4-kaggle-digit-recognizer/data');
 const PATH_TO_TRAIN_FILE = path.join(PATH_TO_DATA_FOLDER, 'train.csv');
 
 const getDataset = (): {train: INetworkTrainingSetItem[], test: INetworkTrainingSetItem[]} => {
@@ -27,6 +28,7 @@ const getDataset = (): {train: INetworkTrainingSetItem[], test: INetworkTraining
 
   const prepareSet = (collection: any[]): {input: number[], output: number[]}[] => {
     return collection
+      .filter((v) => v.hasOwnProperty('pixel0'))
       .map((curr) => {
         const input = new Array(inputHeaders.length);
         inputHeaders.forEach((key, idx) => {
@@ -67,13 +69,14 @@ const {train, test} = getDataset();
 // console.log(dataToTrain);
 
 const DEFAULT_SETTINGS = {
-  costFunction: 'BINARY',
-  mutationRate: 0.1,
-  mutationAmount: 100,
+  costFunction: 'MSE',
+  mutationRate: 0.5,
+  mutationAmount: 5,
   elitism: 1,
   selectionFunction: 'TOURNAMENT',
   popsize: 50,
-  // threads: 4
+  threads: 4,
+  scoreTarget: '0' as ScoreTargetType
 };
 
 const NETWORK_INPUT_AMOUNT = train[0].input.length;
