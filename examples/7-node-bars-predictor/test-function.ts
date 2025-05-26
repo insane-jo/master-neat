@@ -1,4 +1,3 @@
-import methods from "../../src/methods/methods";
 import {INetworkTrainingSetItem, ITestResult} from "../../src/architecture/network";
 import Network from "../../src/architecture/network";
 import {CandleData, LineData} from "../common/generate-bars-data";
