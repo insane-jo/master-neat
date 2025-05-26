@@ -51,19 +51,27 @@ const setupExample = async () => {
       });
     }
 
-    const pointsSet = getPointsSet({
-      candles: candlesData,
-      volumes: volumesData,
-      lowerBand: lowerBandData,
-      upperBand: upperBandData,
-      middleBand: middleBandData
+    const delimiterIdx = Math.round(data.bars.length * TRAIN_TEST_SPLIT_RATIO);
+    // const trainSet = pointsSet.slice(0, delimiterIdx);
+    // const testSet = pointsSet.slice(delimiterIdx);
+
+    const trainSet = getPointsSet({
+      candles: candlesData.slice(0, delimiterIdx),
+      volumes: volumesData.slice(0, delimiterIdx),
+      lowerBand: lowerBandData.slice(0, delimiterIdx),
+      upperBand: upperBandData.slice(0, delimiterIdx),
+      middleBand: middleBandData.slice(0, delimiterIdx)
+    });
+
+    const testSet = getPointsSet({
+      candles: candlesData.slice(delimiterIdx),
+      volumes: volumesData.slice(delimiterIdx),
+      lowerBand: lowerBandData.slice(delimiterIdx),
+      upperBand: upperBandData.slice(delimiterIdx),
+      middleBand: middleBandData.slice(delimiterIdx)
     });
 
     // (window as any).NETWORK_INPUT_AMOUNT = pointsSet[0].input.length;
-
-    const delimiterIdx = Math.round(pointsSet.length * TRAIN_TEST_SPLIT_RATIO);
-    const trainSet = pointsSet.slice(0, delimiterIdx);
-    const testSet = pointsSet.slice(delimiterIdx);
 
     return {
       trainSet, testSet

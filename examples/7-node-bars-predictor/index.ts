@@ -13,7 +13,7 @@ import {
 import path from "path";
 
 readyPromise
-  .then(({trainSet, testSet}) => {
+  .then(async ({trainSet, testSet}) => {
     let network: MasterNeat.Network;
 
     if (!fs.existsSync(path.dirname(EXPORT_FILENAME))) {
@@ -29,7 +29,7 @@ readyPromise
       network = new MasterNeat.Network(NETWORK_INPUT_AMOUNT, NETWORK_OUTPUT_AMOUNT);
     }
 
-    const iterationCallback = DRAW_RESULTS_CALLBACK(Date.now(), testSet);
+    const iterationCallback = await DRAW_RESULTS_CALLBACK(Date.now(), testSet);
     network.evolve(trainSet, {
       ...DEFAULT_SETTINGS,
       error: Number.NEGATIVE_INFINITY,

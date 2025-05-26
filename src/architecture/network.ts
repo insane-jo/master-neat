@@ -17,6 +17,11 @@ import subNode from "../methods/mutation/sub-node";
 
 export type INetworkTrainingSetItem = { input: number[], output: number[] };
 
+export interface ITestResult {
+  error: number;
+  time: number;
+}
+
 export type INetworkTrainingOptions = {
   error?: number;
   rate?: number;
@@ -492,7 +497,7 @@ export default class Network {
   /**
    * Tests a set and returns the error and elapsed time
    */
-  test(set: INetworkTrainingSetItem[], cost = methods.cost.MSE) {
+  test(set: INetworkTrainingSetItem[], cost = methods.cost.MSE): ITestResult {
     const nodes = this.nodes;
     const dropout = this.dropout;
 

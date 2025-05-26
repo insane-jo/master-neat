@@ -286,7 +286,24 @@ export const EXPORT_FILENAME = path.resolve(__dirname, './network-export/' + arg
 
 const SAVE_NETWORK_ITERATIONS = 10;
 
-export const DRAW_RESULTS_CALLBACK = (startDate: number, TEST_SET: PointData[]) => {
+import TestFunctionBuilder from './test-function';
+import {getBarsData} from "./get-bars-data";
+
+export const DRAW_RESULTS_CALLBACK = async (startDate: number, TEST_SET: PointData[]) => {
+
+  const barsData = await getBarsData(GROUP_DATA_BY_DAYS);
+
+  const TEST_FUNCTION = TestFunctionBuilder(
+    POINTS_PER_ITERATION,
+    ADD_POINT_INDEX_TO_INPUT,
+    NETWORK_OUTPUT_AMOUNT,
+    barsData[0].bars.slice(
+      Math.round(
+        barsData[0].bars.length * TRAIN_TEST_SPLIT_RATIO
+      )
+    )
+  );
+
   return (bestNetwork: MasterNeat.Network, results: any) => {
     const networkConfiguration = `${NETWORK_INPUT_AMOUNT} - ${bestNetwork.nodes.length - NETWORK_INPUT_AMOUNT - NETWORK_OUTPUT_AMOUNT} - ${NETWORK_OUTPUT_AMOUNT} (${bestNetwork.connections.length})`;
 
@@ -336,7 +353,9 @@ export const DRAW_RESULTS_CALLBACK = (startDate: number, TEST_SET: PointData[]) 
 
     const testError = totalTest.error.toFixed(10);
 
-    console.log(`Iteration: ${iterationTest}, train error: ${results.error.toFixed(10)}. Test error: ${testError}. Predictions: (+${correct})|(-${incorrect})/${total} (${(correct / total * 100).toFixed(2)}%/${(incorrect / total * 100).toFixed(2)}%) Network configuration: ${networkConfiguration}.`)
+    const porfolioResult = TEST_FUNCTION.apply(bestNetwork, [TEST_SET]);
+
+    console.log(`Iteration: ${iterationTest}. Portfolio result: ${porfolioResult.error.toFixed(4)}. Train error: ${results.error.toFixed(10)}. Test error: ${testError}. Predictions: (+${correct})|(-${incorrect})/${total} (${(correct / total * 100).toFixed(2)}%/${(incorrect / total * 100).toFixed(2)}%) Network configuration: ${networkConfiguration}.`)
 
     if (results.iteration % SAVE_NETWORK_ITERATIONS == 0) {
       fs.writeFile(

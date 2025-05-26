@@ -69,13 +69,13 @@ const {train, test} = getDataset();
 // console.log(dataToTrain);
 
 const DEFAULT_SETTINGS = {
-  costFunction: 'MSE',
-  mutationRate: 0.5,
-  mutationAmount: 5,
+  costFunction: 'FOCAL',
+  mutationRate: 0.125,
+  mutationAmount: 100,
   elitism: 1,
   selectionFunction: 'TOURNAMENT',
   popsize: 50,
-  threads: 4,
+  // threads: 4,
   scoreTarget: '0' as ScoreTargetType
 };
 
