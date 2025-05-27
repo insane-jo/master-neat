@@ -14,6 +14,9 @@ export default class CustomNetwork extends Network {
   public pointsPerIteration: number = 20;
   public bars: CandleData[] = [];
 
+  public CORRIDOR_START_PART = .4;
+  public CORRIDOR_END_PART = .6;
+
   test(set: INetworkTrainingSetItem[]): ITestResult {
     // let totalError = 0;
     const barsLength = this.bars.length;
@@ -28,8 +31,8 @@ export default class CustomNetwork extends Network {
 
     // Если переход из 0 в 1 в сигналах происходит внутри этих значений - не торгуем
     // Не торгуем если изменение цены произошло в пивотах между 30 и 70% - только большие колебания ловим
-    const NON_TRADE_CORRIDOR_START = Math.round(.5 * this.pointsPerIteration),
-      NON_TRADE_CORRIDOR_END = Math.round(.5 * this.pointsPerIteration) - 1;
+    const NON_TRADE_CORRIDOR_START = Math.round(this.CORRIDOR_START_PART * this.pointsPerIteration),
+      NON_TRADE_CORRIDOR_END = Math.round(this.CORRIDOR_END_PART * this.pointsPerIteration) - 1;
 
     const getTradePrice = (price: number, getBuyPrice: boolean) => {
       if (getBuyPrice) {
@@ -38,6 +41,8 @@ export default class CustomNetwork extends Network {
         return price * (1 - (SPREAD_PERCENT + COMISSION_PERCENT));
       }
     }
+
+    let lastTradePrice = NaN;
 
     // Compute error in a single loop
     for (let i = 0; i < barsLength - 2 /*Последнюю свечу проверить не можем*/; i++) {
@@ -63,16 +68,32 @@ export default class CustomNetwork extends Network {
       }
 
       if (currentPosition) {
-        const firstValue = localDecisionMaker[0],
-          lastValue = localDecisionMaker[NON_TRADE_CORRIDOR_START];
+        if (currentPosition > 0) {
+          const firstValue = localDecisionMaker[0],
+            lastValue = localDecisionMaker[NON_TRADE_CORRIDOR_START];
 
-        const needToTrade = lastValue > firstValue;
+          const needToSell = lastValue > firstValue;
 
-        if (needToTrade) {
-          const tradePrice = getTradePrice(this.bars[i + 1].open, false);
+          if (needToSell) {
+            const tradePrice = getTradePrice(this.bars[i + 1].open, false);
 
-          portfolioValue = currentPosition * tradePrice;
-          currentPosition = 0;
+            portfolioValue = currentPosition * tradePrice;
+            currentPosition = 0;
+
+            lastTradePrice = NaN;
+          }
+        } else {
+          const firstValue = localDecisionMaker[NON_TRADE_CORRIDOR_END],
+            lastValue = localDecisionMaker[localDecisionMaker.length - 1];
+
+          const needToBuy = lastValue > firstValue;
+          if (needToBuy) {
+            const tradePrice = getTradePrice(this.bars[i + 1].open, true);
+            portfolioValue = -(currentPosition * tradePrice);
+            currentPosition = 0;
+
+            lastTradePrice = NaN;
+          }
         }
       } else {
         if (isBadDecision) {
@@ -80,14 +101,27 @@ export default class CustomNetwork extends Network {
           continue;
         }
 
-        const firstValue = localDecisionMaker[NON_TRADE_CORRIDOR_END],
+        let firstValue = localDecisionMaker[NON_TRADE_CORRIDOR_END],
           lastValue = localDecisionMaker[localDecisionMaker.length - 1];
 
-        const needToTrade = lastValue > firstValue;
+        const needToBuy = lastValue > firstValue;
 
-        if (needToTrade) {
+        if (needToBuy) {
           const tradePrice = getTradePrice(this.bars[i + 1].open, true);
           currentPosition = portfolioValue / tradePrice;
+
+          lastTradePrice = tradePrice;
+        } else {
+          firstValue = localDecisionMaker[0];
+          lastValue = localDecisionMaker[NON_TRADE_CORRIDOR_START];
+
+          const needToSell = lastValue > firstValue;
+          if (needToSell) {
+            const tradePrice = getTradePrice(this.bars[i + 1].open, false);
+            currentPosition = - (portfolioValue / tradePrice);
+
+            lastTradePrice = tradePrice;
+          }
         }
       }
     }

@@ -55,9 +55,9 @@ export const DRAW_RESULTS_CALLBACK = async (startDate: number, TEST_SET: PointDa
 
     const totalTest = bestNetwork.test(TEST_SET);
 
-    const testError = totalTest.error.toFixed(10);
+    const testError = (totalTest.error * 100).toFixed(4);
 
-    console.log(`Iteration: ${iterationTest}. Train error: ${results.error.toFixed(10)}. Test error: ${testError}. Predictions: (+${correct})|(-${incorrect})/${total} (${(correct / total * 100).toFixed(2)}%/${(incorrect / total * 100).toFixed(2)}%) Network configuration: ${networkConfiguration}.`)
+    console.log(`Iteration: ${iterationTest}. Train potrfolio: ${(results.error * 100).toFixed(4)}%. Test portfolio: ${testError}%. Predictions: (+${correct})|(-${incorrect})/${total} (${(correct / total * 100).toFixed(2)}%/${(incorrect / total * 100).toFixed(2)}%) Network configuration: ${networkConfiguration}.`)
 
     if (results.iteration % SAVE_NETWORK_ITERATIONS == 0) {
       fs.writeFile(
