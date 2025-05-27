@@ -279,12 +279,12 @@ export const PRICE_DECIMALS = 2;
 
 export const ADD_POINT_INDEX_TO_INPUT = args.add_point_index_to_input == 1;
 
-const EXPORT_FILENAME_PREFIX = args.prefix;
+export const EXPORT_FILENAME_PREFIX = args.prefix;
 
 args.export_filename = args.export_filename || `${EXPORT_FILENAME_PREFIX}-network-export-${ADD_POINT_INDEX_TO_INPUT ? `${POINTS_PER_ITERATION}-` : ''}${NETWORK_OUTPUT_AMOUNT}${NORMALIZE_POINTS_DATA ? '-norm' : ''}.json`;
 export const EXPORT_FILENAME = path.resolve(__dirname, './network-export/' + args.export_filename);
 
-const SAVE_NETWORK_ITERATIONS = 10;
+export const SAVE_NETWORK_ITERATIONS = 10;
 
 import TestFunctionBuilder from './test-function';
 import {getBarsData} from "./get-bars-data";
@@ -295,7 +295,6 @@ export const DRAW_RESULTS_CALLBACK = async (startDate: number, TEST_SET: PointDa
 
   const TEST_FUNCTION = TestFunctionBuilder(
     POINTS_PER_ITERATION,
-    ADD_POINT_INDEX_TO_INPUT,
     NETWORK_OUTPUT_AMOUNT,
     barsData[0].bars.slice(
       Math.round(

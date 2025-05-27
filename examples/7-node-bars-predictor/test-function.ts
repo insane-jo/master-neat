@@ -4,7 +4,6 @@ import {CandleData, LineData} from "../common/generate-bars-data";
 
 const TestFunctionBuilder = (
   pointsPerIteration: number,
-  addPointIndexToInput: boolean,
   networkOutputAmount: number,
   bars: CandleData[]
 ) => {
