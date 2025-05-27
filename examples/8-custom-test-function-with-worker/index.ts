@@ -47,7 +47,7 @@ readyPromise
     );
     network.pointsPerIteration = POINTS_PER_ITERATION;
 
-    const iterationCallback = await DRAW_RESULTS_CALLBACK(Date.now(), testSet);
+    const iterationCallback = await DRAW_RESULTS_CALLBACK(Date.now(), testSet, EXPORT_FILENAME);
     network.evolve(trainSet, {
       ...DEFAULT_SETTINGS,
       scoreTarget: '+',

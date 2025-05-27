@@ -1,13 +1,12 @@
 import fs from "fs";
 import {
-  EXPORT_FILENAME,
   NETWORK_INPUT_AMOUNT,
   NETWORK_OUTPUT_AMOUNT, SAVE_NETWORK_ITERATIONS
 } from "../7-node-bars-predictor/config";
 import {PointData} from "../7-node-bars-predictor/get-points-set";
 import CustomNetwork from "./custom-network-test";
 
-export const DRAW_RESULTS_CALLBACK = async (startDate: number, TEST_SET: PointData[]) => {
+export const DRAW_RESULTS_CALLBACK = async (startDate: number, TEST_SET: PointData[], exportFilename: string) => {
 
   return (bestNetwork: CustomNetwork, results: any) => {
     const networkConfiguration = `${NETWORK_INPUT_AMOUNT} - ${bestNetwork.nodes.length - NETWORK_INPUT_AMOUNT - NETWORK_OUTPUT_AMOUNT} - ${NETWORK_OUTPUT_AMOUNT} (${bestNetwork.connections.length})`;
@@ -62,7 +61,7 @@ export const DRAW_RESULTS_CALLBACK = async (startDate: number, TEST_SET: PointDa
 
     if (results.iteration % SAVE_NETWORK_ITERATIONS == 0) {
       fs.writeFile(
-        EXPORT_FILENAME,
+        exportFilename,
         JSON.stringify(bestNetwork),
         () => {}
       );
